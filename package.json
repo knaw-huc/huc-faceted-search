@@ -1,0 +1,33 @@
+{
+  "name": "huc-faceted-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "rm -rf build && tsc",
+    "dist": "rm -rf dist && webpack && webpack --config webpack.config.prod.js",
+    "release": "./release.sh",
+    "start:dev": "webpack-dev-server",
+    "watch": "tsc -w"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "@types/react": "^16.4.14",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.2",
+    "ts-loader": "^5.2.1",
+    "tslib": "^1.9.3",
+    "typescript": "^3.0.3",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.9"
+  },
+  "dependencies": {
+    "emotion": "^9.2.10",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-emotion": "^9.2.10"
+  }
+}
