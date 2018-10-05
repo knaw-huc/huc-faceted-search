@@ -22,14 +22,16 @@ class ElasticSearchRequest {
             this.query = { query_string: { query } };
     }
     createListAggregation(facet) {
+        const terms = {
+            field: facet.field,
+            size: facet.viewSize,
+            order: {
+                [facet.order[0]]: facet.order[1]
+            },
+        };
         return {
             aggs: {
-                [facet.field]: {
-                    terms: {
-                        field: facet.field,
-                        size: facet.viewSize
-                    }
-                },
+                [facet.field]: { terms },
                 [`${facet.field}-count`]: {
                     cardinality: {
                         field: facet.field
