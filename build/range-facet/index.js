@@ -19,7 +19,7 @@ const ActiveDates = react_emotion_1.default('div') `
 	font-weight: bold;
 	grid-template-columns: 1fr 16px 1fr;
 `;
-class RangeFacet extends React.PureComponent {
+class RangeFacetView extends React.PureComponent {
     constructor() {
         super(...arguments);
         this.state = {
@@ -30,15 +30,15 @@ class RangeFacet extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.ioManager.addRangeFacet(this.props.id, this.props.field);
+        this.props.state.ioManager.addRangeFacet(this.props.field, this.props.index);
     }
     render() {
         let min;
         let max;
         let histogramValues = [];
-        const { state, id } = this.props;
-        if (state.facets !== null && state.facets.hasOwnProperty(id)) {
-            const facetData = state.facets[id];
+        const { field, state } = this.props;
+        if (state.facets !== null && state.facets.hasOwnProperty(field)) {
+            const facetData = state.facets[field];
             min = facetData.values[0];
             max = facetData.values[1];
             histogramValues = facetData.histogramValues;
@@ -78,4 +78,4 @@ class RangeFacet extends React.PureComponent {
                 React.createElement("span", { style: { textAlign: 'right' } }, max))));
     }
 }
-exports.default = RangeFacet;
+exports.default = RangeFacetView;

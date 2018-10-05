@@ -3,7 +3,7 @@ import { FacetsProps } from '../facets';
 import { ListFacetProps } from './index';
 import styled from 'react-emotion';
 import { Input } from '../full-text-search';
-import { SortBy, SortDirection } from '../io-manager/list-manager';
+import { SortBy, SortDirection } from '../models/facet';
 
 const Wrapper = styled('div')`
 	font-size: .9em;
@@ -84,7 +84,7 @@ export default class Options extends React.PureComponent<Props, State> {
 					onChange={ev => {
 						const { value } = ev.target
 						this.setState({ value })
-						this.props.state.ioManager.addListAggregationQuery(this.props.id, this.props.field, value)
+						this.props.state.ioManager.addListAggregationQuery(this.props.field, value)
 					}}
 					style={{
 						height: '2em'
@@ -100,7 +100,6 @@ export default class Options extends React.PureComponent<Props, State> {
 		return (ev: React.ChangeEvent<HTMLInputElement>) => {
 			if (ev.target.value === 'on') {
 				this.props.state.ioManager.sortListBy(
-					this.props.id,
 					this.props.field,
 					sortBy,
 					direction

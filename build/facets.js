@@ -12,6 +12,6 @@ class Facets extends React.PureComponent {
         return this.props.children;
     }
 }
-exports.default = (props) => (React.createElement(context_1.default.Consumer, null, state => React.createElement(Facets, { state: state }, React.Children.map(props.children, (child) => {
-    return React.cloneElement(child, { state });
+exports.default = (props) => (React.createElement(context_1.default.Consumer, null, state => React.createElement(Facets, { state: state }, React.Children.map(props.children, (child, index) => {
+    return React.cloneElement(child, { state, index });
 }))));

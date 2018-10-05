@@ -1,101 +1,61 @@
-import RangeManager, { IRangeFacet } from './range-manager'
-import ListManager, { IListFacet, SortBy, SortDirection } from './list-manager'
-
-export class Request {
-	aggs: { [id: string]: AggregationRequest } = {}
-	post_filter: any = {}
-	query: any
-	size: number = 20
-	sort: string = 'date'
-}
-
-interface Hit {
-	// sort: number[]
-	// _id: string
-	// _index: string
-	// _score: number
-	_source: any
-	// _type: string
-}
-export interface Response {
-	aggregations: { [id: string]: any}
-	hits: {
-		hits: Hit[]
-		// max_score: number
-		total: number
-	}
-	// timed_out: boolean
-	// took: number
-}
-
-export interface AggregationRequest {
-	aggs: any
-	filter: any
-}
-
-export enum FacetType {
-	List,
-	Range,
-}
-export interface IFacet {
-	field: string
-	type: FacetType
-}
-
-export type IFacets = { [id: string]: IListFacet | IRangeFacet }
+import RangeManager from './range-manager'
+import ListFacetManager from './list-manager'
+import { SortBy, SortDirection, Facets } from '../models/facet'
+import ElasticSearchRequest from '../models/elastic-search-request'
+import ElasticSearchResponseParser, { ElasticSearchResponse } from '../models/elastic-search-response-parser'
 
 export default class IOManager {
 	private cache: {[key: string]: string} = {}
 	private rangeManager = new RangeManager()
-	private listManager = new ListManager()
+	private listManager = new ListFacetManager()
+	private query: string = ''
 	facetCount: number
-	request: Request = new Request()
+	request: ElasticSearchRequest
 
-	constructor(private url: string, private onChange: (response: Response, facets: IFacets) => void) {}
+	constructor(private url: string, private onChange: (response: ElasticSearchResponse, facets: Facets) => void) {}
 
-	addListAggregation(id: string, field: string, size: number) {
-		this.listManager.addFacet(id, field, size)
+	addListAggregation(field: string, index: number, size: number) {
+		this.listManager.addFacet(field, index, size)
 		this.dispatch()
 	}
 
-	addListAggregationQuery(id: string, field: string, query: string) {
-		this.listManager.addQuery(id, field, query)
+	addListAggregationQuery(field: string, query: string) {
+		this.listManager.addQuery(field, query)
 		this.dispatch()
 	}
 
 	addListFilter(field: string, key: string) {
 		this.listManager.addFilter(field, key)
-		this.setFilters()
+		this.dispatch()
 	}
 
 	removeListFilter(field: string, key: string) {
 		this.listManager.removeFilter(field, key)
-		this.setFilters()
-	}
-
-	sortListBy(id: string, field: string, sortBy: SortBy, direction: SortDirection) {
-		this.listManager.sortBy(id, field, sortBy, direction)
 		this.dispatch()
 	}
 
-	addRangeFacet(id: string, field: string) {
-		this.rangeManager.addFacet(id, field)
+	sortListBy(field: string, sortBy: SortBy, direction: SortDirection) {
+		this.listManager.sortBy(field, sortBy, direction)
+		this.dispatch()
+	}
+
+	addRangeFacet(field: string, index: number) {
+		this.rangeManager.addFacet(field, index)
 		this.dispatch()
 	}
 
 	addRangeFilter(field: string, min: number, max :number) {
 		this.rangeManager.addFilter(field, min, max)
-		this.setFilters()
+		this.dispatch()
 	}
 
 	addQuery(query: string) {
-		this.request.query = { query_string: { query } }
-		if (!query.length) delete this.request.query
+		this.query = query
 		this.dispatch()
 	}
 
 	reset() {
-		this.request = new Request()
+		this.query = ''
 		this.listManager.reset()
 		this.rangeManager.reset()
 		this.dispatch()
@@ -106,39 +66,23 @@ export default class IOManager {
 		this.dispatch()
 	}
 
-	viewMoreFacetValues(id: string, field: string, size: number) {
-		const lastResponse = JSON.parse(this.cache[JSON.stringify(this.request)])
-		const maxSize = lastResponse.aggregations[id][`${field}-count`].value	
-
-		this.request.aggs[id].aggs[field].terms.size += size
-
-		if (this.request.aggs[id].aggs[field].terms.size > maxSize) {
-			this.request.aggs[id].aggs[field].term.size = maxSize
-		}
-
+	viewMoreFacetValues(field: string) {
+		this.listManager.facets[field].viewMore()
 		this.dispatch()
 	}
 
-	viewLessFacetValues(id: string, field: string, size: number) {
-		this.request.aggs[id].aggs[field].terms.size -= size
-
-		if (this.request.aggs[id].aggs[field].terms.size < size) {
-			this.request.aggs[id].aggs[field].term.size = size
-		}
-
+	viewLessFacetValues(field: string) {
+		this.listManager.facets[field].viewLess()
 		this.dispatch()
 	}
 
 	private async dispatch() {
-		this.request.aggs = {
-			...this.listManager.aggregations,
-			...this.rangeManager.aggregations
-		}
-
 		const facets = {
 			...this.listManager.facets,
 			...this.rangeManager.facets,
 		}
+
+		this.request = new ElasticSearchRequest(facets, this.query)
 
 		if (
 			this.facetCount == null ||
@@ -149,7 +93,7 @@ export default class IOManager {
 
 		const body = JSON.stringify(this.request)
 
-		let response: Response
+		let response: ElasticSearchResponse
 		if (this.cache.hasOwnProperty(body)) {
 			response = JSON.parse(this.cache[body])
 		} else {
@@ -169,48 +113,8 @@ export default class IOManager {
 		}
 
 
-		this.listManager.updateFacets(response)
-		this.rangeManager.updateFacets(response)
+		const responseParser = new ElasticSearchResponseParser(response, facets)
 
-		this.onChange(response, facets)
-	}
-
-	private prepareFilters(manager: ListManager | RangeManager) {
-		let filters
-
-		if (manager.filters.length === 0) {
-			filters = {}
-		} else if (manager.filters.length === 1) {
-			filters = manager.filters[0]
-		} else {
-			filters = {
-				bool: {
-					should: manager.filters
-				}
-			}
-		}
-
-		return filters
-	}
-
-	private setFilters() {
-		let listFilters = this.prepareFilters(this.listManager)
-		let rangeFilters = this.prepareFilters(this.rangeManager)
-		let post_filter
-
-		if (this.listManager.filters.length && this.rangeManager.filters.length) {
-			post_filter = {
-				bool: {
-					must: [rangeFilters].concat(listFilters)
-				}
-			}
-		} else if (this.listManager.filters.length && !this.rangeManager.filters.length) {
-			post_filter = listFilters
-		} else if (!this.listManager.filters.length && this.rangeManager.filters.length) {
-			post_filter = rangeFilters
-		}
-
-		this.request.post_filter = post_filter
-		this.dispatch()
+		this.onChange(response, responseParser.facets)
 	}
 }

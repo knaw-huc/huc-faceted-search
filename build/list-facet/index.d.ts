@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FacetsProps } from '../facets';
 export interface ListFacetProps {
     field: string;
-    id: string;
     size?: number;
     title: string;
 }

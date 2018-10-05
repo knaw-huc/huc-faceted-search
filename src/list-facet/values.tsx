@@ -1,9 +1,10 @@
 import * as React from 'react'
-import FacetValue, { IFacetValue } from './value'
+import FacetValueView from './value'
 import styled from 'react-emotion'
 import { MoreLessButton } from '../button'
 import { ListFacetProps, ListFacetState } from './index'
 import { FacetsProps } from '../facets';
+import { ListFacetValue } from '../models/facet';
 
 const DURATION = 500
 const FRAME_DURATION = 16
@@ -20,9 +21,9 @@ const List = styled('ul')`
 
 type Props = FacetsProps & ListFacetProps & ListFacetState
 interface State {
-	values: IFacetValue[]
+	values: ListFacetValue[]
 }
-export default class FacetValues extends React.PureComponent<Props, State> {
+export default class FacetValuesView extends React.PureComponent<Props, State> {
 	private wrapperRef: React.RefObject<HTMLDivElement>
 	private listHeight: number
 	state: State = {
@@ -36,9 +37,9 @@ export default class FacetValues extends React.PureComponent<Props, State> {
 
 	static getDerivedStateFromProps(props: Props) {
 		const { facets } = props.state
-		const values = (facets == null || !facets.hasOwnProperty(props.id)) ?
+		const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
 			[] :
-			facets[props.id].values
+			facets[props.field].values
 		return { values }
 	}
 
@@ -59,7 +60,7 @@ export default class FacetValues extends React.PureComponent<Props, State> {
 				<List>
 					{
 						this.state.values.map(value =>
-							<FacetValue
+							<FacetValueView
 								addFilter={() => this.props.state.ioManager.addListFilter(this.props.field, value.key)}
 								key={value.key}
 								removeFilter={() => this.props.state.ioManager.removeListFilter(this.props.field, value.key)}
@@ -69,14 +70,14 @@ export default class FacetValues extends React.PureComponent<Props, State> {
 					}
 				</List>
 				<MoreLessButton
-					onClick={() => this.props.state.ioManager.viewMoreFacetValues(this.props.id, this.props.field, this.props.size)}
+					onClick={() => this.props.state.ioManager.viewMoreFacetValues(this.props.field)}
 				>
 					View more
 				</MoreLessButton>
 				{
 					this.state.values.length && this.props.size !== this.state.values.length &&
 					<MoreLessButton
-						onClick={() => this.props.state.ioManager.viewLessFacetValues(this.props.id, this.props.field, this.props.size)}
+						onClick={() => this.props.state.ioManager.viewLessFacetValues(this.props.field)}
 					>
 						View less
 					</MoreLessButton>

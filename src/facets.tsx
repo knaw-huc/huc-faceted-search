@@ -2,6 +2,7 @@ import * as React from 'react'
 import Context, { ContextState } from './context'
 
 export interface FacetsProps {
+	index?: number
 	state?: ContextState
 }
 class Facets extends React.PureComponent<FacetsProps> {
@@ -22,8 +23,8 @@ export default (props: any) => (
 			state =>
 				<Facets state={state}>
 					{
-						React.Children.map(props.children, (child: any) => {
-							return React.cloneElement(child, { state })
+						React.Children.map(props.children, (child: any, index: number) => {
+							return React.cloneElement(child, { state, index })
 						})
 					}
 				</Facets>

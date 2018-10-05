@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { IFacetValue } from './value';
 import { ListFacetProps, ListFacetState } from './index';
 import { FacetsProps } from '../facets';
+import { ListFacetValue } from '../models/facet';
 declare type Props = FacetsProps & ListFacetProps & ListFacetState;
 interface State {
-    values: IFacetValue[];
+    values: ListFacetValue[];
 }
-export default class FacetValues extends React.PureComponent<Props, State> {
+export default class FacetValuesView extends React.PureComponent<Props, State> {
     private wrapperRef;
     private listHeight;
     state: State;
     constructor(props: Props);
     static getDerivedStateFromProps(props: Props): {
-        values: IFacetValue[] | [number, number];
+        values: ListFacetValue[] | [number, number];
     };
     componentDidUpdate(prevProps: Props, prevState: State): void;
     render(): JSX.Element;

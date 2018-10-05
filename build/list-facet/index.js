@@ -15,7 +15,7 @@ class ListFacet extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.ioManager.addListAggregation(this.props.id, this.props.field, this.props.size);
+        this.props.state.ioManager.addListAggregation(this.props.field, this.props.index, this.props.size);
     }
     render() {
         return (React.createElement(facet_1.default, null,

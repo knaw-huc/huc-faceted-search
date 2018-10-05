@@ -8,8 +8,12 @@ export default () => (
 			state =>
 				<Button
 					onClick={() => state.ioManager.reset()}
+					style={{
+						fontSize: '1.2em',
+						marginTop: '2em',
+					}}
 				>
-					Clear
+					Reset
 				</Button>
 		}
 	</Context.Consumer>

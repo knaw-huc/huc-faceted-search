@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Facet from '../facet'
-import FacetValues from './values'
+import FacetValuesView from './values'
 import FacetHeader from '../facet-header'
 import { FacetsProps } from '../facets';
 import { FacetMenuButton } from '../button';
@@ -8,7 +8,6 @@ import Options from './options'
 
 export interface ListFacetProps {
 	field: string
-	id: string
 	size?: number
 	title: string
 }
@@ -27,7 +26,7 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 	}
 
 	componentDidMount() {
-		this.props.state.ioManager.addListAggregation(this.props.id, this.props.field, this.props.size)
+		this.props.state.ioManager.addListAggregation(this.props.field, this.props.index, this.props.size)
 	}
 
 	render() {
@@ -65,7 +64,7 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 					this.state.options &&
 					<Options {...this.props} />
 				}
-				<FacetValues {...this.props} {...this.state} />
+				<FacetValuesView {...this.props} {...this.state} />
 			</Facet>
 		)
 	}

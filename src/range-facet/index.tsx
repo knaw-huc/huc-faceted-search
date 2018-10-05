@@ -1,11 +1,11 @@
 import * as React from 'react'
 import HireRangeSlider from 'hire-range-slider'
 import { FacetsProps } from '../facets';
-import { IRangeFacet } from '../io-manager/range-manager'
 import Facet from '../facet';
 import FacetHeader from '../facet-header';
 import styled from 'react-emotion';
 import Histogram from './histogram'
+import { RangeFacet } from '../models/facet';
 
 const Dates = styled('div')`
 	color: #888;
@@ -24,7 +24,6 @@ const ActiveDates = styled('div')`
 
 interface Props {
 	field: string
-	id: string
 	title: string
 }
 interface State {
@@ -33,7 +32,7 @@ interface State {
 	rangeMax: number,
 	upperLimit: number
 }
-export default class RangeFacet extends React.PureComponent<Props & FacetsProps, State> {
+export default class RangeFacetView extends React.PureComponent<Props & FacetsProps, State> {
 	state: State = {
 		lowerLimit: 0,
 		rangeMin: null,
@@ -42,7 +41,7 @@ export default class RangeFacet extends React.PureComponent<Props & FacetsProps,
 	}
 
 	componentDidMount() {
-		this.props.state.ioManager.addRangeFacet(this.props.id, this.props.field)
+		this.props.state.ioManager.addRangeFacet(this.props.field, this.props.index)
 	}
 
 	render() {
@@ -50,9 +49,9 @@ export default class RangeFacet extends React.PureComponent<Props & FacetsProps,
 		let max: number
 		let histogramValues = []
 
-		const { state, id } = this.props
-		if (state.facets !== null && state.facets.hasOwnProperty(id)) {
-			const facetData = state.facets[id] as IRangeFacet
+		const { field, state } = this.props
+		if (state.facets !== null && state.facets.hasOwnProperty(field)) {
+			const facetData = state.facets[field] as RangeFacet
 			min = facetData.values[0]
 			max = facetData.values[1]
 			histogramValues = facetData.histogramValues

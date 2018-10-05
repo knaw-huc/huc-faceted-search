@@ -1,18 +1,21 @@
 import * as React from 'react'
-import Facets from './facets'
+import FacetsView from './facets'
 import ListFacet from './list-facet'
-import RangeFacet from './range-facet'
+import RangeFacetView from './range-facet'
 import FullTextSearch from './full-text-search'
 import Context, { defaultState, ContextState } from './context'
 import styled from 'react-emotion'
-import IOManager, { Request, Response, IFacets } from './io-manager'
+import IOManager from './io-manager'
 import Reset from './reset'
+import ElasticSearchRequest from './models/elastic-search-request'
+import { ElasticSearchResponse } from './models/elastic-search-response-parser';
+import { Facets } from './models/facet';
 
 export {
-	Facets,
+	FacetsView as Facets,
 	FullTextSearch,
 	ListFacet,
-	RangeFacet,
+	RangeFacetView as RangeFacet,
 	Reset,
 }
 
@@ -21,11 +24,11 @@ const Wrapper = styled('div')`
 `
 
 interface Props {
-	onChange: (request: Request, response: Response) => void
+	onChange: (request: ElasticSearchRequest, response: ElasticSearchResponse) => void
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
-	private handleChange = (response: Response, facets: IFacets) => {
+	private handleChange = (response: ElasticSearchResponse, facets: Facets) => {
 		this.setState({ facets, response })
 		this.props.onChange(this.state.ioManager.request, response)
 	}

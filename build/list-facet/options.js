@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const react_emotion_1 = require("react-emotion");
 const full_text_search_1 = require("../full-text-search");
-const list_manager_1 = require("../io-manager/list-manager");
+const facet_1 = require("../models/facet");
 const Wrapper = react_emotion_1.default('div') `
 	font-size: .9em;
 	margin-bottom: 2em;
@@ -35,7 +35,7 @@ class Options extends React.PureComponent {
         this.sortBy = (sortBy, direction) => {
             return (ev) => {
                 if (ev.target.value === 'on') {
-                    this.props.state.ioManager.sortListBy(this.props.id, this.props.field, sortBy, direction);
+                    this.props.state.ioManager.sortListBy(this.props.field, sortBy, direction);
                 }
             };
         };
@@ -45,20 +45,20 @@ class Options extends React.PureComponent {
             React.createElement(H4, null, "Order"),
             React.createElement(RadioGroup, null,
                 React.createElement(Div, null,
-                    React.createElement("input", { defaultChecked: true, id: "highest-first-radio", name: "sort", onChange: this.sortBy(list_manager_1.SortBy.Count, list_manager_1.SortDirection.Desc), type: "radio" }),
+                    React.createElement("input", { defaultChecked: true, id: "highest-first-radio", name: "sort", onChange: this.sortBy(facet_1.SortBy.Count, facet_1.SortDirection.Desc), type: "radio" }),
                     React.createElement("label", { htmlFor: "highest-first-radio" }, "Highest first"),
-                    React.createElement("input", { id: "lowest-first-radio", type: "radio", name: "sort", onChange: this.sortBy(list_manager_1.SortBy.Count, list_manager_1.SortDirection.Asc) }),
+                    React.createElement("input", { id: "lowest-first-radio", type: "radio", name: "sort", onChange: this.sortBy(facet_1.SortBy.Count, facet_1.SortDirection.Asc) }),
                     React.createElement("label", { htmlFor: "lowest-first-radio" }, "Lowest first")),
                 React.createElement(Div, null,
-                    React.createElement("input", { id: "az-radio", type: "radio", name: "sort", onChange: this.sortBy(list_manager_1.SortBy.Key, list_manager_1.SortDirection.Asc) }),
+                    React.createElement("input", { id: "az-radio", type: "radio", name: "sort", onChange: this.sortBy(facet_1.SortBy.Key, facet_1.SortDirection.Asc) }),
                     React.createElement("label", { htmlFor: "az-radio" }, "A - Z"),
-                    React.createElement("input", { id: "za-radio", name: "sort", onChange: this.sortBy(list_manager_1.SortBy.Key, list_manager_1.SortDirection.Desc), type: "radio" }),
+                    React.createElement("input", { id: "za-radio", name: "sort", onChange: this.sortBy(facet_1.SortBy.Key, facet_1.SortDirection.Desc), type: "radio" }),
                     React.createElement("label", { htmlFor: "za-radio" }, "Z - A"))),
             React.createElement(H4, null, "Filter"),
             React.createElement(full_text_search_1.Input, { onChange: ev => {
                     const { value } = ev.target;
                     this.setState({ value });
-                    this.props.state.ioManager.addListAggregationQuery(this.props.id, this.props.field, value);
+                    this.props.state.ioManager.addListAggregationQuery(this.props.field, value);
                 }, style: {
                     height: '2em'
                 }, type: "text", value: this.state.value })));

@@ -1,14 +1,15 @@
 import * as React from 'react';
-import Facets from './facets';
+import FacetsView from './facets';
 import ListFacet from './list-facet';
-import RangeFacet from './range-facet';
+import RangeFacetView from './range-facet';
 import FullTextSearch from './full-text-search';
 import { ContextState } from './context';
-import { Request, Response } from './io-manager';
 import Reset from './reset';
-export { Facets, FullTextSearch, ListFacet, RangeFacet, Reset, };
+import ElasticSearchRequest from './models/elastic-search-request';
+import { ElasticSearchResponse } from './models/elastic-search-response-parser';
+export { FacetsView as Facets, FullTextSearch, ListFacet, RangeFacetView as RangeFacet, Reset, };
 interface Props {
-    onChange: (request: Request, response: Response) => void;
+    onChange: (request: ElasticSearchRequest, response: ElasticSearchResponse) => void;
     url: string;
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {

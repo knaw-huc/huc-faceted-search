@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled, { css } from "react-emotion"
+import { ListFacetValue } from '../models/facet';
 
 const Wrapper = styled('li')`
 	cursor: pointer;
@@ -25,19 +26,15 @@ const Count = styled('span')`
 	text-align: right;
 `
 
-export interface IFacetValue {
-	key: string
-	doc_count: number
-}
 interface Props {
 	addFilter: () => void
 	removeFilter: () => void
-	value: IFacetValue
+	value: ListFacetValue
 }
 interface State {
 	active: boolean
 }
-export default class FacetValue extends React.PureComponent<Props, State> {
+export default class FacetValueView extends React.PureComponent<Props, State> {
 	state: State = {
 		active: false
 	}

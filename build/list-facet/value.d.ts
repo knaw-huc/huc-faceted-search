@@ -1,17 +1,14 @@
 import * as React from 'react';
-export interface IFacetValue {
-    key: string;
-    doc_count: number;
-}
+import { ListFacetValue } from '../models/facet';
 interface Props {
     addFilter: () => void;
     removeFilter: () => void;
-    value: IFacetValue;
+    value: ListFacetValue;
 }
 interface State {
     active: boolean;
 }
-export default class FacetValue extends React.PureComponent<Props, State> {
+export default class FacetValueView extends React.PureComponent<Props, State> {
     state: State;
     toggleActive: () => void;
     render(): JSX.Element;

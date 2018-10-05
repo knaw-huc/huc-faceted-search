@@ -1,32 +1,12 @@
-import { AggregationRequest, IFacet, Response } from "./index";
-import { IFacetValue } from "../list-facet/value";
-export declare enum SortBy {
-    Count = "_count",
-    Key = "_term"
-}
-export declare enum SortDirection {
-    Asc = "asc",
-    Desc = "desc"
-}
-export interface IListFacet extends IFacet {
-    size: number;
-    values: IFacetValue[];
-}
-export default class ListManager {
-    aggregations: {
-        [key: string]: AggregationRequest;
-    };
+import { ListFacet, SortDirection, SortBy } from '../models/facet';
+export default class ListFacetManager {
     facets: {
-        [key: string]: IListFacet;
+        [field: string]: ListFacet;
     };
-    filters: any[];
-    addFacet(id: string, field: string, size: number): void;
+    addFacet(field: string, index: number, size: number): void;
     addFilter(field: string, key: string): void;
     removeFilter(field: string, key: string): void;
     reset(): void;
-    addQuery(id: string, field: string, query: string): void;
-    sortBy(id: string, field: string, sortBy: SortBy, direction: SortDirection): void;
-    updateFacets(response: Response): void;
-    private addAggregation;
-    private addFacetData;
+    addQuery(field: string, query: string): void;
+    sortBy(field: string, sortBy: SortBy, direction: SortDirection): void;
 }

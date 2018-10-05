@@ -1,9 +1,11 @@
 import * as React from 'react';
-import IOManager, { Response, IFacets } from './io-manager';
+import IOManager from './io-manager';
+import { Facets } from './models/facet';
+import { ElasticSearchResponse } from './models/elastic-search-response-parser';
 export interface ContextState {
-    facets: IFacets;
+    facets: Facets;
     ioManager: IOManager;
-    response: Response;
+    response: ElasticSearchResponse;
 }
 export declare const defaultState: ContextState;
 declare const _default: React.Context<ContextState>;

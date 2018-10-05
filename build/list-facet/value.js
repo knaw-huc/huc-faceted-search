@@ -23,7 +23,7 @@ const Count = react_emotion_1.default('span') `
 	${common}
 	text-align: right;
 `;
-class FacetValue extends React.PureComponent {
+class FacetValueView extends React.PureComponent {
     constructor() {
         super(...arguments);
         this.state = {
@@ -45,4 +45,4 @@ class FacetValue extends React.PureComponent {
             React.createElement(Count, Object.assign({}, this.state), this.props.value.doc_count)));
     }
 }
-exports.default = FacetValue;
+exports.default = FacetValueView;

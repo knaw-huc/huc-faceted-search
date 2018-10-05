@@ -1,31 +1,9 @@
-import { AggregationRequest, IFacet, Response } from "./index";
-export interface IRangeFacet extends IFacet {
-    histogramValues: any[];
-    values: [number, number];
-}
-interface IRangeFilter {
-    range: {
-        [key: string]: {
-            gte: number;
-            lte: number;
-        };
-    };
-}
+import { RangeFacet } from '../models/facet';
 export default class RangeManger {
-    aggregations: {
-        [key: string]: AggregationRequest;
-    };
     facets: {
-        [key: string]: IRangeFacet;
+        [key: string]: RangeFacet;
     };
-    filters: IRangeFilter[];
-    addFacet(id: string, field: string): void;
+    addFacet(field: string, index: number): void;
     addFilter(field: string, min: number, max: number): void;
     reset(): void;
-    updateFacets(response: Response): void;
-    private addAggregation;
-    private addHistogramAggregation;
-    private addFacetData;
-    private removeFilter;
 }
-export {};

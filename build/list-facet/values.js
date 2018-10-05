@@ -14,7 +14,7 @@ const List = react_emotion_1.default('ul') `
 	margin: 0;
 	padding: 0;
 `;
-class FacetValues extends React.PureComponent {
+class FacetValuesView extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,9 +24,9 @@ class FacetValues extends React.PureComponent {
     }
     static getDerivedStateFromProps(props) {
         const { facets } = props.state;
-        const values = (facets == null || !facets.hasOwnProperty(props.id)) ?
+        const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
             [] :
-            facets[props.id].values;
+            facets[props.field].values;
         return { values };
     }
     componentDidUpdate(prevProps, prevState) {
@@ -40,9 +40,9 @@ class FacetValues extends React.PureComponent {
     render() {
         return (React.createElement(Wrapper, { innerRef: this.wrapperRef },
             React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.ioManager.addListFilter(this.props.field, value.key), key: value.key, removeFilter: () => this.props.state.ioManager.removeListFilter(this.props.field, value.key), value: value }))),
-            React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.viewMoreFacetValues(this.props.id, this.props.field, this.props.size) }, "View more"),
+            React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.viewMoreFacetValues(this.props.field) }, "View more"),
             this.state.values.length && this.props.size !== this.state.values.length &&
-                React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.viewLessFacetValues(this.props.id, this.props.field, this.props.size) }, "View less")));
+                React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.viewLessFacetValues(this.props.field) }, "View less")));
     }
     animate(reverse = false) {
         let elapsed = 0;
@@ -65,4 +65,4 @@ class FacetValues extends React.PureComponent {
         }
     }
 }
-exports.default = FacetValues;
+exports.default = FacetValuesView;
