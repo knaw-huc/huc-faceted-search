@@ -29,6 +29,8 @@ class ElasticSearchRequest {
                 [facet.order[0]]: facet.order[1]
             },
         };
+        if (facet.query.length)
+            terms.include = `.*${facet.query}.*`;
         return {
             aggs: {
                 [facet.field]: { terms },

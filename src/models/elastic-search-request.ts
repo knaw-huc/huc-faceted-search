@@ -40,6 +40,8 @@ export default class ElasticSearchRequest {
 				[facet.order[0]]: facet.order[1]
 			},
 		}
+
+		if (facet.query.length) (terms as any).include = `.*${facet.query}.*`
 		
 		return {
 			aggs: {

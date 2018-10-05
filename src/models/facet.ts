@@ -29,7 +29,7 @@ export interface ListFacetValue {
 export class ListFacet extends Facet {
 	filters: Set<string> = new Set()
 	order: [SortBy, SortDirection] = [SortBy.Count, SortDirection.Desc]
-	query: string = null
+	query: string = ''
 	values: ListFacetValue[] = []
 	viewSize: number
 

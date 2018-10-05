@@ -30,7 +30,7 @@ class ListFacet extends Facet {
         this.size = size;
         this.filters = new Set();
         this.order = [SortBy.Count, SortDirection.Desc];
-        this.query = null;
+        this.query = '';
         this.values = [];
         this.viewSize = size;
     }
