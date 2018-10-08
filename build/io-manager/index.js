@@ -10,37 +10,11 @@ class IOManager {
         this.url = url;
         this.onChange = onChange;
         this.cache = {};
-        this.rangeManager = new range_manager_1.default();
-        this.listManager = new list_manager_1.default();
         this.query = '';
-    }
-    addListAggregation(field, index, size) {
-        this.listManager.addFacet(field, index, size);
-        this.dispatch();
-    }
-    addListAggregationQuery(field, query) {
-        this.listManager.addQuery(field, query);
-        this.dispatch();
-    }
-    addListFilter(field, key) {
-        this.listManager.addFilter(field, key);
-        this.dispatch();
-    }
-    removeListFilter(field, key) {
-        this.listManager.removeFilter(field, key);
-        this.dispatch();
-    }
-    sortListBy(field, sortBy, direction) {
-        this.listManager.sortBy(field, sortBy, direction);
-        this.dispatch();
-    }
-    addRangeFacet(field, index) {
-        this.rangeManager.addFacet(field, index);
-        this.dispatch();
-    }
-    addRangeFilter(field, min, max) {
-        this.rangeManager.addFilter(field, min, max);
-        this.dispatch();
+        this.listManager = new list_manager_1.default();
+        this.rangeManager = new range_manager_1.default();
+        this.listManager.onChange(() => this.dispatch());
+        this.rangeManager.onChange(() => this.dispatch());
     }
     addQuery(query) {
         this.query = query;
@@ -54,14 +28,6 @@ class IOManager {
     }
     setFacetCount(count) {
         this.facetCount = count;
-        this.dispatch();
-    }
-    viewMoreFacetValues(field) {
-        this.listManager.facets[field].viewMore();
-        this.dispatch();
-    }
-    viewLessFacetValues(field) {
-        this.listManager.facets[field].viewLess();
         this.dispatch();
     }
     dispatch() {

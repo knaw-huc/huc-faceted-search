@@ -30,7 +30,7 @@ class RangeFacetView extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.ioManager.addRangeFacet(this.props.field, this.props.index);
+        this.props.state.ioManager.rangeManager.addFacet(this.props.field, this.props.index);
     }
     render() {
         let min;
@@ -56,7 +56,7 @@ class RangeFacetView extends React.PureComponent {
                         upperLimit: data.upperLimit,
                     });
                     if (data.refresh) {
-                        this.props.state.ioManager.addRangeFilter(this.props.field, rangeMin, rangeMax);
+                        this.props.state.ioManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax);
                         this.setState({
                             rangeMin,
                             rangeMax,
@@ -69,13 +69,36 @@ class RangeFacetView extends React.PureComponent {
                     position: 'absolute',
                 }, upperLimit: this.state.upperLimit }),
             React.createElement(Dates, null,
-                React.createElement("span", null, min),
+                React.createElement("span", null, this.formatNumber(min)),
                 React.createElement(ActiveDates, null, this.state.rangeMin != null && this.state.rangeMax != null &&
                     React.createElement(React.Fragment, null,
-                        React.createElement("span", { style: { textAlign: 'right' } }, this.state.rangeMin),
+                        React.createElement("span", { style: { textAlign: 'right' } }, this.formatNumber(this.state.rangeMin)),
                         React.createElement("span", { style: { textAlign: 'center' } }, "-"),
-                        React.createElement("span", null, this.state.rangeMax))),
-                React.createElement("span", { style: { textAlign: 'right' } }, max))));
+                        React.createElement("span", null, this.formatNumber(this.state.rangeMax)))),
+                React.createElement("span", { style: { textAlign: 'right' } }, this.formatNumber(max)))));
+    }
+    formatNumber(num) {
+        if (this.props.type === 'number')
+            return num;
+        else if (this.props.type === 'timestamp') {
+            let date;
+            const d = new Date(num);
+            const year = d.getUTCFullYear();
+            if (this.props.granularity === 'year') {
+                date = isNaN(year) ? '' : year.toString();
+            }
+            else if (this.props.granularity === 'month') {
+                date = `${year}-${d.getUTCMonth() + 1}`;
+            }
+            else if (this.props.granularity === 'day') {
+                date = `${year}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
+            }
+            return date;
+        }
     }
 }
+RangeFacetView.defaultProps = {
+    granularity: 'year',
+    type: 'number',
+};
 exports.default = RangeFacetView;

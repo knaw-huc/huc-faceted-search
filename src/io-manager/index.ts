@@ -1,52 +1,21 @@
 import RangeManager from './range-manager'
 import ListFacetManager from './list-manager'
-import { SortBy, SortDirection, Facets } from '../models/facet'
+import { Facets } from '../models/facet'
 import ElasticSearchRequest from '../models/elastic-search-request'
 import ElasticSearchResponseParser, { ElasticSearchResponse } from '../models/elastic-search-response-parser'
 
 export default class IOManager {
 	private cache: {[key: string]: string} = {}
-	private rangeManager = new RangeManager()
-	private listManager = new ListFacetManager()
 	private query: string = ''
+
 	facetCount: number
+	listManager = new ListFacetManager()
+	rangeManager = new RangeManager()
 	request: ElasticSearchRequest
 
-	constructor(private url: string, private onChange: (response: ElasticSearchResponse, facets: Facets) => void) {}
-
-	addListAggregation(field: string, index: number, size: number) {
-		this.listManager.addFacet(field, index, size)
-		this.dispatch()
-	}
-
-	addListAggregationQuery(field: string, query: string) {
-		this.listManager.addQuery(field, query)
-		this.dispatch()
-	}
-
-	addListFilter(field: string, key: string) {
-		this.listManager.addFilter(field, key)
-		this.dispatch()
-	}
-
-	removeListFilter(field: string, key: string) {
-		this.listManager.removeFilter(field, key)
-		this.dispatch()
-	}
-
-	sortListBy(field: string, sortBy: SortBy, direction: SortDirection) {
-		this.listManager.sortBy(field, sortBy, direction)
-		this.dispatch()
-	}
-
-	addRangeFacet(field: string, index: number) {
-		this.rangeManager.addFacet(field, index)
-		this.dispatch()
-	}
-
-	addRangeFilter(field: string, min: number, max :number) {
-		this.rangeManager.addFilter(field, min, max)
-		this.dispatch()
+	constructor(private url: string, private onChange: (response: ElasticSearchResponse, facets: Facets) => void) {
+		this.listManager.onChange(() => this.dispatch())
+		this.rangeManager.onChange(() => this.dispatch())
 	}
 
 	addQuery(query: string) {
@@ -66,15 +35,15 @@ export default class IOManager {
 		this.dispatch()
 	}
 
-	viewMoreFacetValues(field: string) {
-		this.listManager.facets[field].viewMore()
-		this.dispatch()
-	}
+	// viewMoreFacetValues(field: string) {
+	// 	this.listManager.facets[field].viewMore()
+	// 	this.dispatch()
+	// }
 
-	viewLessFacetValues(field: string) {
-		this.listManager.facets[field].viewLess()
-		this.dispatch()
-	}
+	// viewLessFacetValues(field: string) {
+	// 	this.listManager.facets[field].viewLess()
+	// 	this.dispatch()
+	// }
 
 	private async dispatch() {
 		const facets = {

@@ -35,7 +35,7 @@ class Options extends React.PureComponent {
         this.sortBy = (sortBy, direction) => {
             return (ev) => {
                 if (ev.target.value === 'on') {
-                    this.props.state.ioManager.sortListBy(this.props.field, sortBy, direction);
+                    this.props.state.ioManager.listManager.sortBy(this.props.field, sortBy, direction);
                 }
             };
         };
@@ -58,7 +58,7 @@ class Options extends React.PureComponent {
             React.createElement(full_text_search_1.Input, { onChange: ev => {
                     const { value } = ev.target;
                     this.setState({ value });
-                    this.props.state.ioManager.addListAggregationQuery(this.props.field, value);
+                    this.props.state.ioManager.listManager.addQuery(this.props.field, value);
                 }, style: {
                     height: '2em'
                 }, type: "text", value: this.state.value })));

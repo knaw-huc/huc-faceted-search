@@ -51,8 +51,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 	}
 
 	render() {
-		// console.log(this.props.state.ioManager.request)
-		// console.log(this.props.id, this.props.field)
+		console.log(this.props)
 		return (
 			<Wrapper
 				innerRef={this.wrapperRef}
@@ -61,23 +60,23 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 					{
 						this.state.values.map(value =>
 							<FacetValueView
-								addFilter={() => this.props.state.ioManager.addListFilter(this.props.field, value.key)}
+								addFilter={() => this.props.state.ioManager.listManager.addFilter(this.props.field, value.key)}
 								key={value.key}
-								removeFilter={() => this.props.state.ioManager.removeListFilter(this.props.field, value.key)}
+								removeFilter={() => this.props.state.ioManager.listManager.removeFilter(this.props.field, value.key)}
 								value={value}
 							/>
 						)
 					}
 				</List>
 				<MoreLessButton
-					onClick={() => this.props.state.ioManager.viewMoreFacetValues(this.props.field)}
+					onClick={() => this.props.state.ioManager.listManager.viewMore(this.props.field)}
 				>
 					View more
 				</MoreLessButton>
 				{
 					this.state.values.length && this.props.size !== this.state.values.length &&
 					<MoreLessButton
-						onClick={() => this.props.state.ioManager.viewLessFacetValues(this.props.field)}
+						onClick={() => this.props.state.ioManager.listManager.viewLess(this.props.field)}
 					>
 						View less
 					</MoreLessButton>
@@ -86,7 +85,6 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 		)
 	}
 
-	// @ts-ignore
 	private animate(reverse: boolean = false) {
 		let elapsed = 0
 		const interval = setInterval(() => {

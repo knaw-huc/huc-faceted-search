@@ -1,11 +1,11 @@
 import * as React from 'react'
 import HireRangeSlider from 'hire-range-slider'
-import { FacetsProps } from '../facets';
-import Facet from '../facet';
-import FacetHeader from '../facet-header';
-import styled from 'react-emotion';
+import { FacetsProps } from '../facets'
+import Facet from '../facet'
+import FacetHeader from '../facet-header'
+import styled from 'react-emotion'
 import Histogram from './histogram'
-import { RangeFacet } from '../models/facet';
+import { RangeFacet } from '../models/facet'
 
 const Dates = styled('div')`
 	color: #888;
@@ -24,7 +24,9 @@ const ActiveDates = styled('div')`
 
 interface Props {
 	field: string
+	granularity: 'year' | 'month' | 'day'
 	title: string
+	type?: 'number' | 'timestamp'
 }
 interface State {
 	lowerLimit: number
@@ -40,8 +42,13 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 		upperLimit: 1,
 	}
 
+	static defaultProps: Partial<Props> = {
+		granularity: 'year',
+		type: 'number',
+	}
+
 	componentDidMount() {
-		this.props.state.ioManager.addRangeFacet(this.props.field, this.props.index)
+		this.props.state.ioManager.rangeManager.addFacet(this.props.field, this.props.index)
 	}
 
 	render() {
@@ -78,7 +85,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 						})
 
 						if (data.refresh) {
-							this.props.state.ioManager.addRangeFilter(this.props.field, rangeMin, rangeMax)
+							this.props.state.ioManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax)
 							this.setState({
 								rangeMin,
 								rangeMax,
@@ -94,20 +101,41 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 					upperLimit={this.state.upperLimit}
 				/>
 				<Dates>
-					<span>{min}</span>
+					<span>{this.formatNumber(min)}</span>
 					<ActiveDates>
 						{
 							this.state.rangeMin != null && this.state.rangeMax != null &&
 							<>
-								<span style={{textAlign: 'right'}}>{this.state.rangeMin}</span>
+								<span style={{textAlign: 'right'}}>{this.formatNumber(this.state.rangeMin)}</span>
 								<span style={{textAlign: 'center'}}>-</span>
-								<span>{this.state.rangeMax}</span>
+								<span>{this.formatNumber(this.state.rangeMax)}</span>
 							</>
 						}
 					</ActiveDates>
-					<span style={{textAlign: 'right'}}>{max}</span>
+					<span style={{textAlign: 'right'}}>{this.formatNumber(max)}</span>
 				</Dates>
 			</Facet>
 		)
+	}
+
+	formatNumber(num: number) {
+		if (this.props.type === 'number') return num
+		else if (this.props.type === 'timestamp') {
+			let date: string
+			const d = new Date(num)
+			const year = d.getUTCFullYear()
+
+			if (this.props.granularity === 'year') {
+				date = isNaN(year) ? '' : year.toString()
+			}
+			else if (this.props.granularity === 'month') {
+				date = `${year}-${d.getUTCMonth() + 1}`
+			}
+			else if (this.props.granularity === 'day') {
+				date = `${year}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`
+			}
+
+			return date
+		}
 	}
 }

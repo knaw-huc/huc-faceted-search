@@ -1,18 +1,30 @@
 import { ListFacet, SortDirection, SortBy } from '../models/facet'
+import FacetManager from './facet-manager'
 
-export default class ListFacetManager {
-	facets: { [field: string]: ListFacet } = {}
-
+export default class ListFacetManager extends FacetManager<ListFacet> {
 	addFacet(field: string, index: number, size: number) {
 		this.facets[field] = new ListFacet(field, index, size)
+		this.change()
 	}
 
 	addFilter(field: string, key: string) {
 		this.facets[field].filters.add(key)
+		this.change()
 	}
 
 	removeFilter(field: string, key: string) {
 		this.facets[field].filters.delete(key)
+		this.change()
+	}
+
+	addQuery(field: string, query: string) {
+		this.facets[field].query = query
+		this.change()
+	}
+
+	sortBy(field: string, sortBy: SortBy, direction: SortDirection) {
+		this.facets[field].order = [sortBy, direction]
+		this.change()
 	}
 
 	reset() {
@@ -21,11 +33,11 @@ export default class ListFacetManager {
 		}
 	}
 
-	addQuery(field: string, query: string) {
-		this.facets[field].query = query
+	viewLess(field: string) {
+		this.facets[field].viewLess()
 	}
 
-	sortBy(field: string, sortBy: SortBy, direction: SortDirection) {
-		this.facets[field].order = [sortBy, direction]
+	viewMore(field: string) {
+		this.facets[field].viewMore()
 	}
 }

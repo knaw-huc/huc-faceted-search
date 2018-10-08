@@ -38,11 +38,12 @@ class FacetValuesView extends React.PureComponent {
             this.animate(true);
     }
     render() {
+        console.log(this.props);
         return (React.createElement(Wrapper, { innerRef: this.wrapperRef },
-            React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.ioManager.addListFilter(this.props.field, value.key), key: value.key, removeFilter: () => this.props.state.ioManager.removeListFilter(this.props.field, value.key), value: value }))),
-            React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.viewMoreFacetValues(this.props.field) }, "View more"),
+            React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.ioManager.listManager.addFilter(this.props.field, value.key), key: value.key, removeFilter: () => this.props.state.ioManager.listManager.removeFilter(this.props.field, value.key), value: value }))),
+            React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.listManager.viewMore(this.props.field) }, "View more"),
             this.state.values.length && this.props.size !== this.state.values.length &&
-                React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.viewLessFacetValues(this.props.field) }, "View less")));
+                React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.ioManager.listManager.viewLess(this.props.field) }, "View less")));
     }
     animate(reverse = false) {
         let elapsed = 0;
