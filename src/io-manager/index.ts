@@ -35,16 +35,6 @@ export default class IOManager {
 		this.dispatch()
 	}
 
-	// viewMoreFacetValues(field: string) {
-	// 	this.listManager.facets[field].viewMore()
-	// 	this.dispatch()
-	// }
-
-	// viewLessFacetValues(field: string) {
-	// 	this.listManager.facets[field].viewLess()
-	// 	this.dispatch()
-	// }
-
 	private async dispatch() {
 		const facets = {
 			...this.listManager.facets,
