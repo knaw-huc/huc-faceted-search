@@ -5,11 +5,13 @@ import RangeFacetView from './views/range-facet'
 import FullTextSearch from './views/full-text-search'
 import Context, { defaultState, ContextState } from './context'
 import styled from 'react-emotion'
-import IOManager from './io-manager'
+import FacetsManager from './facets-manager'
 import Reset from './views/reset'
 import ElasticSearchRequest from './models/elastic-search-request'
-import { ElasticSearchResponse } from './models/elastic-search-response-parser';
-import { Facets } from './models/facet';
+import { ElasticSearchResponse } from './models/elastic-search-response-parser'
+import { Facets } from './models/facet'
+import IOManager from './dispatch'
+import { BackendType } from './backends'
 
 export {
 	FacetsView as Facets,
@@ -24,18 +26,27 @@ const Wrapper = styled('div')`
 `
 
 interface Props {
+	backend: BackendType
 	onChange: (request: ElasticSearchRequest, response: ElasticSearchResponse) => void
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
-	private handleChange = (response: ElasticSearchResponse, facets: Facets) => {
-		this.setState({ facets, response })
-		this.props.onChange(this.state.ioManager.request, response)
+	state: ContextState
+	ioManager: IOManager
+
+	static defaultProps: Partial<Props> = {
+		backend: 'none'
 	}
 
-	state: ContextState = {
-		...defaultState,
-		ioManager: new IOManager(this.props.url, this.handleChange)
+	constructor(props: Props) {
+		super(props)
+
+		this.ioManager = new IOManager({ backend: this.props.backend, url: props.url })
+
+		this.state = {
+			...defaultState,
+			facetsManager: new FacetsManager(this.handleChange)
+		}
 	}
 
 	render() {
@@ -46,5 +57,11 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 				</Wrapper>
 			</Context.Provider>
 		)
+	}
+
+	private handleChange = async (inputFacets: Facets, query: string) => {
+		const { facets, response } = await this.ioManager.dispatch(inputFacets, query)
+		this.setState({ facets, response })
+		this.props.onChange(this.ioManager.requestBody, response)
 	}
 }

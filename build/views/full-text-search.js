@@ -22,7 +22,7 @@ class FullTextSearch extends React.PureComponent {
             React.createElement(exports.Input, { type: "text", onChange: (ev) => {
                     const { value } = ev.target;
                     this.setState({ value });
-                    this.props.state.ioManager.addQuery(value);
+                    this.props.state.facetsManager.addQuery(value);
                 }, placeholder: "Search", value: this.state.value })));
     }
 }

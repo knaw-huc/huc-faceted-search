@@ -5,7 +5,7 @@ const context_1 = require("../context");
 class Facets extends React.PureComponent {
     componentDidMount() {
         if (Array.isArray(this.props.children)) {
-            this.props.state.ioManager.setFacetCount(this.props.children.length);
+            this.props.state.facetsManager.setFacetCount(this.props.children.length);
         }
     }
     render() {

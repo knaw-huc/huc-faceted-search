@@ -29,7 +29,7 @@ class FullTextSearch extends React.PureComponent<Props, State> {
 					onChange={(ev) => {
 						const { value } = ev.target
 						this.setState({ value })
-						this.props.state.ioManager.addQuery(value)
+						this.props.state.facetsManager.addQuery(value)
 					}}
 					placeholder="Search"
 					value={this.state.value}

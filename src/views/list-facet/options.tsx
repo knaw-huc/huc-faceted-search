@@ -84,7 +84,7 @@ export default class Options extends React.PureComponent<Props, State> {
 					onChange={ev => {
 						const { value } = ev.target
 						this.setState({ value })
-						this.props.state.ioManager.listManager.addQuery(this.props.field, value)
+						this.props.state.facetsManager.listManager.addQuery(this.props.field, value)
 					}}
 					style={{
 						height: '2em'
@@ -99,7 +99,7 @@ export default class Options extends React.PureComponent<Props, State> {
 	private sortBy = (sortBy: SortBy, direction: SortDirection) => {
 		return (ev: React.ChangeEvent<HTMLInputElement>) => {
 			if (ev.target.value === 'on') {
-				this.props.state.ioManager.listManager.sortBy(
+				this.props.state.facetsManager.listManager.sortBy(
 					this.props.field,
 					sortBy,
 					direction

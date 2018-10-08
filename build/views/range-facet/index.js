@@ -30,7 +30,7 @@ class RangeFacetView extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.ioManager.rangeManager.addFacet(this.props.field, this.props.index);
+        this.props.state.facetsManager.rangeManager.addFacet(this.props.field, this.props.index);
     }
     componentDidUpdate(prevProps) {
         const { facets } = prevProps.state;
@@ -71,7 +71,7 @@ class RangeFacetView extends React.PureComponent {
                         upperLimit: data.upperLimit,
                     });
                     if (data.refresh) {
-                        this.props.state.ioManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax);
+                        this.props.state.facetsManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax);
                     }
                 }, style: {
                     marginTop: '-4px',

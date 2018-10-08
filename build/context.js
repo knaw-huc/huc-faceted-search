@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 exports.defaultState = {
     facets: {},
-    ioManager: null,
+    facetsManager: null,
     response: null
 };
 exports.default = React.createContext(exports.defaultState);

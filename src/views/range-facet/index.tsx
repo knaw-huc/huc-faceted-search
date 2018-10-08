@@ -48,7 +48,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 	}
 
 	componentDidMount() {
-		this.props.state.ioManager.rangeManager.addFacet(this.props.field, this.props.index)
+		this.props.state.facetsManager.rangeManager.addFacet(this.props.field, this.props.index)
 	}
 
 	// Reset the range facet when the filter is removed
@@ -102,7 +102,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 						})
 
 						if (data.refresh) {
-							this.props.state.ioManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax)
+							this.props.state.facetsManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax)
 						}
 					}}
 					style={{

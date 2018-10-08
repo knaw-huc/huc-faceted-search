@@ -8,7 +8,7 @@ export interface FacetsProps {
 class Facets extends React.PureComponent<FacetsProps> {
 	componentDidMount() {
 		if (Array.isArray(this.props.children)) {
-			this.props.state.ioManager.setFacetCount(this.props.children.length)
+			this.props.state.facetsManager.setFacetCount(this.props.children.length)
 		}
 	}
 

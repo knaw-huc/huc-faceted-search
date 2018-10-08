@@ -26,7 +26,7 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 	}
 
 	componentDidMount() {
-		this.props.state.ioManager.listManager.addFacet(this.props.field, this.props.index, this.props.size)
+		this.props.state.facetsManager.listManager.addFacet(this.props.field, this.props.index, this.props.size)
 	}
 
 	render() {

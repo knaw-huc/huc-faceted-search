@@ -1,16 +1,16 @@
 import * as React from 'react'
-import IOManager from './io-manager'
+import FacetsManager from './facets-manager'
 import { Facets } from './models/facet'
 import { ElasticSearchResponse } from './models/elastic-search-response-parser'
 
 export interface ContextState {
 	facets: Facets,
-	ioManager: IOManager,
+	facetsManager: FacetsManager,
 	response: ElasticSearchResponse
 }
 export const defaultState: ContextState = {
 	facets: {},
-	ioManager: null,
+	facetsManager: null,
 	response: null
 }
 

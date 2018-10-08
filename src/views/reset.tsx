@@ -7,7 +7,7 @@ export default () => (
 		{
 			state =>
 				<Button
-					onClick={() => state.ioManager.reset()}
+					onClick={() => state.facetsManager.reset()}
 					style={{
 						fontSize: '1.2em',
 						marginTop: '2em',
