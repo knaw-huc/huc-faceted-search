@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Context, { ContextState } from './context'
+import Context, { ContextState } from '../context'
 
 export interface FacetsProps {
 	index?: number

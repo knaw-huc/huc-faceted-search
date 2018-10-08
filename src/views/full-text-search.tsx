@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'react-emotion';
-import Context, { ContextState } from './context'
+import Context, { ContextState } from '../context'
 
 export const Input = styled('input')`
 	box-sizing: border-box;

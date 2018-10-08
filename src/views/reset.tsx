@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Context from './context'
+import Context from '../context'
 import Button from './button'
 
 export default () => (

@@ -9,7 +9,7 @@ export interface ContextState {
 	response: ElasticSearchResponse
 }
 export const defaultState: ContextState = {
-	facets: null,
+	facets: {},
 	ioManager: null,
 	response: null
 }

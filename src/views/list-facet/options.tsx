@@ -3,7 +3,7 @@ import { FacetsProps } from '../facets';
 import { ListFacetProps } from './index';
 import styled from 'react-emotion';
 import { Input } from '../full-text-search';
-import { SortBy, SortDirection } from '../models/facet';
+import { SortBy, SortDirection } from '../../models/facet';
 
 const Wrapper = styled('div')`
 	font-size: .9em;

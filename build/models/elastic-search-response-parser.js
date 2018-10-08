@@ -24,6 +24,8 @@ class ElasticSearchResponseParser {
             .map(key => this.facets[key])
             .filter(facet => facet.type === facet_1.FacetType.Range)
             .forEach((facet) => {
+            if (facet.values[0] != null && facet.values[1] != null)
+                return;
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
             const { min, max } = this.response.aggregations[facet.id][facet.field];

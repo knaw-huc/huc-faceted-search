@@ -4,7 +4,7 @@ import styled from 'react-emotion'
 import { MoreLessButton } from '../button'
 import { ListFacetProps, ListFacetState } from './index'
 import { FacetsProps } from '../facets';
-import { ListFacetValue } from '../models/facet';
+import { ListFacetValue, ListFacet } from '../../models/facet';
 
 const DURATION = 500
 const FRAME_DURATION = 16
@@ -51,7 +51,6 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 	}
 
 	render() {
-		console.log(this.props)
 		return (
 			<Wrapper
 				innerRef={this.wrapperRef}
@@ -61,6 +60,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 						this.state.values.map(value =>
 							<FacetValueView
 								addFilter={() => this.props.state.ioManager.listManager.addFilter(this.props.field, value.key)}
+								active={(this.props.state.facets[this.props.field] as ListFacet).filters.has(value.key)}
 								key={value.key}
 								removeFilter={() => this.props.state.ioManager.listManager.removeFilter(this.props.field, value.key)}
 								value={value}

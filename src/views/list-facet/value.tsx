@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled, { css } from "react-emotion"
-import { ListFacetValue } from '../models/facet';
+import { ListFacetValue } from '../../models/facet'
 
 const Wrapper = styled('li')`
 	cursor: pointer;
@@ -27,6 +27,7 @@ const Count = styled('span')`
 `
 
 interface Props {
+	active: boolean
 	addFilter: () => void
 	removeFilter: () => void
 	value: ListFacetValue
@@ -36,14 +37,15 @@ interface State {
 }
 export default class FacetValueView extends React.PureComponent<Props, State> {
 	state: State = {
+		active: this.props.active
+	}
+
+	static defaultProps: Partial<Props> = {
 		active: false
 	}
 
-	toggleActive = () => {
-		const nextActive = !this.state.active
-		if (nextActive) this.props.addFilter()
-		else this.props.removeFilter()
-		this.setState({ active: nextActive })
+	static getDerivedStateFromProps(props: Props) {
+		return { active: props.active }
 	}
 
 	render() {
@@ -63,4 +65,12 @@ export default class FacetValueView extends React.PureComponent<Props, State> {
 
 		)
 	}
+
+	private toggleActive = () => {
+		const nextActive = !this.state.active
+		if (nextActive) this.props.addFilter()
+		else this.props.removeFilter()
+		this.setState({ active: nextActive })
+	}
+
 }

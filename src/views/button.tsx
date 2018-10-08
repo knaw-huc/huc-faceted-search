@@ -1,5 +1,5 @@
 import styled from 'react-emotion'
-import { SPOT_COLOR } from './constants'
+import { SPOT_COLOR } from '../constants'
 
 const Button = styled('button')`
 	background: none;
