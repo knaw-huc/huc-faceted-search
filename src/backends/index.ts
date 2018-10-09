@@ -1,5 +1,5 @@
-import ElasticSearchRequest from "../models/elastic-search-request";
-import ElasticSearchResponseParser from "../models/elastic-search-response-parser";
+import ElasticSearchRequest from "./elasticsearch/request-creator";
+import ElasticSearchResponseParser from "./elasticsearch/response-parser";
 import { NoneRequestCreator, NoneResponseParser } from './none'
 
 export type BackendType = 'none' | 'elasticsearch'

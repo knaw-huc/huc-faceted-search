@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const value_1 = require("./value");
 const react_emotion_1 = require("react-emotion");
-const button_1 = require("../button");
+const more_less_buttons_1 = require("./more-less-buttons");
 const DURATION = 500;
 const FRAME_DURATION = 16;
 function easeOutQuint(t) { return 1 + (--t) * t * t * t * t; }
@@ -40,9 +40,7 @@ class FacetValuesView extends React.PureComponent {
     render() {
         return (React.createElement(Wrapper, { innerRef: this.wrapperRef },
             React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.listManager.addFilter(this.props.field, value.key), active: this.props.state.facets[this.props.field].filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.listManager.removeFilter(this.props.field, value.key), value: value }))),
-            React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.facetsManager.listManager.viewMore(this.props.field) }, "View more"),
-            this.state.values.length && this.props.size !== this.state.values.length &&
-                React.createElement(button_1.MoreLessButton, { onClick: () => this.props.state.facetsManager.listManager.viewLess(this.props.field) }, "View less")));
+            React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
     }
     animate(reverse = false) {
         let elapsed = 0;

@@ -6,6 +6,5 @@ export declare class NoneRequestCreator {
 }
 export declare class NoneResponseParser {
     facets: Facets;
-    query: string;
-    constructor(facets: Facets, query: string);
+    constructor(response: any, facets: Facets);
 }

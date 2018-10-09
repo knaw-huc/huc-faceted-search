@@ -15,7 +15,7 @@ const react_emotion_1 = require("react-emotion");
 const facets_manager_1 = require("./facets-manager");
 const reset_1 = require("./views/reset");
 exports.Reset = reset_1.default;
-const dispatch_1 = require("./dispatch");
+const io_manager_1 = require("./io-manager");
 const Wrapper = react_emotion_1.default('div') `
 	font-family: sans-serif;
 `;
@@ -27,7 +27,7 @@ class FacetedSearch extends React.PureComponent {
             this.setState({ facets, response });
             this.props.onChange(this.ioManager.requestBody, response);
         });
-        this.ioManager = new dispatch_1.default({ backend: this.props.backend, url: props.url });
+        this.ioManager = new io_manager_1.default({ backend: this.props.backend, url: props.url });
         this.state = Object.assign({}, context_1.defaultState, { facetsManager: new facets_manager_1.default(this.handleChange) });
     }
     render() {

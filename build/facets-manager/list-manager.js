@@ -30,9 +30,11 @@ class ListFacetManager extends facet_manager_1.default {
     }
     viewLess(field) {
         this.facets[field].viewLess();
+        this.change();
     }
     viewMore(field) {
         this.facets[field].viewMore();
+        this.change();
     }
 }
 exports.default = ListFacetManager;

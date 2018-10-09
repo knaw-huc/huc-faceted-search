@@ -26,6 +26,7 @@ export declare class ListFacet extends Facet {
     filters: Set<string>;
     order: [SortBy, SortDirection];
     query: string;
+    total: number;
     values: ListFacetValue[];
     viewSize: number;
     constructor(field: string, index: number, size: number);

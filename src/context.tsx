@@ -1,12 +1,11 @@
 import * as React from 'react'
 import FacetsManager from './facets-manager'
 import { Facets } from './models/facet'
-import { ElasticSearchResponse } from './models/elastic-search-response-parser'
 
 export interface ContextState {
 	facets: Facets,
 	facetsManager: FacetsManager,
-	response: ElasticSearchResponse
+	response: any
 }
 export const defaultState: ContextState = {
 	facets: {},

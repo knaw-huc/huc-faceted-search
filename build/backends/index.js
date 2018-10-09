@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const elastic_search_request_1 = require("../models/elastic-search-request");
-const elastic_search_response_parser_1 = require("../models/elastic-search-response-parser");
+const request_creator_1 = require("./elasticsearch/request-creator");
+const response_parser_1 = require("./elasticsearch/response-parser");
 const none_1 = require("./none");
 exports.default = {
     none: {
@@ -9,7 +9,7 @@ exports.default = {
         ResponseParser: none_1.NoneResponseParser,
     },
     elasticsearch: {
-        RequestCreator: elastic_search_request_1.default,
-        ResponseParser: elastic_search_response_parser_1.default,
+        RequestCreator: request_creator_1.default,
+        ResponseParser: response_parser_1.default,
     }
 };

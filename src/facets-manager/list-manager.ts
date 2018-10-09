@@ -35,9 +35,11 @@ export default class ListFacetManager extends FacetManager<ListFacet> {
 
 	viewLess(field: string) {
 		this.facets[field].viewLess()
+		this.change()
 	}
 
 	viewMore(field: string) {
 		this.facets[field].viewMore()
+		this.change()
 	}
 }

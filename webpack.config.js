@@ -22,5 +22,9 @@ module.exports = {
 				options: { configFile: "tsconfig.json" },
 			}
 		]
+	},
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM'
 	}
 };

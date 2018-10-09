@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ListFacetProps, ListFacetState } from './index';
 import { FacetsProps } from '../facets';
 import { ListFacetValue } from '../../models/facet';
-declare type Props = FacetsProps & ListFacetProps & ListFacetState;
+export declare type Props = FacetsProps & ListFacetProps & ListFacetState;
 interface State {
     values: ListFacetValue[];
 }

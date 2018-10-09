@@ -1,10 +1,10 @@
 import * as React from 'react'
 import FacetValueView from './value'
 import styled from 'react-emotion'
-import { MoreLessButton } from '../button'
 import { ListFacetProps, ListFacetState } from './index'
 import { FacetsProps } from '../facets';
 import { ListFacetValue, ListFacet } from '../../models/facet';
+import MoreLessButtons from './more-less-buttons'
 
 const DURATION = 500
 const FRAME_DURATION = 16
@@ -19,7 +19,7 @@ const List = styled('ul')`
 	padding: 0;
 `
 
-type Props = FacetsProps & ListFacetProps & ListFacetState
+export type Props = FacetsProps & ListFacetProps & ListFacetState
 interface State {
 	values: ListFacetValue[]
 }
@@ -68,19 +68,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 						)
 					}
 				</List>
-				<MoreLessButton
-					onClick={() => this.props.state.facetsManager.listManager.viewMore(this.props.field)}
-				>
-					View more
-				</MoreLessButton>
-				{
-					this.state.values.length && this.props.size !== this.state.values.length &&
-					<MoreLessButton
-						onClick={() => this.props.state.facetsManager.listManager.viewLess(this.props.field)}
-					>
-						View less
-					</MoreLessButton>
-				}
+				<MoreLessButtons {...this.props} />
 			</Wrapper>
 		)
 	}

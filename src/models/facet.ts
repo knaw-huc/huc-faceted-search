@@ -30,12 +30,12 @@ export class ListFacet extends Facet {
 	filters: Set<string> = new Set()
 	order: [SortBy, SortDirection] = [SortBy.Count, SortDirection.Desc]
 	query: string = ''
+	total: number = 0
 	values: ListFacetValue[] = []
 	viewSize: number
 
 	constructor(field: string, index: number, public size: number) {
 		super(field, index, FacetType.List)
-
 		this.viewSize = size
 	}
 

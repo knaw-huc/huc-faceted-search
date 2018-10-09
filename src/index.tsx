@@ -7,10 +7,8 @@ import Context, { defaultState, ContextState } from './context'
 import styled from 'react-emotion'
 import FacetsManager from './facets-manager'
 import Reset from './views/reset'
-import ElasticSearchRequest from './models/elastic-search-request'
-import { ElasticSearchResponse } from './models/elastic-search-response-parser'
 import { Facets } from './models/facet'
-import IOManager from './dispatch'
+import IOManager from './io-manager'
 import { BackendType } from './backends'
 
 export {
@@ -27,7 +25,7 @@ const Wrapper = styled('div')`
 
 interface Props {
 	backend: BackendType
-	onChange: (request: ElasticSearchRequest, response: ElasticSearchResponse) => void
+	onChange: (request: any, response: any) => void
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
