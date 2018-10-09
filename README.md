@@ -18,3 +18,38 @@ The `dist` dir has the bundled (normal & minimized) scripts
 
 - `npm run build`
 - `npm run dist`
+
+## Syntax
+```typescript
+import React from 'react'
+import FacetedSearch, { FullTextSearch, Reset, Facets, RangeFacet, ListFacet } from 'huc-faceted-search'
+
+export default function() {
+  return (
+    <FacetedSearch
+      backend="elasticsearch"
+      onChange={(request, response) => {}}
+      url="/api/search"
+    >
+      <FullTextSearch />
+      <Reset />
+      <Facets>
+        <RangeFacet
+          field="price"
+          title="Price range"
+          type="timestamp"
+        />
+        <RangeFacet
+          field="date"
+          title="Date range"
+          type="timestamp"
+        />
+        <ListFacet
+          field="car"
+          title="Cars"
+        />
+      </Facets>
+    </FacetedSearch>
+  )
+}
+```
