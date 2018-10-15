@@ -8,8 +8,11 @@ interface State {
     suggestions: string[];
 }
 export default class AutoSuggest extends React.PureComponent<Props, State> {
+    private cache;
     state: State;
     componentDidUpdate(prevProps: Props, prevState: State): Promise<void>;
     render(): JSX.Element;
+    private autoSuggest;
+    private requestAutoSuggest;
 }
 export {};

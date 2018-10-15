@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Suggestion from './suggestion'
-import styled from 'react-emotion';
+import styled from 'react-emotion'
+import debounce from 'lodash.debounce'
 
 const Suggestions = styled('ul')`
 	box-sizing: border-box;
@@ -25,6 +26,7 @@ interface State {
 	suggestions: string[]
 }
 export default class AutoSuggest extends React.PureComponent<Props, State> {
+	private cache: {[key: string]: string[]} = {}
 	state: State = {
 		suggestions: []
 	}
@@ -34,8 +36,7 @@ export default class AutoSuggest extends React.PureComponent<Props, State> {
 		if (prevState.suggestions.length && !this.state.suggestions.length) return
 
 		if (prevProps.value !== this.props.value) {
-			const suggestions = await this.props.autoSuggest(this.props.value)
-			this.setState({ suggestions })
+			this.requestAutoSuggest()
 		}
 	}
 
@@ -57,4 +58,18 @@ export default class AutoSuggest extends React.PureComponent<Props, State> {
 			</Suggestions>
 		)
 	}
+
+	private autoSuggest = async () => {
+		let suggestions: string[]
+
+		if (this.cache.hasOwnProperty(this.props.value)) {
+			suggestions = this.cache[this.props.value]
+		} else {
+			suggestions = await this.props.autoSuggest(this.props.value)
+			this.cache[this.props.value] = suggestions
+		}
+
+		this.setState({ suggestions })
+	}
+	private requestAutoSuggest = debounce(this.autoSuggest, 300)
 }

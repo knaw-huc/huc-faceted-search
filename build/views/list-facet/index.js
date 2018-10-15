@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const facet_1 = require("../facet");
-const values_1 = require("./values");
-const facet_header_1 = require("../facet-header");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
+const facet_1 = tslib_1.__importDefault(require("../facet"));
+const values_1 = tslib_1.__importDefault(require("./values"));
+const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
 const button_1 = require("../button");
-const options_1 = require("./options");
+const options_1 = tslib_1.__importDefault(require("./options"));
 class ListFacet extends React.PureComponent {
     constructor() {
         super(...arguments);

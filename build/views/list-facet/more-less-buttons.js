@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
 const button_1 = require("../button");
 function default_1(props) {
     if (!props.state.facets.hasOwnProperty(props.field))

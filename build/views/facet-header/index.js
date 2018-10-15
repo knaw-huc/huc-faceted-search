@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const react_emotion_1 = require("react-emotion");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
+const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
 const Header = react_emotion_1.default('header') `
 	display: grid;
 	grid-template-columns: 2fr 1fr;

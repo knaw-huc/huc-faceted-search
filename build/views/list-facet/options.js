@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const react_emotion_1 = require("react-emotion");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
+const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
 const full_text_search_1 = require("../full-text-search");
 const facet_1 = require("../../models/facet");
 const Wrapper = react_emotion_1.default('div') `

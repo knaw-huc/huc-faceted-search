@@ -10,7 +10,7 @@ import { BackendType } from './backends';
 export { FacetsView as Facets, FullTextSearch, ListFacet, RangeFacetView as RangeFacet, Reset, };
 interface Props {
     backend: BackendType;
-    onChange: (request: any, response: any) => void;
+    onChange: (request: any, response: any, query: string) => void;
     url: string;
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {

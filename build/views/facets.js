@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const context_1 = require("../context");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
+const context_1 = tslib_1.__importDefault(require("../context"));
 class Facets extends React.PureComponent {
     componentDidMount() {
         if (Array.isArray(this.props.children)) {

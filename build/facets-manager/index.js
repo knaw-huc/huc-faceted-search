@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const range_manager_1 = require("./range-manager");
-const list_manager_1 = require("./list-manager");
+const tslib_1 = require("tslib");
+const range_manager_1 = tslib_1.__importDefault(require("./range-manager"));
+const list_manager_1 = tslib_1.__importDefault(require("./list-manager"));
 class FacetsManager {
     constructor(onChange) {
         this.onChange = onChange;

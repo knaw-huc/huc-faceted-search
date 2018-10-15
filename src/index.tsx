@@ -25,7 +25,7 @@ const Wrapper = styled('div')`
 
 interface Props {
 	backend: BackendType
-	onChange: (request: any, response: any) => void
+	onChange: (request: any, response: any, query: string) => void
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
@@ -60,6 +60,6 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	private handleChange = async (inputFacets: Facets, query: string) => {
 		const { facets, response } = await this.ioManager.dispatch(inputFacets, query)
 		this.setState({ facets, response })
-		this.props.onChange(this.ioManager.requestBody, response)
+		this.props.onChange(this.ioManager.requestBody, response, query)
 	}
 }

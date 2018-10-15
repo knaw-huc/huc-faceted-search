@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
 var ChartType;
 (function (ChartType) {
     ChartType[ChartType["Bar"] = 0] = "Bar";

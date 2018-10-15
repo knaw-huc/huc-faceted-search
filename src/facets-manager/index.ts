@@ -3,7 +3,7 @@ import ListFacetManager from './list-manager'
 import { Facets } from '../models/facet'
 
 export default class FacetsManager {
-	private query: string = ''
+	query: string = ''
 
 	facetCount: number
 	listManager = new ListFacetManager()

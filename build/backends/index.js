@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const request_creator_1 = require("./elasticsearch/request-creator");
-const response_parser_1 = require("./elasticsearch/response-parser");
+const tslib_1 = require("tslib");
+const request_creator_1 = tslib_1.__importDefault(require("./elasticsearch/request-creator"));
+const response_parser_1 = tslib_1.__importDefault(require("./elasticsearch/response-parser"));
 const none_1 = require("./none");
 exports.default = {
     none: {

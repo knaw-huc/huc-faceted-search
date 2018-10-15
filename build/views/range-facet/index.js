@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const hire_range_slider_1 = require("hire-range-slider");
-const facet_1 = require("../facet");
-const facet_header_1 = require("../facet-header");
-const react_emotion_1 = require("react-emotion");
-const histogram_1 = require("./histogram");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
+const hire_range_slider_1 = tslib_1.__importDefault(require("hire-range-slider"));
+const facet_1 = tslib_1.__importDefault(require("../facet"));
+const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
+const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const histogram_1 = tslib_1.__importDefault(require("./histogram"));
 const Dates = react_emotion_1.default('div') `
 	color: #888;
 	display: grid;

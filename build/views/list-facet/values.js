@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const value_1 = require("./value");
-const react_emotion_1 = require("react-emotion");
-const more_less_buttons_1 = require("./more-less-buttons");
+const tslib_1 = require("tslib");
+const React = tslib_1.__importStar(require("react"));
+const value_1 = tslib_1.__importDefault(require("./value"));
+const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const more_less_buttons_1 = tslib_1.__importDefault(require("./more-less-buttons"));
 const DURATION = 500;
 const FRAME_DURATION = 16;
 function easeOutQuint(t) { return 1 + (--t) * t * t * t * t; }
