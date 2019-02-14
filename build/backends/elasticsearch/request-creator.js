@@ -6,7 +6,6 @@ class ElasticSearchRequest {
         this.aggs = {};
         this.post_filter = {};
         this.size = 20;
-        this.sort = 'date';
         const facetList = Object.keys(facets).map(field => facets[field]);
         const listFacets = facetList.filter(facet => facet.type === facet_1.FacetType.List);
         const rangeFacets = facetList.filter(facet => facet.type === facet_1.FacetType.Range);
@@ -18,8 +17,10 @@ class ElasticSearchRequest {
             this.aggs[`${rangeFacet.id}_histogram`] = this.createHistogramAggregation(rangeFacet);
         }
         this.setPostFilter(listFacets, rangeFacets);
-        if (query.length)
+        if (query.length) {
             this.query = { query_string: { query } };
+            this.highlight = { fields: { text: {} }, require_field_match: false };
+        }
     }
     createListAggregation(facet) {
         const terms = {

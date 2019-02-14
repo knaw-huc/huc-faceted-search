@@ -5,8 +5,22 @@ class ElasticSearchResponseParser {
     constructor(response, facets) {
         this.response = response;
         this.facets = facets;
+        this.parsedResponse = {
+            aggregations: {},
+            hits: [],
+            total: 0
+        };
         this.updateListFacets();
         this.updateRangeFacets();
+        this.parseResponse(response);
+    }
+    parseResponse(response) {
+        this.parsedResponse = {
+            aggregations: response.aggregations,
+            hits: response.hits.hits
+                .map((hit) => (Object.assign({ id: hit._id, snippets: hit.highlight ? hit.highlight.text : [] }, hit._source))),
+            total: response.hits.total,
+        };
     }
     updateListFacets() {
         Object.keys(this.facets)

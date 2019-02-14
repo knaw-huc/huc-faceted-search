@@ -32,7 +32,7 @@ export default class IOManager {
 
 		return {
 			facets: responseParser.facets,
-			response
+			response: responseParser.parsedResponse
 		}
 	}
 

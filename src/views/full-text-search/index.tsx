@@ -5,6 +5,8 @@ import AutoSuggest from './auto-suggest'
 import debounce from 'lodash.debounce'
 
 export const Input = styled('input')`
+	background-color: white;
+	border: 1px solid #AAA;
 	box-sizing: border-box;
 	font-size: 1.2em;
 	outline: none;

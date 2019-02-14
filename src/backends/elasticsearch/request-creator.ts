@@ -1,4 +1,4 @@
-import { FacetType, ListFacet, RangeFacet, Facets } from '../../models/facet';
+import { FacetType, ListFacet, RangeFacet, Facets } from '../../models/facet'
 
 interface AggregationRequest {
 	aggs: any
@@ -8,10 +8,11 @@ interface AggregationRequest {
 type Aggregations = { [id: string]: AggregationRequest }
 export default class ElasticSearchRequest {
 	aggs: Aggregations = {}
+	highlight: { fields: { text: {} }, require_field_match: boolean }
 	post_filter: any = {}
 	query: any
 	size: number = 20
-	sort: string = 'date'
+	// sort: string = 'date'
 
 	constructor(facets: Facets = {}, query: string = '') {
 		const facetList = Object.keys(facets).map(field => facets[field])
@@ -29,7 +30,11 @@ export default class ElasticSearchRequest {
 
 		this.setPostFilter(listFacets, rangeFacets)
 
-		if (query.length) this.query = { query_string: { query }}
+
+		if (query.length) {
+			this.query = { query_string: { query } }
+			this.highlight = { fields: { text: {} }, require_field_match: false }
+		}
 	}
 
 	private createListAggregation(facet: ListFacet) {

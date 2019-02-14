@@ -8,10 +8,15 @@ declare type Aggregations = {
 };
 export default class ElasticSearchRequest {
     aggs: Aggregations;
+    highlight: {
+        fields: {
+            text: {};
+        };
+        require_field_match: boolean;
+    };
     post_filter: any;
     query: any;
     size: number;
-    sort: string;
     constructor(facets?: Facets, query?: string);
     private createListAggregation;
     private createRangeAggregation;

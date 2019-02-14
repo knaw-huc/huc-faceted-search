@@ -23,7 +23,7 @@ class IOManager {
             const responseParser = new this.backend.ResponseParser(response, facets);
             return {
                 facets: responseParser.facets,
-                response
+                response: responseParser.parsedResponse
             };
         });
     }

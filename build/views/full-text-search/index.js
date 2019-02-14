@@ -7,6 +7,8 @@ const context_1 = tslib_1.__importDefault(require("../../context"));
 const auto_suggest_1 = tslib_1.__importDefault(require("./auto-suggest"));
 const lodash_debounce_1 = tslib_1.__importDefault(require("lodash.debounce"));
 exports.Input = react_emotion_1.default('input') `
+	background-color: white;
+	border: 1px solid #AAA;
 	box-sizing: border-box;
 	font-size: 1.2em;
 	outline: none;

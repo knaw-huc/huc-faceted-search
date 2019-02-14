@@ -1,5 +1,11 @@
 import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet } from '../../models/facet'
 
+interface ParsedResponse {
+	aggregations: { [id: string]: any}
+	hits: any[]
+	total: number
+}
+
 export interface ElasticSearchResponse {
 	aggregations: { [id: string]: any}
 	hits: {
@@ -9,9 +15,29 @@ export interface ElasticSearchResponse {
 }
 
 export default class ElasticSearchResponseParser {
+	parsedResponse: ParsedResponse = {
+		aggregations: {},
+		hits: [],
+		total: 0
+	}
+
 	constructor(private response: ElasticSearchResponse, public facets: Facets) {
 		this.updateListFacets()
 		this.updateRangeFacets()
+		this.parseResponse(response)
+	}
+
+	private parseResponse(response: ElasticSearchResponse) {
+		this.parsedResponse = {
+			aggregations: response.aggregations,
+			hits: response.hits.hits
+				.map((hit: any) => ({
+					id: hit._id,
+					snippets: hit.highlight ? hit.highlight.text : [],
+					...hit._source
+				})),
+			total: response.hits.total,
+		}
 	}
 
 	private updateListFacets() {

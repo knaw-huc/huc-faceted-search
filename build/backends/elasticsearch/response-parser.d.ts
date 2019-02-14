@@ -1,4 +1,11 @@
 import { Facets } from '../../models/facet';
+interface ParsedResponse {
+    aggregations: {
+        [id: string]: any;
+    };
+    hits: any[];
+    total: number;
+}
 export interface ElasticSearchResponse {
     aggregations: {
         [id: string]: any;
@@ -13,7 +20,10 @@ export interface ElasticSearchResponse {
 export default class ElasticSearchResponseParser {
     private response;
     facets: Facets;
+    parsedResponse: ParsedResponse;
     constructor(response: ElasticSearchResponse, facets: Facets);
+    private parseResponse;
     private updateListFacets;
     private updateRangeFacets;
 }
+export {};

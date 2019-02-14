@@ -24,13 +24,13 @@ const Wrapper = styled('div')`
 `
 
 interface Props {
-	backend: BackendType
+	backend?: BackendType
 	onChange: (request: any, response: any, query: string) => void
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
 	state: ContextState
-	ioManager: IOManager
+	private ioManager: IOManager
 
 	static defaultProps: Partial<Props> = {
 		backend: 'none'
