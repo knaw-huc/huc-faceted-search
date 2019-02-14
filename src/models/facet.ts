@@ -1,4 +1,5 @@
 export enum FacetType {
+	Boolean,
 	List,
 	Range,
 }
@@ -48,6 +49,15 @@ export class ListFacet extends Facet {
 	}
 }
 
+export class BooleanFacet extends Facet {
+	filters: Set<string> = new Set()
+	values: ListFacetValue[] = []
+
+	constructor(field: string, index: number) {
+		super(field, index, FacetType.Boolean)
+	}
+}
+
 export class RangeFacet extends Facet {
 	filter: [number, number]
 	histogramValues: any[] = []
@@ -58,4 +68,4 @@ export class RangeFacet extends Facet {
 	}
 }
 
-export type Facets = { [id: string]: ListFacet | RangeFacet }
+export type Facets = { [id: string]: BooleanFacet | ListFacet | RangeFacet }

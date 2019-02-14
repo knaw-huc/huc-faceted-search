@@ -1,4 +1,4 @@
-import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet } from '../../models/facet'
+import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet, BooleanFacet } from '../../models/facet'
 
 interface ParsedResponse {
 	aggregations: { [id: string]: any}
@@ -22,6 +22,7 @@ export default class ElasticSearchResponseParser {
 	}
 
 	constructor(private response: ElasticSearchResponse, public facets: Facets) {
+		this.updateBooleanFacets()
 		this.updateListFacets()
 		this.updateRangeFacets()
 		this.parseResponse(response)
@@ -38,6 +39,17 @@ export default class ElasticSearchResponseParser {
 				})),
 			total: response.hits.total,
 		}
+	}
+
+	private updateBooleanFacets() {
+		Object.keys(this.facets)
+			.map(key => this.facets[key])
+			.filter(facet => facet.type === FacetType.Boolean)
+			.forEach((facet: BooleanFacet) => {
+				if (!this.response.aggregations.hasOwnProperty(facet.id)) return
+				let { buckets } = this.response.aggregations[facet.id][facet.field] as { buckets: ListFacetValue[] }
+				facet.values = Array.isArray(buckets) ? buckets : []
+			})
 	}
 
 	private updateListFacets() {

@@ -10,6 +10,7 @@ class ElasticSearchResponseParser {
             hits: [],
             total: 0
         };
+        this.updateBooleanFacets();
         this.updateListFacets();
         this.updateRangeFacets();
         this.parseResponse(response);
@@ -21,6 +22,17 @@ class ElasticSearchResponseParser {
                 .map((hit) => (Object.assign({ id: hit._id, snippets: hit.highlight ? hit.highlight.text : [] }, hit._source))),
             total: response.hits.total,
         };
+    }
+    updateBooleanFacets() {
+        Object.keys(this.facets)
+            .map(key => this.facets[key])
+            .filter(facet => facet.type === facet_1.FacetType.Boolean)
+            .forEach((facet) => {
+            if (!this.response.aggregations.hasOwnProperty(facet.id))
+                return;
+            let { buckets } = this.response.aggregations[facet.id][facet.field];
+            facet.values = Array.isArray(buckets) ? buckets : [];
+        });
     }
     updateListFacets() {
         Object.keys(this.facets)

@@ -1,6 +1,6 @@
-import { RangeFacet, ListFacet } from '../models/facet';
+import { RangeFacet, ListFacet, BooleanFacet } from '../models/facet';
 
-export default abstract class FacetManger<T extends RangeFacet | ListFacet> {
+export default abstract class FacetManger<T extends RangeFacet | ListFacet | BooleanFacet> {
 	facets: { [key: string]: T } = {}
 	change: () => void = () => {}
 

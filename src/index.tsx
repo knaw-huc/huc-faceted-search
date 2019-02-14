@@ -1,7 +1,8 @@
 import * as React from 'react'
 import FacetsView from './views/facets'
 import ListFacet from './views/list-facet'
-import RangeFacetView from './views/range-facet'
+import RangeFacet from './views/range-facet'
+import BooleanFacet from './views/boolean-facet'
 import FullTextSearch from './views/full-text-search'
 import Context, { defaultState, ContextState } from './context'
 import styled from 'react-emotion'
@@ -12,10 +13,11 @@ import IOManager from './io-manager'
 import { BackendType } from './backends'
 
 export {
+	BooleanFacet,
 	FacetsView as Facets,
 	FullTextSearch,
 	ListFacet,
-	RangeFacetView as RangeFacet,
+	RangeFacet,
 	Reset,
 }
 

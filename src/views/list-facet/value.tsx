@@ -29,6 +29,7 @@ const Count = styled('span')`
 interface Props {
 	active: boolean
 	addFilter: () => void
+	keyFormatter?: (key: string | number) => string
 	removeFilter: () => void
 	value: ListFacetValue
 }
@@ -49,6 +50,9 @@ export default class FacetValueView extends React.PureComponent<Props, State> {
 	}
 
 	render() {
+		let key = this.props.value.key
+		if (this.props.keyFormatter != null) key = this.props.keyFormatter(key)
+
 		return (
 			<Wrapper
 				onClick={this.toggleActive}
@@ -59,7 +63,7 @@ export default class FacetValueView extends React.PureComponent<Props, State> {
 					onChange={this.toggleActive}
 					type="checkbox"
 				/>
-				<Key {...this.state}>{this.props.value.key}</Key>
+				<Key {...this.state}>{key}</Key>
 				<Count {...this.state}>{this.props.value.doc_count}</Count>
 			</Wrapper>
 

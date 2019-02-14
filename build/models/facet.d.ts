@@ -1,6 +1,7 @@
 export declare enum FacetType {
-    List = 0,
-    Range = 1
+    Boolean = 0,
+    List = 1,
+    Range = 2
 }
 export declare enum SortBy {
     Count = "_count",
@@ -33,6 +34,11 @@ export declare class ListFacet extends Facet {
     viewLess(): void;
     viewMore(): void;
 }
+export declare class BooleanFacet extends Facet {
+    filters: Set<string>;
+    values: ListFacetValue[];
+    constructor(field: string, index: number);
+}
 export declare class RangeFacet extends Facet {
     filter: [number, number];
     histogramValues: any[];
@@ -40,5 +46,5 @@ export declare class RangeFacet extends Facet {
     constructor(field: string, index: number);
 }
 export declare type Facets = {
-    [id: string]: ListFacet | RangeFacet;
+    [id: string]: BooleanFacet | ListFacet | RangeFacet;
 };

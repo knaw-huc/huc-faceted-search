@@ -3,7 +3,6 @@ import { ListFacetValue } from '../../models/facet';
 interface Props {
     active: boolean;
     addFilter: () => void;
-    keyFormatter?: (key: string | number) => string;
     removeFilter: () => void;
     value: ListFacetValue;
 }

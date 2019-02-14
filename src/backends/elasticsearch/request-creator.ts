@@ -1,8 +1,8 @@
-import { FacetType, ListFacet, RangeFacet, Facets } from '../../models/facet'
+import { FacetType, ListFacet, RangeFacet, Facets, BooleanFacet } from '../../models/facet'
 
 interface AggregationRequest {
 	aggs: any
-	filter: any
+	filter?: any
 }
 
 type Aggregations = { [id: string]: AggregationRequest }
@@ -12,15 +12,21 @@ export default class ElasticSearchRequest {
 	post_filter: any = {}
 	query: any
 	size: number = 20
-	// sort: string = 'date'
 
 	constructor(facets: Facets = {}, query: string = '') {
 		const facetList = Object.keys(facets).map(field => facets[field])
+		const booleanFacets = facetList.filter(facet => facet.type === FacetType.Boolean) as BooleanFacet[]
 		const listFacets = facetList.filter(facet => facet.type === FacetType.List) as ListFacet[]
 		const rangeFacets = facetList.filter(facet => facet.type === FacetType.Range) as RangeFacet[]
 
+		this.setPostFilter(booleanFacets, listFacets, rangeFacets)
+
 		for (const listFacet of listFacets) {
 			this.aggs[listFacet.id] = this.createListAggregation(listFacet)
+		}
+
+		for (const booleanFacet of booleanFacets) {
+			this.aggs[booleanFacet.id] = this.createBooleanAggregation(booleanFacet)
 		}
 
 		for (const rangeFacet of rangeFacets) {
@@ -28,13 +34,29 @@ export default class ElasticSearchRequest {
 			this.aggs[`${rangeFacet.id}_histogram`] = this.createHistogramAggregation(rangeFacet) as any
 		}
 
-		this.setPostFilter(listFacets, rangeFacets)
-
-
 		if (query.length) {
 			this.query = { query_string: { query } }
 			this.highlight = { fields: { text: {} }, require_field_match: false }
 		}
+	}
+
+	private createBooleanAggregation(facet: BooleanFacet) {
+		const aggs = {
+			[facet.field]: {
+				terms: {
+					field: facet.field
+				}
+			},
+		}
+
+		return this.addFilter(aggs)
+	}
+
+	private addFilter(aggs: any) {
+		const req: AggregationRequest = { aggs }
+		req.filter = this.post_filter
+		return req
+
 	}
 
 	private createListAggregation(facet: ListFacet) {
@@ -48,34 +70,28 @@ export default class ElasticSearchRequest {
 
 		if (facet.query.length) (terms as any).include = `.*${facet.query}.*`
 		
-		return {
-			aggs: {
-				[facet.field]: { terms },
-				[`${facet.field}-count`]: {
-					cardinality: {
-						field: facet.field
-					}
+		const aggs = {
+			[facet.field]: { terms },
+			[`${facet.field}-count`]: {
+				cardinality: {
+					field: facet.field
 				}
-			},
-			filter: {
-				match_all: {}
 			}
 		}
+
+		return this.addFilter(aggs)
 	}
 
 	private createRangeAggregation(facet: RangeFacet) {
-		return {
-			aggs: {
-				[facet.field]: {
-					stats: {
-						field: facet.field,
-					}
-				},
+		const aggs = {
+			[facet.field]: {
+				stats: {
+					field: facet.field,
+				}
 			},
-			filter: {
-				match_all: {}
-			}
 		}
+
+		return this.addFilter(aggs)
 	}
 
 	private createHistogramAggregation(facet: RangeFacet) {
@@ -88,7 +104,16 @@ export default class ElasticSearchRequest {
 		}
 	}
 
-	private setPostFilter(listFacets: ListFacet[], rangeFacets: RangeFacet[]) {
+	private setPostFilter(booleanFacets: BooleanFacet[], listFacets: ListFacet[], rangeFacets: RangeFacet[]) {
+		const booleanFilters: any[] = booleanFacets
+			.filter(facet => facet.filters.size > 0)
+			.map((facet: ListFacet) => {
+				const filters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }))
+				if (filters.length === 1)		return filters[0]
+				else if (filters.length > 1)	return { bool: { should: filters } }
+				return {}
+			})
+
 		const listFilters: any[] = listFacets
 			.filter(facet => facet.filters.size > 0)
 			.map((facet: ListFacet) => {
@@ -111,11 +136,13 @@ export default class ElasticSearchRequest {
 				})
 			)
 
-		const filters = listFilters.concat(rangeFilters)
+		const filters = listFilters.concat(rangeFilters, booleanFilters)
 
-		if (filters.length === 1) {
+		if (!filters.length) {
+			this.post_filter = {}
+		} else if (filters.length === 1) {
 			this.post_filter = filters[0]
-		} else {
+		} else if (filters.length > 1) {
 			this.post_filter = {
 				bool: {
 					must: filters

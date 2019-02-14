@@ -43,12 +43,9 @@ class FacetValueView extends React.PureComponent {
         return { active: props.active };
     }
     render() {
-        let key = this.props.value.key;
-        if (this.props.keyFormatter != null)
-            key = this.props.keyFormatter(key);
         return (React.createElement(Wrapper, { onClick: this.toggleActive, title: this.props.value.key },
             React.createElement("input", { checked: this.state.active, onChange: this.toggleActive, type: "checkbox" }),
-            React.createElement(Key, Object.assign({}, this.state), key),
+            React.createElement(Key, Object.assign({}, this.state), this.props.value.key),
             React.createElement(Count, Object.assign({}, this.state), this.props.value.doc_count)));
     }
 }

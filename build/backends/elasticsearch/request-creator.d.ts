@@ -1,7 +1,7 @@
 import { Facets } from '../../models/facet';
 interface AggregationRequest {
     aggs: any;
-    filter: any;
+    filter?: any;
 }
 declare type Aggregations = {
     [id: string]: AggregationRequest;
@@ -18,6 +18,8 @@ export default class ElasticSearchRequest {
     query: any;
     size: number;
     constructor(facets?: Facets, query?: string);
+    private createBooleanAggregation;
+    private addFilter;
     private createListAggregation;
     private createRangeAggregation;
     private createHistogramAggregation;

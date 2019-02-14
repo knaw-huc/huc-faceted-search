@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetType;
 (function (FacetType) {
-    FacetType[FacetType["List"] = 0] = "List";
-    FacetType[FacetType["Range"] = 1] = "Range";
+    FacetType[FacetType["Boolean"] = 0] = "Boolean";
+    FacetType[FacetType["List"] = 1] = "List";
+    FacetType[FacetType["Range"] = 2] = "Range";
 })(FacetType = exports.FacetType || (exports.FacetType = {}));
 var SortBy;
 (function (SortBy) {
@@ -44,6 +45,14 @@ class ListFacet extends Facet {
     }
 }
 exports.ListFacet = ListFacet;
+class BooleanFacet extends Facet {
+    constructor(field, index) {
+        super(field, index, FacetType.Boolean);
+        this.filters = new Set();
+        this.values = [];
+    }
+}
+exports.BooleanFacet = BooleanFacet;
 class RangeFacet extends Facet {
     constructor(field, index) {
         super(field, index, FacetType.Range);

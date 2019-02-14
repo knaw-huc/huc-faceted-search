@@ -23,6 +23,7 @@ export default class ElasticSearchResponseParser {
     parsedResponse: ParsedResponse;
     constructor(response: ElasticSearchResponse, facets: Facets);
     private parseResponse;
+    private updateBooleanFacets;
     private updateListFacets;
     private updateRangeFacets;
 }
