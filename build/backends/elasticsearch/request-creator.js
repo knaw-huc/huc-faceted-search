@@ -72,10 +72,9 @@ class ElasticSearchRequest {
         return this.addFilter(aggs);
     }
     createHistogramAggregation(facet) {
-        facet.field;
         return {
             date_histogram: {
-                field: "date",
+                field: facet.field,
                 interval: "year",
             }
         };

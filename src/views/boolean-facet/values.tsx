@@ -1,6 +1,6 @@
 import * as React from 'react'
 import FacetValueView from '../list-facet/value'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { BooleanFacetProps } from './index'
 import { FacetsProps } from '../facets';
 import { ListFacetValue, BooleanFacet } from '../../models/facet'
@@ -28,7 +28,6 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 	}
 
 	render() {
-		console.log(this.state.values)
 		return (
 			<div>
 				<List>

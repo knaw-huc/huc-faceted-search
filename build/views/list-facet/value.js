@@ -2,25 +2,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
-const react_emotion_1 = tslib_1.__importStar(require("react-emotion"));
-const Wrapper = react_emotion_1.default('li') `
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
+const core_1 = require("@emotion/core");
+const Wrapper = styled_1.default('li') `
 	cursor: pointer;
 	display: grid;
 	grid-template-columns: 24px 4fr 1fr;
 	margin-bottom: .2em;
 `;
-const common = (props) => react_emotion_1.css `
+const common = (props) => core_1.css `
 	color: ${props.active ? '#444' : '#888'};
 	font-size: .9em;
 	font-weight: ${props.active ? 'bold' : 'normal'};
 `;
-const Key = react_emotion_1.default('span') `
+const Key = styled_1.default('span') `
 	${common}
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 `;
-const Count = react_emotion_1.default('span') `
+const Count = styled_1.default('span') `
 	${common}
 	text-align: right;
 `;

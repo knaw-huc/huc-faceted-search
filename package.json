@@ -14,27 +14,29 @@
   "author": "",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "@types/jest": "^23.3.2",
-    "@types/lodash.debounce": "^4.0.4",
-    "@types/react": "^16.4.14",
-    "express": "^4.16.3",
-    "jest": "^23.6.0",
-    "nodemon": "^1.18.4",
+    "@types/jest": "^24.0.4",
+    "@types/lodash.debounce": "^4.0.5",
+    "@types/react": "^16.8.3",
+    "express": "^4.16.4",
+    "jest": "^24.1.0",
+    "nodemon": "^1.18.10",
     "random-words": "^1.1.0",
-    "reload": "^2.3.1",
-    "ts-jest": "^23.10.2",
-    "ts-loader": "^5.2.1",
+    "reload": "^2.4.0",
+    "ts-jest": "^23.10.5",
+    "ts-loader": "^5.3.3",
     "tslib": "^1.9.3",
-    "typescript": "^3.0.3",
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.1"
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "emotion": "^9.2.10",
+    "@emotion/core": "^10.0.7",
+    "@emotion/styled": "^10.0.7",
+    "emotion": "^10.0.7",
     "hire-range-slider": "^3.1.0",
     "lodash.debounce": "^4.0.8",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-emotion": "^9.2.10"
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-emotion": "^10.0.0"
   }
 }

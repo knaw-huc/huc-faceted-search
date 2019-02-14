@@ -3,7 +3,7 @@ import HireRangeSlider from 'hire-range-slider'
 import { FacetsProps } from '../facets'
 import Facet from '../facet'
 import FacetHeader from '../facet-header'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import Histogram from './histogram'
 import { RangeFacet } from '../../models/facet'
 

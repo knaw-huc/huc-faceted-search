@@ -32,7 +32,7 @@ export default class Histogram extends React.PureComponent<Props> {
 			const values = this.props.values.map(value => value.doc_count)
 
 
-			const canvas = this.drawChart(ChartType.Bar, values, 12)
+			const canvas = this.drawChart(ChartType.Bar, values, 24)
 			// const canvas = this.drawChart(ChartType.Horizon, values)
 
 			this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height)

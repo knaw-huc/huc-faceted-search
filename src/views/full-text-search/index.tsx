@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import Context, { ContextState } from '../../context'
 import AutoSuggest from './auto-suggest'
 import debounce from 'lodash.debounce'

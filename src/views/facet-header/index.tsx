@@ -1,6 +1,5 @@
 import * as React from 'react'
-import styled from 'react-emotion'
-// import { FacetMenuButton } from '../button'
+import styled from '@emotion/styled'
 
 const Header = styled('header')`
 	display: grid;
@@ -12,7 +11,6 @@ const H3 = styled('h3')`
 `
 
 interface Props {
-	// collapse?: () => void
 	title: string	
 }
 interface State {

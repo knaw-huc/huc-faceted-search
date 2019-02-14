@@ -5,16 +5,16 @@ const React = tslib_1.__importStar(require("react"));
 const hire_range_slider_1 = tslib_1.__importDefault(require("hire-range-slider"));
 const facet_1 = tslib_1.__importDefault(require("../facet"));
 const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const histogram_1 = tslib_1.__importDefault(require("./histogram"));
-const Dates = react_emotion_1.default('div') `
+const Dates = styled_1.default('div') `
 	color: #888;
 	display: grid;
 	font-size: .9em;
 	grid-template-columns: 1fr auto 1fr;
 	margin-top: 1em;
 `;
-const ActiveDates = react_emotion_1.default('div') `
+const ActiveDates = styled_1.default('div') `
 	color: #444;
 	display: grid;
 	font-weight: bold;

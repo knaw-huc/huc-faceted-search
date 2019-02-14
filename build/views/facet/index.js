@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
-const Wrapper = react_emotion_1.default('div') `
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
+const Wrapper = styled_1.default('div') `
 	margin-top: 2em;
 `;
 class Facet extends React.PureComponent {

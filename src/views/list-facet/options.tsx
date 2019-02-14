@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FacetsProps } from '../facets';
 import { ListFacetProps } from './index';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Input } from '../full-text-search';
 import { SortBy, SortDirection } from '../../models/facet';
 
@@ -81,7 +81,7 @@ export default class Options extends React.PureComponent<Props, State> {
 				</RadioGroup>
 				<H4>Filter</H4>
 				<Input
-					onChange={ev => {
+					onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
 						const { value } = ev.target
 						this.setState({ value })
 						this.props.state.facetsManager.listManager.addQuery(this.props.field, value)

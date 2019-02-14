@@ -95,10 +95,9 @@ export default class ElasticSearchRequest {
 	}
 
 	private createHistogramAggregation(facet: RangeFacet) {
-		facet.field
 		return {
 			date_histogram: {
-				field: "date",
+				field: facet.field,
 				interval: "year",
 			}
 		}

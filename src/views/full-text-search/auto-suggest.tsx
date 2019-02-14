@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Suggestion from './suggestion'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import debounce from 'lodash.debounce'
 
 const Suggestions = styled('ul')`

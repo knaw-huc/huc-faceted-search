@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
-const Li = react_emotion_1.default('li') `
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
+const Li = styled_1.default('li') `
 	background: ${(props) => props.hover ? '#EEE' : '#FFF'};
 	border-bottom: 1px solid #CCC;
 	cursor: pointer;

@@ -13,12 +13,12 @@ exports.BooleanFacet = boolean_facet_1.default;
 const full_text_search_1 = tslib_1.__importDefault(require("./views/full-text-search"));
 exports.FullTextSearch = full_text_search_1.default;
 const context_1 = tslib_1.__importStar(require("./context"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const facets_manager_1 = tslib_1.__importDefault(require("./facets-manager"));
 const reset_1 = tslib_1.__importDefault(require("./views/reset"));
 exports.Reset = reset_1.default;
 const io_manager_1 = tslib_1.__importDefault(require("./io-manager"));
-const Wrapper = react_emotion_1.default('div') `
+const Wrapper = styled_1.default('div') `
 	font-family: sans-serif;
 `;
 class FacetedSearch extends React.PureComponent {

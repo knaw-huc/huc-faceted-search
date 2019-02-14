@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const value_1 = tslib_1.__importDefault(require("./value"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const more_less_buttons_1 = tslib_1.__importDefault(require("./more-less-buttons"));
 const DURATION = 500;
 const FRAME_DURATION = 16;
 function easeOutQuint(t) { return 1 + (--t) * t * t * t * t; }
-const Wrapper = react_emotion_1.default('div') `
+const Wrapper = styled_1.default('div') `
 	overflow: hidden;
 `;
-const List = react_emotion_1.default('ul') `
+const List = styled_1.default('ul') `
 	margin: 0;
 	padding: 0;
 `;
@@ -39,7 +39,7 @@ class FacetValuesView extends React.PureComponent {
             this.animate(true);
     }
     render() {
-        return (React.createElement(Wrapper, { innerRef: this.wrapperRef },
+        return (React.createElement(Wrapper, { ref: this.wrapperRef },
             React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.listManager.addFilter(this.props.field, value.key), active: this.props.state.facets[this.props.field].filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.listManager.removeFilter(this.props.field, value.key), value: value }))),
             React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
     }
@@ -55,6 +55,7 @@ class FacetValuesView extends React.PureComponent {
                 currentHeight = reverse ? 'auto' : '0';
                 clearInterval(interval);
             }
+            console.log(this.wrapperRef.current);
             this.wrapperRef.current.style.height = currentHeight;
         }, FRAME_DURATION);
     }

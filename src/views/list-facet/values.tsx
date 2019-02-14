@@ -1,6 +1,6 @@
 import * as React from 'react'
 import FacetValueView from './value'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { ListFacetProps, ListFacetState } from './index'
 import { FacetsProps } from '../facets';
 import { ListFacetValue, ListFacet } from '../../models/facet';
@@ -53,7 +53,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 	render() {
 		return (
 			<Wrapper
-				innerRef={this.wrapperRef}
+				ref={this.wrapperRef}
 			>
 				<List>
 					{
@@ -84,6 +84,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 				currentHeight = reverse ? 'auto' : '0'
 				clearInterval(interval)
 			}
+			console.log(this.wrapperRef.current)
 			this.wrapperRef.current.style.height = currentHeight
 		}, FRAME_DURATION)
 	}

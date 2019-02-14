@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const suggestion_1 = tslib_1.__importDefault(require("./suggestion"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const lodash_debounce_1 = tslib_1.__importDefault(require("lodash.debounce"));
-const Suggestions = react_emotion_1.default('ul') `
+const Suggestions = styled_1.default('ul') `
 	box-sizing: border-box;
 	list-style: none;
 	margin: 0;

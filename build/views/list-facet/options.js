@@ -2,26 +2,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
-const react_emotion_1 = tslib_1.__importDefault(require("react-emotion"));
+const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const full_text_search_1 = require("../full-text-search");
 const facet_1 = require("../../models/facet");
-const Wrapper = react_emotion_1.default('div') `
+const Wrapper = styled_1.default('div') `
 	font-size: .9em;
 	margin-bottom: 2em;
 `;
-const RadioGroup = react_emotion_1.default('div') `
+const RadioGroup = styled_1.default('div') `
 	border: 1px solid #AAA;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	padding: 1em;
 `;
-const Div = react_emotion_1.default('div') `
+const Div = styled_1.default('div') `
 	list-style: none;
 	display: grid;
 	grid-template-columns: 24px 1fr;
 	grid-template-rows: 1fr 1fr;
 `;
-const H4 = react_emotion_1.default('h4') `
+const H4 = styled_1.default('h4') `
 	color: gray;
 	font-weight: normal;
 	margin: 1em 0 .2em 0;
@@ -56,7 +56,7 @@ class Options extends React.PureComponent {
                     React.createElement("input", { id: "za-radio", name: "sort", onChange: this.sortBy(facet_1.SortBy.Key, facet_1.SortDirection.Desc), type: "radio" }),
                     React.createElement("label", { htmlFor: "za-radio" }, "Z - A"))),
             React.createElement(H4, null, "Filter"),
-            React.createElement(full_text_search_1.Input, { onChange: ev => {
+            React.createElement(full_text_search_1.Input, { onChange: (ev) => {
                     const { value } = ev.target;
                     this.setState({ value });
                     this.props.state.facetsManager.listManager.addQuery(this.props.field, value);
