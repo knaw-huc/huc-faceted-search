@@ -37,7 +37,7 @@ export default function() {
         <RangeFacet
           field="price"
           title="Price range"
-          type="timestamp"
+          type="number"
         />
         <RangeFacet
           field="date"
