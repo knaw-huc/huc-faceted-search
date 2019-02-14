@@ -9,7 +9,7 @@ interface State {
 export default class FacetValuesView extends React.PureComponent<Props, State> {
     state: State;
     static getDerivedStateFromProps(props: Props): {
-        values: ListFacetValue[] | [number, number];
+        values: [number, number] | ListFacetValue[];
     };
     render(): JSX.Element;
 }

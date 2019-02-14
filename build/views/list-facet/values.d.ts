@@ -12,7 +12,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
     state: State;
     constructor(props: Props);
     static getDerivedStateFromProps(props: Props): {
-        values: ListFacetValue[] | [number, number];
+        values: [number, number] | ListFacetValue[];
     };
     componentDidUpdate(prevProps: Props, prevState: State): void;
     render(): JSX.Element;
