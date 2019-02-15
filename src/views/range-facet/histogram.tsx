@@ -54,7 +54,7 @@ export default class Histogram extends React.PureComponent<Props> {
 						background: 'rgba(255, 255, 255, .2)',
 						height: '100%',
 						left: `${this.props.lowerLimit * 100}%`,
-						mixBlendMode: 'difference',
+						mixBlendMode: 'luminosity',
 						position: 'absolute',
 						width: `${(this.props.upperLimit - this.props.lowerLimit) * 100}%`,
 					}}
