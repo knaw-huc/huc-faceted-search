@@ -1,6 +1,6 @@
 import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet, BooleanFacet } from '../../models/facet'
 
-interface ParsedResponse {
+export interface ParsedResponse {
 	aggregations: { [id: string]: any}
 	hits: any[]
 	total: number

@@ -6,12 +6,18 @@ class IOManager {
     constructor(options) {
         this.options = options;
         this.cache = {};
+        this.history = [];
         this.backend = backends_1.default[options.backend];
     }
     dispatch(facets, query) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.requestBody = new this.backend.RequestCreator(facets, query);
-            const body = JSON.stringify(this.requestBody);
+            const requestBody = new this.backend.RequestCreator(facets, query);
+            return this.handleFetch(requestBody, facets, query);
+        });
+    }
+    handleFetch(request, facets, query) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const body = JSON.stringify(request);
             let response;
             if (this.cache.hasOwnProperty(body)) {
                 response = JSON.parse(this.cache[body]);
@@ -21,8 +27,10 @@ class IOManager {
                 this.cache[body] = JSON.stringify(response);
             }
             const responseParser = new this.backend.ResponseParser(response, facets);
+            this.history.push({ facets, query, request: body, response: responseParser.parsedResponse });
             return {
                 facets: responseParser.facets,
+                request,
                 response: responseParser.parsedResponse
             };
         });
@@ -43,6 +51,21 @@ class IOManager {
                 throw ('Failed to fetched Faceted Search state');
             }
             return fetchResponse.status === 200 ? response : null;
+        });
+    }
+    getNext() {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.history.length)
+                return;
+            const lastItem = this.history[this.history.length - 1];
+            const body = JSON.parse(lastItem.request);
+            if (body.hasOwnProperty('from'))
+                body.from += body.size;
+            else
+                body.from = body.size;
+            const dispatchResponse = yield this.handleFetch(body, lastItem.facets, lastItem.query);
+            dispatchResponse.response.hits = lastItem.response.hits.concat(dispatchResponse.response.hits);
+            return Object.assign({}, dispatchResponse, { query: lastItem.query });
         });
     }
 }

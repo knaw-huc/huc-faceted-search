@@ -19,5 +19,6 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
     static defaultProps: Partial<Props>;
     constructor(props: Props);
     render(): JSX.Element;
+    getNext(): Promise<void>;
     private handleChange;
 }

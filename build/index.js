@@ -25,9 +25,9 @@ class FacetedSearch extends React.PureComponent {
     constructor(props) {
         super(props);
         this.handleChange = (inputFacets, query) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { facets, response } = yield this.ioManager.dispatch(inputFacets, query);
+            const { facets, request, response } = yield this.ioManager.dispatch(inputFacets, query);
             this.setState({ facets, response });
-            this.props.onChange(this.ioManager.requestBody, response, query);
+            this.props.onChange(request, response, query);
         });
         this.ioManager = new io_manager_1.default({ backend: this.props.backend, url: props.url });
         this.state = Object.assign({}, context_1.defaultState, { facetsManager: new facets_manager_1.default(this.handleChange) });
@@ -35,6 +35,13 @@ class FacetedSearch extends React.PureComponent {
     render() {
         return (React.createElement(context_1.default.Provider, { value: this.state },
             React.createElement(Wrapper, null, this.props.children)));
+    }
+    getNext() {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { request, response, query } = yield this.ioManager.getNext();
+            this.setState({ response });
+            this.props.onChange(request, response, query);
+        });
     }
 }
 FacetedSearch.defaultProps = {

@@ -1,5 +1,5 @@
 import { Facets } from '../../models/facet';
-interface ParsedResponse {
+export interface ParsedResponse {
     aggregations: {
         [id: string]: any;
     };
@@ -27,4 +27,3 @@ export default class ElasticSearchResponseParser {
     private updateListFacets;
     private updateRangeFacets;
 }
-export {};
