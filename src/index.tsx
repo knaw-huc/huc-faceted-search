@@ -11,6 +11,7 @@ import Reset from './views/reset'
 import { Facets } from './models/facet'
 import IOManager from './io-manager'
 import { BackendType } from './backends'
+import SearchResults from './search-results'
 
 export {
 	BooleanFacet,
@@ -19,6 +20,7 @@ export {
 	ListFacet,
 	RangeFacet,
 	Reset,
+	SearchResults
 }
 
 const Wrapper = styled('div')`

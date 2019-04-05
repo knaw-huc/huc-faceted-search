@@ -25,7 +25,7 @@ export default class FacetsManager {
 			...this.rangeManager.facets,
 		}
 
-		if ( this.facetCount == null || Object.keys(facets).length !== this.facetCount) return
+		if (this.facetCount == null || Object.keys(facets).length !== this.facetCount) return
 
 		this.onChange(facets, this.query)
 	}

@@ -7,7 +7,8 @@ import FullTextSearch from './views/full-text-search';
 import { ContextState } from './context';
 import Reset from './views/reset';
 import { BackendType } from './backends';
-export { BooleanFacet, FacetsView as Facets, FullTextSearch, ListFacet, RangeFacet, Reset, };
+import SearchResults from './search-results';
+export { BooleanFacet, FacetsView as Facets, FullTextSearch, ListFacet, RangeFacet, Reset, SearchResults };
 interface Props {
     backend?: BackendType;
     onChange: (request: any, response: any, query: string) => void;

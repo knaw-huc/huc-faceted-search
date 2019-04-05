@@ -26,7 +26,6 @@ export default class IOManager {
 
 	async dispatch(facets: Facets, query: string): Promise<DispatchResponse> {
 		const requestBody = new this.backend.RequestCreator(facets, query)
-		// const body = JSON.stringify(requestBody)
 		return this.handleFetch(requestBody, facets, query)
 	}
 

@@ -2,8 +2,8 @@ import * as React from 'react'
 import Facet from '../facet'
 import FacetValuesView from './values'
 import FacetHeader from '../facet-header'
-import { FacetsProps } from '../facets';
-import { FacetMenuButton } from '../button';
+import { FacetsProps } from '../facets'
+import { FacetMenuButton } from '../button'
 import Options from './options'
 
 export interface ListFacetProps {

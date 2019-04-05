@@ -18,6 +18,8 @@ const facets_manager_1 = tslib_1.__importDefault(require("./facets-manager"));
 const reset_1 = tslib_1.__importDefault(require("./views/reset"));
 exports.Reset = reset_1.default;
 const io_manager_1 = tslib_1.__importDefault(require("./io-manager"));
+const search_results_1 = tslib_1.__importDefault(require("./search-results"));
+exports.SearchResults = search_results_1.default;
 const Wrapper = styled_1.default('div') `
 	font-family: sans-serif;
 `;
