@@ -5,36 +5,36 @@ const facet_1 = require("../models/facet");
 const facet_manager_1 = tslib_1.__importDefault(require("./facet-manager"));
 class ListFacetManager extends facet_manager_1.default {
     addFacet(field, index, size) {
-        this.facets[field] = new facet_1.ListFacet(field, index, size);
+        this.facets.set(field, new facet_1.ListFacet(field, index, size));
         this.change();
     }
     addFilter(field, key) {
-        this.facets[field].filters.add(key);
+        this.facets.get(field).filters.add(key);
         this.change();
     }
     removeFilter(field, key) {
-        this.facets[field].filters.delete(key);
+        this.facets.get(field).filters.delete(key);
         this.change();
     }
     addQuery(field, query) {
-        this.facets[field].query = query;
+        this.facets.get(field).query = query;
         this.change();
     }
     sortBy(field, sortBy, direction) {
-        this.facets[field].order = [sortBy, direction];
+        this.facets.get(field).order = [sortBy, direction];
         this.change();
     }
     reset() {
-        for (const field of Object.keys(this.facets)) {
-            this.facets[field] = new facet_1.ListFacet(field, this.facets[field].index, this.facets[field].size);
+        for (const [field, facet] of this.facets) {
+            this.facets.set(field, new facet_1.ListFacet(field, facet.index, facet.size));
         }
     }
     viewLess(field) {
-        this.facets[field].viewLess();
+        this.facets.get(field).viewLess();
         this.change();
     }
     viewMore(field) {
-        this.facets[field].viewMore();
+        this.facets.get(field).viewMore();
         this.change();
     }
 }

@@ -23,7 +23,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 		const { facets } = props.state
 		const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
 			[] :
-			facets[props.field].values
+			facets.get(props.field).values
 		return { values }
 	}
 
@@ -35,7 +35,7 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 						this.state.values.map(value =>
 							<FacetValueView
 								addFilter={() => this.props.state.facetsManager.booleanManager.addFilter(this.props.field, value.key)}
-								active={(this.props.state.facets[this.props.field] as BooleanFacet).filters.has(value.key)}
+								active={(this.props.state.facets.get(this.props.field) as BooleanFacet).filters.has(value.key)}
 								key={value.key}
 								keyFormatter={(key: string | number) => {
 									return this.props.labels[key as number]

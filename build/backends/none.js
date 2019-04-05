@@ -13,7 +13,7 @@ class NoneResponseParser {
         this.facets = facets;
         Object.keys(facets)
             .forEach(field => {
-            const facet = facets[field];
+            const facet = facets.get(field);
             facet.values = response[field].values;
             if (facet.type === facet_1.FacetType.List) {
                 facet.total = response[field].total;

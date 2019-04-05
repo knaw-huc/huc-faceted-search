@@ -19,12 +19,12 @@ class FacetValuesView extends React.PureComponent {
         const { facets } = props.state;
         const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
             [] :
-            facets[props.field].values;
+            facets.get(props.field).values;
         return { values };
     }
     render() {
         return (React.createElement("div", null,
-            React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.booleanManager.addFilter(this.props.field, value.key), active: this.props.state.facets[this.props.field].filters.has(value.key), key: value.key, keyFormatter: (key) => {
+            React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.booleanManager.addFilter(this.props.field, value.key), active: this.props.state.facets.get(this.props.field).filters.has(value.key), key: value.key, keyFormatter: (key) => {
                     return this.props.labels[key];
                 }, removeFilter: () => this.props.state.facetsManager.booleanManager.removeFilter(this.props.field, value.key), value: value })))));
     }

@@ -6,7 +6,7 @@ const button_1 = require("../button");
 function default_1(props) {
     if (!props.state.facets.hasOwnProperty(props.field))
         return null;
-    const facet = props.state.facets[props.field];
+    const facet = props.state.facets.get(props.field);
     return (React.createElement(React.Fragment, null,
         facet.total > 0 &&
             facet.total > facet.viewSize &&

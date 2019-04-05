@@ -35,10 +35,10 @@ class RangeFacetView extends React.PureComponent {
     }
     componentDidUpdate(prevProps) {
         const { facets } = prevProps.state;
-        if (!facets.hasOwnProperty(prevProps.field))
+        if (!facets.has(prevProps.field))
             return;
-        const prevFacet = facets[prevProps.field];
-        const facet = this.props.state.facets[this.props.field];
+        const prevFacet = facets.get(prevProps.field);
+        const facet = this.props.state.facets.get(this.props.field);
         if (prevFacet.filter != null && facet.filter == null) {
             this.setState({
                 lowerLimit: 0,
@@ -54,7 +54,7 @@ class RangeFacetView extends React.PureComponent {
         let histogramValues = [];
         const { field, state } = this.props;
         if (state.facets !== null && state.facets.hasOwnProperty(field)) {
-            const facetData = state.facets[field];
+            const facetData = state.facets.get(field);
             min = facetData.values[0];
             max = facetData.values[1];
             histogramValues = facetData.histogramValues;

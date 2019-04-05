@@ -47,4 +47,8 @@ export default class FacetsManager {
 		this.facetCount = count
 		this.handleChange()
 	}
+
+	// setValue(field: string, key: string) {
+
+	// }
 }

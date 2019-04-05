@@ -68,4 +68,4 @@ export class RangeFacet extends Facet {
 	}
 }
 
-export type Facets = { [id: string]: BooleanFacet | ListFacet | RangeFacet }
+export type Facets = Map<string, BooleanFacet | ListFacet | RangeFacet>

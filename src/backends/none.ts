@@ -8,7 +8,7 @@ export class NoneResponseParser {
 	constructor(response: any, public facets: Facets) {
 		Object.keys(facets)
 			.forEach(field => {
-				const facet = facets[field]
+				const facet = facets.get(field)
 				facet.values = response[field].values
 				if (facet.type === FacetType.List) {
 					(facet as ListFacet).total = response[field].total

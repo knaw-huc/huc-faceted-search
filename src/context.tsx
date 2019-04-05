@@ -8,7 +8,7 @@ export interface ContextState {
 	response: any
 }
 export const defaultState: ContextState = {
-	facets: {},
+	facets: new Map(),
 	facetsManager: null,
 	response: null
 }

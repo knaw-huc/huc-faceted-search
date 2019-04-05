@@ -5,20 +5,20 @@ const facet_1 = require("../models/facet");
 const facet_manager_1 = tslib_1.__importDefault(require("./facet-manager"));
 class BooleanManager extends facet_manager_1.default {
     addFacet(field, index) {
-        this.facets[field] = new facet_1.BooleanFacet(field, index);
+        this.facets.set(field, new facet_1.BooleanFacet(field, index));
         this.change();
     }
     addFilter(field, key) {
-        this.facets[field].filters.add(key);
+        this.facets.get(field).filters.add(key);
         this.change();
     }
     removeFilter(field, key) {
-        this.facets[field].filters.delete(key);
+        this.facets.get(field).filters.delete(key);
         this.change();
     }
     reset() {
-        for (const field of Object.keys(this.facets)) {
-            this.facets[field] = new facet_1.BooleanFacet(field, this.facets[field].index);
+        for (const [field, facet] of this.facets) {
+            this.facets.set(field, new facet_1.BooleanFacet(field, facet.index));
         }
     }
 }

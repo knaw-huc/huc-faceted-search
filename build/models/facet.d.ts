@@ -45,6 +45,4 @@ export declare class RangeFacet extends Facet {
     values: [number, number];
     constructor(field: string, index: number);
 }
-export declare type Facets = {
-    [id: string]: BooleanFacet | ListFacet | RangeFacet;
-};
+export declare type Facets = Map<string, BooleanFacet | ListFacet | RangeFacet>;

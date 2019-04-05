@@ -25,7 +25,7 @@ class ElasticSearchResponseParser {
     }
     updateBooleanFacets() {
         Object.keys(this.facets)
-            .map(key => this.facets[key])
+            .map(key => this.facets.get(key))
             .filter(facet => facet.type === facet_1.FacetType.Boolean)
             .forEach((facet) => {
             if (!this.response.aggregations.hasOwnProperty(facet.id))
@@ -36,7 +36,7 @@ class ElasticSearchResponseParser {
     }
     updateListFacets() {
         Object.keys(this.facets)
-            .map(key => this.facets[key])
+            .map(key => this.facets.get(key))
             .filter(facet => facet.type === facet_1.FacetType.List)
             .forEach((facet) => {
             if (!this.response.aggregations.hasOwnProperty(facet.id))
@@ -49,7 +49,7 @@ class ElasticSearchResponseParser {
     }
     updateRangeFacets() {
         Object.keys(this.facets)
-            .map(key => this.facets[key])
+            .map(key => this.facets.get(key))
             .filter(facet => facet.type === facet_1.FacetType.Range)
             .forEach((facet) => {
             if (facet.values[0] != null && facet.values[1] != null)

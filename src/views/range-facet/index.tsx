@@ -54,9 +54,9 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 	// Reset the range facet when the filter is removed
 	componentDidUpdate(prevProps: Props & FacetsProps) {
 		 const { facets } = prevProps.state
-		if (!facets.hasOwnProperty(prevProps.field)) return
-		const prevFacet = facets[prevProps.field] as RangeFacet
-		const facet = this.props.state.facets[this.props.field] as RangeFacet
+		if (!facets.has(prevProps.field)) return
+		const prevFacet = facets.get(prevProps.field) as RangeFacet
+		const facet = this.props.state.facets.get(this.props.field) as RangeFacet
 
 		if (prevFacet.filter != null && facet.filter == null) {
 			this.setState({
@@ -75,7 +75,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 
 		const { field, state } = this.props
 		if (state.facets !== null && state.facets.hasOwnProperty(field)) {
-			const facetData = state.facets[field] as RangeFacet
+			const facetData = state.facets.get(field) as RangeFacet
 			min = facetData.values[0]
 			max = facetData.values[1]
 			histogramValues = facetData.histogramValues

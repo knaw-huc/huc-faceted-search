@@ -5,7 +5,7 @@ import { ListFacet } from '../../models/facet';
 
 export default function(props: Props) {
 	if (!props.state.facets.hasOwnProperty(props.field)) return null
-	const facet = props.state.facets[props.field] as ListFacet
+	const facet = props.state.facets.get(props.field) as ListFacet
 
 	return (
 		<>

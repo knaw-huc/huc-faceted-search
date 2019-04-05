@@ -1,7 +1,7 @@
 import { RangeFacet, ListFacet, BooleanFacet } from '../models/facet';
 
 export default abstract class FacetManger<T extends RangeFacet | ListFacet | BooleanFacet> {
-	facets: { [key: string]: T } = {}
+	facets: Map<string, T> = new Map()
 	change: () => void = () => {}
 
 	onChange(func: () => void) {

@@ -13,8 +13,8 @@ export default class ElasticSearchRequest {
 	query: any
 	size: number = 20
 
-	constructor(facets: Facets = {}, query: string = '') {
-		const facetList = Object.keys(facets).map(field => facets[field])
+	constructor(facets: Facets = new Map(), query: string = '') {
+		const facetList = Object.keys(facets).map(field => facets.get(field))
 		const booleanFacets = facetList.filter(facet => facet.type === FacetType.Boolean) as BooleanFacet[]
 		const listFacets = facetList.filter(facet => facet.type === FacetType.List) as ListFacet[]
 		const rangeFacets = facetList.filter(facet => facet.type === FacetType.Range) as RangeFacet[]

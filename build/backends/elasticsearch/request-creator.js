@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const facet_1 = require("../../models/facet");
 class ElasticSearchRequest {
-    constructor(facets = {}, query = '') {
+    constructor(facets = new Map(), query = '') {
         this.aggs = {};
         this.post_filter = {};
         this.size = 20;
-        const facetList = Object.keys(facets).map(field => facets[field]);
+        const facetList = Object.keys(facets).map(field => facets.get(field));
         const booleanFacets = facetList.filter(facet => facet.type === facet_1.FacetType.Boolean);
         const listFacets = facetList.filter(facet => facet.type === facet_1.FacetType.List);
         const rangeFacets = facetList.filter(facet => facet.type === facet_1.FacetType.Range);
