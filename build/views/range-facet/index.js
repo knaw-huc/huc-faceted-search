@@ -35,11 +35,8 @@ class RangeFacetView extends React.PureComponent {
         this.props.state.facetsManager.addFacet(facet_2.FacetType.Range, this.props.field, this.props.index);
     }
     componentDidUpdate(prevProps) {
-        const { facets } = prevProps.state;
-        if (!facets.has(prevProps.field))
-            return;
-        const prevFacet = facets.get(prevProps.field);
-        const facet = this.props.state.facets.get(this.props.field);
+        const prevFacet = prevProps.state.facetsManager.getRangeFacet(prevProps.field);
+        const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
         if (prevFacet.filter != null && facet.filter == null) {
             this.setState({
                 lowerLimit: 0,
@@ -53,13 +50,11 @@ class RangeFacetView extends React.PureComponent {
         let min;
         let max;
         let histogramValues = [];
-        const { field, state } = this.props;
-        if (state.facets !== null && state.facets.hasOwnProperty(field)) {
-            const facetData = state.facets.get(field);
-            min = facetData.values[0];
-            max = facetData.values[1];
-            histogramValues = facetData.histogramValues;
-        }
+        const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
+        if (facet == null)
+            return null;
+        [min, max] = facet.values;
+        histogramValues = facet.histogramValues;
         return (React.createElement(facet_1.default, { style: { position: 'relative' } },
             React.createElement(facet_header_1.default, Object.assign({}, this.props)),
             React.createElement(histogram_1.default, { lowerLimit: this.state.lowerLimit, upperLimit: this.state.upperLimit, values: histogramValues }),

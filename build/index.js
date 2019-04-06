@@ -26,13 +26,14 @@ const Wrapper = styled_1.default('div') `
 class FacetedSearch extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.handleChange = (inputFacets, query) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const { facets, request, response } = yield this.ioManager.dispatch(inputFacets, query);
-            this.setState({ facets, response });
-            this.props.onChange(request, response, query);
+        this.handleChange = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { request, response } = yield this.ioManager.dispatch();
+            this.setState({ response });
+            this.props.onChange(request, response, this.facetsManager.query);
         });
-        this.ioManager = new io_manager_1.default({ backend: this.props.backend, url: props.url });
-        this.state = Object.assign({}, context_1.defaultState, { facetsManager: new facets_manager_1.default(this.handleChange) });
+        this.facetsManager = new facets_manager_1.default(this.handleChange);
+        this.ioManager = new io_manager_1.default({ backend: this.props.backend, url: props.url }, this.facetsManager);
+        this.state = Object.assign({}, context_1.defaultState, { facetsManager: this.facetsManager });
     }
     render() {
         return (React.createElement(context_1.default.Provider, { value: this.state },

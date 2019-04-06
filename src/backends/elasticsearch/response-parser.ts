@@ -1,4 +1,5 @@
-import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet  } from '../../models/facet'
+import { ListFacetValue, FacetType } from '../../models/facet'
+import FacetsManager from '../../facets-manager';
 
 export interface ParsedResponse {
 	aggregations: { [id: string]: any}
@@ -21,7 +22,7 @@ export default class ElasticSearchResponseParser {
 		total: 0
 	}
 
-	constructor(private response: ElasticSearchResponse, public facets: Facets) {
+	constructor(private response: ElasticSearchResponse, private facetsManager: FacetsManager) {
 		this.updateBooleanFacets()
 		this.updateListFacets()
 		this.updateRangeFacets()
@@ -42,9 +43,8 @@ export default class ElasticSearchResponseParser {
 	}
 
 	private updateBooleanFacets() {
-		this.facets
+		this.facetsManager.getFacets(FacetType.Boolean)
 			.forEach(facet => {
-				if (facet.type !== FacetType.Boolean) return
 				if (!this.response.aggregations.hasOwnProperty(facet.id)) return
 				let { buckets } = this.response.aggregations[facet.id][facet.field] as { buckets: ListFacetValue[] }
 				facet.values = Array.isArray(buckets) ? buckets : []
@@ -56,10 +56,8 @@ export default class ElasticSearchResponseParser {
 	}
 
 	private updateListFacets() {
-		Object.keys(this.facets)
-			.map(key => this.facets.get(key))
-			.filter(facet => facet.type === FacetType.List)
-			.forEach((facet: ListFacet) => {
+		this.facetsManager.getFacets(FacetType.List)
+			.forEach((facet) => {
 				if (!this.response.aggregations.hasOwnProperty(facet.id)) return
 				let { buckets } = this.response.aggregations[facet.id][facet.field] as { buckets: ListFacetValue[] }
 				facet.values = Array.isArray(buckets) ? buckets : []
@@ -69,12 +67,9 @@ export default class ElasticSearchResponseParser {
 			})
 	}
 
-	// TODO this.facets is a Map now, fix it
 	private updateRangeFacets() {
-		Object.keys(this.facets)
-			.map(key => this.facets.get(key))
-			.filter(facet => facet.type === FacetType.Range)
-			.forEach((facet: RangeFacet) => {
+		this.facetsManager.getFacets(FacetType.Range)
+			.forEach(facet => {
 				if (facet.values[0] != null && facet.values[1] != null) return
 				if (!this.response.aggregations.hasOwnProperty(facet.id)) return
 				const { min, max } = this.response.aggregations[facet.id][facet.field]

@@ -4,9 +4,7 @@ const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const button_1 = require("../button");
 function default_1(props) {
-    if (!props.state.facets.hasOwnProperty(props.field))
-        return null;
-    const facet = props.state.facets.get(props.field);
+    const facet = props.state.facetsManager.getListFacet(props.field);
     return (React.createElement(React.Fragment, null,
         facet.total > 0 &&
             facet.total > facet.viewSize &&

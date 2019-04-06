@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const facet_1 = require("../../models/facet");
 class ElasticSearchResponseParser {
-    constructor(response, facets) {
+    constructor(response, facetsManager) {
         this.response = response;
-        this.facets = facets;
+        this.facetsManager = facetsManager;
         this.parsedResponse = {
             aggregations: {},
             hits: [],
@@ -24,10 +24,8 @@ class ElasticSearchResponseParser {
         };
     }
     updateBooleanFacets() {
-        this.facets
+        this.facetsManager.getFacets(facet_1.FacetType.Boolean)
             .forEach(facet => {
-            if (facet.type !== facet_1.FacetType.Boolean)
-                return;
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
             let { buckets } = this.response.aggregations[facet.id][facet.field];
@@ -39,9 +37,7 @@ class ElasticSearchResponseParser {
         });
     }
     updateListFacets() {
-        Object.keys(this.facets)
-            .map(key => this.facets.get(key))
-            .filter(facet => facet.type === facet_1.FacetType.List)
+        this.facetsManager.getFacets(facet_1.FacetType.List)
             .forEach((facet) => {
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
@@ -52,10 +48,8 @@ class ElasticSearchResponseParser {
         });
     }
     updateRangeFacets() {
-        Object.keys(this.facets)
-            .map(key => this.facets.get(key))
-            .filter(facet => facet.type === facet_1.FacetType.Range)
-            .forEach((facet) => {
+        this.facetsManager.getFacets(facet_1.FacetType.Range)
+            .forEach(facet => {
             if (facet.values[0] != null && facet.values[1] != null)
                 return;
             if (!this.response.aggregations.hasOwnProperty(facet.id))

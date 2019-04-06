@@ -17,6 +17,7 @@ interface Props {
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
     state: ContextState;
     private ioManager;
+    private facetsManager;
     static defaultProps: Partial<Props>;
     constructor(props: Props);
     render(): JSX.Element;

@@ -1,4 +1,4 @@
-import { Facets } from '../../models/facet';
+import FacetsManager from '../../facets-manager';
 export interface ParsedResponse {
     aggregations: {
         [id: string]: any;
@@ -19,9 +19,9 @@ export interface ElasticSearchResponse {
 }
 export default class ElasticSearchResponseParser {
     private response;
-    facets: Facets;
+    private facetsManager;
     parsedResponse: ParsedResponse;
-    constructor(response: ElasticSearchResponse, facets: Facets);
+    constructor(response: ElasticSearchResponse, facetsManager: FacetsManager);
     private parseResponse;
     private updateBooleanFacets;
     private updateListFacets;

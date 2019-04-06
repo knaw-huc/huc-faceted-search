@@ -1,10 +1,11 @@
 import * as React from 'react'
 import FacetValueView from './value'
 import styled from '@emotion/styled'
-import { ListFacetProps, ListFacetState } from './index'
-import { FacetsProps } from '../facets';
-import { ListFacetValue, ListFacet } from '../../models/facet';
+// import { ListFacetProps, ListFacetState } from './index'
+// import { FacetsProps } from '../facets';
+import { ListFacet } from '../../models/facet';
 import MoreLessButtons from './more-less-buttons'
+import { ContextState } from '../../context';
 
 const DURATION = 500
 const FRAME_DURATION = 16
@@ -19,48 +20,36 @@ const List = styled('ul')`
 	padding: 0;
 `
 
-export type Props = FacetsProps & ListFacetProps & ListFacetState
-interface State {
-	values: ListFacetValue[]
+export type Props = {
+	collapsed: boolean
+	facet: ListFacet
+	field: string
+	state: ContextState
 }
-export default class FacetValuesView extends React.PureComponent<Props, State> {
-	private wrapperRef: React.RefObject<HTMLDivElement>
+export default class FacetValuesView extends React.PureComponent<Props> {
+	private wrapperRef = React.createRef() as React.RefObject<HTMLDivElement>
 	private listHeight: number
-	state: State = {
-		values: []
-	}
 
-	constructor(props: Props) {
-		super(props)
-		this.wrapperRef = React.createRef()
-	}
-
-	static getDerivedStateFromProps(props: Props) {
-		const { facets } = props.state
-		const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
-			[] :
-			facets.get(props.field).values
-		return { values }
-	}
-
-	componentDidUpdate(prevProps: Props, prevState: State) {
-		if (prevState.values.length !== this.state.values.length) this.setHeight()
+	componentDidUpdate(prevProps: Props) {
+		if (prevProps.facet != null && prevProps.facet.values.length !== this.props.facet.values.length) this.setHeight()
 
 		if (!prevProps.collapsed && this.props.collapsed) this.animate()
 		else if (prevProps.collapsed && !this.props.collapsed) this.animate(true)
 	}
 
 	render() {
+		if (this.props.facet == null) return null
+
 		return (
 			<Wrapper
 				ref={this.wrapperRef}
 			>
 				<List>
 					{
-						this.state.values.map(value =>
+						this.props.facet.values.map(value =>
 							<FacetValueView
 								addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, value.key)}
-								active={(this.props.state.facets.get(this.props.field) as ListFacet).filters.has(value.key)}
+								active={this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value.key)}
 								key={value.key}
 								removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, value.key)}
 								value={value}
@@ -84,7 +73,6 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 				currentHeight = reverse ? 'auto' : '0'
 				clearInterval(interval)
 			}
-			console.log(this.wrapperRef.current)
 			this.wrapperRef.current.style.height = currentHeight
 		}, FRAME_DURATION)
 	}

@@ -16,22 +16,12 @@ const List = styled_1.default('ul') `
 	padding: 0;
 `;
 class FacetValuesView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            values: []
-        };
+    constructor() {
+        super(...arguments);
         this.wrapperRef = React.createRef();
     }
-    static getDerivedStateFromProps(props) {
-        const { facets } = props.state;
-        const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
-            [] :
-            facets.get(props.field).values;
-        return { values };
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.values.length !== this.state.values.length)
+    componentDidUpdate(prevProps) {
+        if (prevProps.facet != null && prevProps.facet.values.length !== this.props.facet.values.length)
             this.setHeight();
         if (!prevProps.collapsed && this.props.collapsed)
             this.animate();
@@ -39,8 +29,10 @@ class FacetValuesView extends React.PureComponent {
             this.animate(true);
     }
     render() {
+        if (this.props.facet == null)
+            return null;
         return (React.createElement(Wrapper, { ref: this.wrapperRef },
-            React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.state.facets.get(this.props.field).filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value }))),
+            React.createElement(List, null, this.props.facet.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value }))),
             React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
     }
     animate(reverse = false) {
@@ -55,7 +47,6 @@ class FacetValuesView extends React.PureComponent {
                 currentHeight = reverse ? 'auto' : '0';
                 clearInterval(interval);
             }
-            console.log(this.wrapperRef.current);
             this.wrapperRef.current.style.height = currentHeight;
         }, FRAME_DURATION);
     }

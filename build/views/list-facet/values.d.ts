@@ -1,22 +1,17 @@
 import * as React from 'react';
-import { ListFacetProps, ListFacetState } from './index';
-import { FacetsProps } from '../facets';
-import { ListFacetValue } from '../../models/facet';
-export declare type Props = FacetsProps & ListFacetProps & ListFacetState;
-interface State {
-    values: ListFacetValue[];
-}
-export default class FacetValuesView extends React.PureComponent<Props, State> {
+import { ListFacet } from '../../models/facet';
+import { ContextState } from '../../context';
+export declare type Props = {
+    collapsed: boolean;
+    facet: ListFacet;
+    field: string;
+    state: ContextState;
+};
+export default class FacetValuesView extends React.PureComponent<Props> {
     private wrapperRef;
     private listHeight;
-    state: State;
-    constructor(props: Props);
-    static getDerivedStateFromProps(props: Props): {
-        values: ListFacetValue[] | [number, number];
-    };
-    componentDidUpdate(prevProps: Props, prevState: State): void;
+    componentDidUpdate(prevProps: Props): void;
     render(): JSX.Element;
     private animate;
     private setHeight;
 }
-export {};

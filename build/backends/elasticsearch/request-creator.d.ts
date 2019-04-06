@@ -1,4 +1,4 @@
-import { Facets } from '../../models/facet';
+import FacetsManager from '../../facets-manager';
 interface AggregationRequest {
     aggs: any;
     filter?: any;
@@ -17,13 +17,14 @@ export default class ElasticSearchRequest {
     post_filter: any;
     query: any;
     size: number;
-    constructor(facets?: Facets, query?: string);
-    private createBooleanAggregation;
+    constructor(facetsManager: FacetsManager);
+    private setQuery;
+    private setAggregations;
+    private setPostFilter;
     private addFilter;
+    private createBooleanAggregation;
     private createListAggregation;
     private createRangeAggregation;
     private createHistogramAggregation;
-    private setAggs;
-    private setPostFilter;
 }
 export {};

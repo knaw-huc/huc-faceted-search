@@ -7,11 +7,8 @@ export type Backend = {
 	RequestCreator: any
 	ResponseParser: any
 }
-export type Backends = {
-	[key in BackendType]: Backend
-}
 
-export default {
+const backends: Record<BackendType, Backend> = {
 	none: {
 		RequestCreator: NoneRequestCreator,
 		ResponseParser: NoneResponseParser,
@@ -20,5 +17,6 @@ export default {
 		RequestCreator: ElasticSearchRequest,
 		ResponseParser: ElasticSearchResponseParser,
 	}
+}
 
-} as Backends
+export default backends

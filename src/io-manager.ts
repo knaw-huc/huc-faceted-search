@@ -1,12 +1,12 @@
-import { Facets } from './models/facet'
 import backends, { Backend } from './backends'
 import { ParsedResponse } from './backends/elasticsearch/response-parser'
+import FacetsManager from './facets-manager';
 
-type DispatchResponse = { request: any, response: any, facets: Facets }
+type DispatchResponse = { request: any, response: any }
 
 interface History {
-	facets: Facets,
-	query: string,
+	// facets: Facets,
+	// query: string,
 	request: string,
 	response: ParsedResponse,
 }
@@ -20,37 +20,38 @@ export default class IOManager {
 	private cache: {[key: string]: string} = {}
 	private history: History[] = []
 
-	constructor(private options: Options) {
+	constructor(private options: Options, private facetsManager: FacetsManager) {
 		this.backend = backends[options.backend]
 	}
 
-	async dispatch(facets: Facets, query: string): Promise<DispatchResponse> {
-		const requestBody = new this.backend.RequestCreator(facets, query)
-		return this.handleFetch(requestBody, facets, query)
+	async dispatch(): Promise<DispatchResponse> {
+		const requestBody = new this.backend.RequestCreator(this.facetsManager)
+		return this.handleFetch(requestBody)
 	}
 
-	async handleFetch(request: any, facets: Facets, query: string) {
+	// TODO type request
+	async handleFetch(request: any) {
 		const body = JSON.stringify(request)
 		let response: any
 		if (this.cache.hasOwnProperty(body)) {
 			response = JSON.parse(this.cache[body])
 		} else {
+			// TODO type response
 			response = await this.fetch(body)
 			this.cache[body] = JSON.stringify(response)
 		}
 
-		const responseParser = new this.backend.ResponseParser(response, facets)
+		const responseParser = new this.backend.ResponseParser(response, this.facetsManager)
 
-		this.history.push({ facets, query, request: body, response: responseParser.parsedResponse })
+		this.history.push({ request: body, response: responseParser.parsedResponse })
 
 		return {
-			facets: responseParser.facets,
 			request,
 			response: responseParser.parsedResponse
 		}
 	}
 
-	async fetch(body: any) {
+	private async fetch(body: any) {
 		let fetchResponse: Response
 		let response: any
 
@@ -76,12 +77,12 @@ export default class IOManager {
 		if (body.hasOwnProperty('from')) body.from += body.size
 		else body.from = body.size
 
-		const dispatchResponse = await this.handleFetch(body, lastItem.facets, lastItem.query)
+		const dispatchResponse = await this.handleFetch(body)
 		dispatchResponse.response.hits = lastItem.response.hits.concat(dispatchResponse.response.hits)
 
 		return {
 			...dispatchResponse,
-			query: lastItem.query,
+			query: this.facetsManager.query,
 		}
 	}
 }

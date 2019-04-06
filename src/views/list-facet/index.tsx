@@ -65,7 +65,12 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 					this.state.options &&
 					<Options {...this.props} />
 				}
-				<FacetValuesView {...this.props} {...this.state} />
+				<FacetValuesView
+					collapsed={this.state.collapsed}
+					facet={this.props.state.facetsManager.getListFacet(this.props.field)}
+					field={this.props.field}
+					state={this.props.state}
+				/>
 			</Facet>
 		)
 	}

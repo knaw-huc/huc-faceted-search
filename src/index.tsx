@@ -8,7 +8,6 @@ import Context, { defaultState, ContextState } from './context'
 import styled from '@emotion/styled'
 import FacetsManager from './facets-manager'
 import Reset from './views/reset'
-import { Facets } from './models/facet'
 import IOManager from './io-manager'
 import { BackendType } from './backends'
 import SearchResults from './search-results'
@@ -35,6 +34,7 @@ interface Props {
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
 	state: ContextState
 	private ioManager: IOManager
+	private facetsManager: FacetsManager
 
 	static defaultProps: Partial<Props> = {
 		backend: 'none'
@@ -43,11 +43,12 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	constructor(props: Props) {
 		super(props)
 
-		this.ioManager = new IOManager({ backend: this.props.backend, url: props.url })
+		this.facetsManager = new FacetsManager(this.handleChange)
+		this.ioManager = new IOManager({ backend: this.props.backend, url: props.url }, this.facetsManager)
 
 		this.state = {
 			...defaultState,
-			facetsManager: new FacetsManager(this.handleChange)
+			facetsManager: this.facetsManager
 		}
 	}
 
@@ -68,9 +69,9 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 
 	}
 
-	private handleChange = async (inputFacets: Facets, query: string) => {
-		const { facets, request, response } = await this.ioManager.dispatch(inputFacets, query)
-		this.setState({ facets, response })
-		this.props.onChange(request, response, query)
+	private handleChange = async () => {
+		const { request, response } = await this.ioManager.dispatch()
+		this.setState({ response })
+		this.props.onChange(request, response, this.facetsManager.query)
 	}
 }

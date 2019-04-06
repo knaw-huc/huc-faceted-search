@@ -3,19 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const backends_1 = tslib_1.__importDefault(require("./backends"));
 class IOManager {
-    constructor(options) {
+    constructor(options, facetsManager) {
         this.options = options;
+        this.facetsManager = facetsManager;
         this.cache = {};
         this.history = [];
         this.backend = backends_1.default[options.backend];
     }
-    dispatch(facets, query) {
+    dispatch() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const requestBody = new this.backend.RequestCreator(facets, query);
-            return this.handleFetch(requestBody, facets, query);
+            const requestBody = new this.backend.RequestCreator(this.facetsManager);
+            return this.handleFetch(requestBody);
         });
     }
-    handleFetch(request, facets, query) {
+    handleFetch(request) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const body = JSON.stringify(request);
             let response;
@@ -26,10 +27,9 @@ class IOManager {
                 response = yield this.fetch(body);
                 this.cache[body] = JSON.stringify(response);
             }
-            const responseParser = new this.backend.ResponseParser(response, facets);
-            this.history.push({ facets, query, request: body, response: responseParser.parsedResponse });
+            const responseParser = new this.backend.ResponseParser(response, this.facetsManager);
+            this.history.push({ request: body, response: responseParser.parsedResponse });
             return {
-                facets: responseParser.facets,
                 request,
                 response: responseParser.parsedResponse
             };
@@ -63,9 +63,9 @@ class IOManager {
                 body.from += body.size;
             else
                 body.from = body.size;
-            const dispatchResponse = yield this.handleFetch(body, lastItem.facets, lastItem.query);
+            const dispatchResponse = yield this.handleFetch(body);
             dispatchResponse.response.hits = lastItem.response.hits.concat(dispatchResponse.response.hits);
-            return Object.assign({}, dispatchResponse, { query: lastItem.query });
+            return Object.assign({}, dispatchResponse, { query: this.facetsManager.query });
         });
     }
 }
