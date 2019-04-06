@@ -5,7 +5,7 @@ import Facet from '../facet'
 import FacetHeader from '../facet-header'
 import styled from '@emotion/styled'
 import Histogram from './histogram'
-import { RangeFacet } from '../../models/facet'
+import { RangeFacet, FacetType } from '../../models/facet'
 
 const Dates = styled('div')`
 	color: #888;
@@ -48,7 +48,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 	}
 
 	componentDidMount() {
-		this.props.state.facetsManager.rangeManager.addFacet(this.props.field, this.props.index)
+		this.props.state.facetsManager.addFacet(FacetType.Range, this.props.field, this.props.index)
 	}
 
 	// Reset the range facet when the filter is removed
@@ -102,7 +102,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 						})
 
 						if (data.refresh) {
-							this.props.state.facetsManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax)
+							this.props.state.facetsManager.addFilter(this.props.field, rangeMin, rangeMax)
 						}
 					}}
 					style={{

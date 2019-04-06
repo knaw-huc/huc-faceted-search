@@ -1,46 +1,36 @@
 import * as React from 'react'
 import FacetValueView from '../list-facet/value'
 import styled from '@emotion/styled'
-import { BooleanFacetProps } from './index'
-import { FacetsProps } from '../facets';
-import { ListFacetValue, BooleanFacet } from '../../models/facet'
+import { BooleanFacet } from '../../models/facet'
+import { ContextState } from '../../context'
 
 const List = styled('ul')`
 	margin: 0;
 	padding: 0;
 `
 
-export type Props = FacetsProps & BooleanFacetProps
-interface State {
-	values: ListFacetValue[]
+export interface Props {
+	facet: BooleanFacet
+	field: string
+	labels: [string, string]
+	state: ContextState
 }
-export default class FacetValuesView extends React.PureComponent<Props, State> {
-	state: State = {
-		values: []
-	}
-
-	static getDerivedStateFromProps(props: Props) {
-		const { facets } = props.state
-		const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
-			[] :
-			facets.get(props.field).values
-		return { values }
-	}
-
+export default class FacetValuesView extends React.PureComponent<Props> {
 	render() {
+		if (this.props.facet == null) return null
+
+		// TODO remove toString()
 		return (
 			<div>
 				<List>
 					{
-						this.state.values.map(value =>
+						this.props.facet.values.map(value =>
 							<FacetValueView
-								addFilter={() => this.props.state.facetsManager.booleanManager.addFilter(this.props.field, value.key)}
-								active={(this.props.state.facets.get(this.props.field) as BooleanFacet).filters.has(value.key)}
+								addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, value.key)}
+								active={this.props.facet.filters.has(value.key)}
 								key={value.key}
-								keyFormatter={(key: string | number) => {
-									return this.props.labels[key as number]
-								}}
-								removeFilter={() => this.props.state.facetsManager.booleanManager.removeFilter(this.props.field, value.key)}
+								keyFormatter={(key: string | number) => this.props.labels[key as number]}
+								removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, value.key)}
 								value={value}
 							/>
 						)

@@ -1,5 +1,4 @@
-import { BooleanFacet } from '../models/facet';
-
+import { BooleanFacet } from '../models/facet'
 import FacetManager from './facet-manager'
 
 export default class BooleanManager extends FacetManager<BooleanFacet> {

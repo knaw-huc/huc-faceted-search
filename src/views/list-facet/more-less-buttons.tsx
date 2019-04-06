@@ -13,7 +13,7 @@ export default function(props: Props) {
 				facet.total > 0 &&
 				facet.total > facet.viewSize &&
 				<MoreLessButton
-					onClick={() => props.state.facetsManager.listManager.viewMore(props.field)}
+					onClick={() => props.state.facetsManager.viewMore(props.field)}
 				>
 					{`View more (${facet.total - facet.viewSize})`}
 				</MoreLessButton>
@@ -21,7 +21,7 @@ export default function(props: Props) {
 			{
 				facet.size < facet.viewSize &&
 				<MoreLessButton
-					onClick={() => props.state.facetsManager.listManager.viewLess(props.field)}
+					onClick={() => props.state.facetsManager.viewLess(props.field)}
 				>
 					View less
 				</MoreLessButton>

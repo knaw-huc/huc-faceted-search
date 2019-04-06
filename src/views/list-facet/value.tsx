@@ -73,8 +73,10 @@ export default class FacetValueView extends React.PureComponent<Props, State> {
 
 	private toggleActive = () => {
 		const nextActive = !this.state.active
+
 		if (nextActive) this.props.addFilter()
 		else this.props.removeFilter()
+
 		this.setState({ active: nextActive })
 	}
 

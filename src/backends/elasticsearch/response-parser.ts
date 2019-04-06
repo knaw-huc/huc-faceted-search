@@ -1,4 +1,4 @@
-import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet, BooleanFacet } from '../../models/facet'
+import { Facets, ListFacetValue, FacetType, ListFacet, RangeFacet  } from '../../models/facet'
 
 export interface ParsedResponse {
 	aggregations: { [id: string]: any}
@@ -32,7 +32,7 @@ export default class ElasticSearchResponseParser {
 		this.parsedResponse = {
 			aggregations: response.aggregations,
 			hits: response.hits.hits
-				.map((hit: any) => ({
+				.map((hit: any): Hit => ({
 					id: hit._id,
 					snippets: hit.highlight ? hit.highlight.text : [],
 					...hit._source
@@ -42,13 +42,16 @@ export default class ElasticSearchResponseParser {
 	}
 
 	private updateBooleanFacets() {
-		Object.keys(this.facets)
-			.map(key => this.facets.get(key))
-			.filter(facet => facet.type === FacetType.Boolean)
-			.forEach((facet: BooleanFacet) => {
+		this.facets
+			.forEach(facet => {
+				if (facet.type !== FacetType.Boolean) return
 				if (!this.response.aggregations.hasOwnProperty(facet.id)) return
 				let { buckets } = this.response.aggregations[facet.id][facet.field] as { buckets: ListFacetValue[] }
 				facet.values = Array.isArray(buckets) ? buckets : []
+				facet.values = facet.values.map(value => {
+					value.key = value.key.toString()
+					return value
+				})
 			})
 	}
 
@@ -66,6 +69,7 @@ export default class ElasticSearchResponseParser {
 			})
 	}
 
+	// TODO this.facets is a Map now, fix it
 	private updateRangeFacets() {
 		Object.keys(this.facets)
 			.map(key => this.facets.get(key))

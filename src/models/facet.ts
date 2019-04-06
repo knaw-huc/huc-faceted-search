@@ -14,7 +14,7 @@ export enum SortDirection {
 	Desc = 'desc',
 }
 
-export class Facet {
+export class BaseFacet {
 	id: string
 
 	constructor(public field: string, public index: number, public type: FacetType) {
@@ -27,11 +27,12 @@ export interface ListFacetValue {
 	doc_count: number
 }
 
-export class ListFacet extends Facet {
+export class ListFacet extends BaseFacet {
 	filters: Set<string> = new Set()
 	order: [SortBy, SortDirection] = [SortBy.Count, SortDirection.Desc]
 	query: string = ''
 	total: number = 0
+	type = FacetType.List
 	values: ListFacetValue[] = []
 	viewSize: number
 
@@ -49,8 +50,9 @@ export class ListFacet extends Facet {
 	}
 }
 
-export class BooleanFacet extends Facet {
+export class BooleanFacet extends BaseFacet {
 	filters: Set<string> = new Set()
+	type = FacetType.Boolean
 	values: ListFacetValue[] = []
 
 	constructor(field: string, index: number) {
@@ -58,9 +60,10 @@ export class BooleanFacet extends Facet {
 	}
 }
 
-export class RangeFacet extends Facet {
+export class RangeFacet extends BaseFacet {
 	filter: [number, number]
 	histogramValues: any[] = []
+	type: FacetType.Range
 	values: [number, number] = [null, null]
 
 	constructor(field: string, index: number) {
@@ -68,4 +71,5 @@ export class RangeFacet extends Facet {
 	}
 }
 
-export type Facets = Map<string, BooleanFacet | ListFacet | RangeFacet>
+export type Facet = BooleanFacet | ListFacet | RangeFacet
+export type Facets = Map<string, Facet>

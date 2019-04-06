@@ -7,6 +7,7 @@ const values_1 = tslib_1.__importDefault(require("./values"));
 const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
 const button_1 = require("../button");
 const options_1 = tslib_1.__importDefault(require("./options"));
+const facet_2 = require("../../models/facet");
 class ListFacet extends React.PureComponent {
     constructor() {
         super(...arguments);
@@ -16,7 +17,7 @@ class ListFacet extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.facetsManager.listManager.addFacet(this.props.field, this.props.index, this.props.size);
+        this.props.state.facetsManager.addFacet(facet_2.FacetType.List, this.props.field, this.props.index, this.props.size);
     }
     render() {
         return (React.createElement(facet_1.default, null,

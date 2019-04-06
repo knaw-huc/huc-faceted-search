@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { BooleanFacetProps } from './index';
-import { FacetsProps } from '../facets';
-import { ListFacetValue } from '../../models/facet';
-export declare type Props = FacetsProps & BooleanFacetProps;
-interface State {
-    values: ListFacetValue[];
+import { BooleanFacet } from '../../models/facet';
+import { ContextState } from '../../context';
+export interface Props {
+    facet: BooleanFacet;
+    field: string;
+    labels: [string, string];
+    state: ContextState;
 }
-export default class FacetValuesView extends React.PureComponent<Props, State> {
-    state: State;
-    static getDerivedStateFromProps(props: Props): {
-        values: ListFacetValue[] | [number, number];
-    };
+export default class FacetValuesView extends React.PureComponent<Props> {
     render(): JSX.Element;
 }
-export {};

@@ -59,10 +59,10 @@ export default class FacetValuesView extends React.PureComponent<Props, State> {
 					{
 						this.state.values.map(value =>
 							<FacetValueView
-								addFilter={() => this.props.state.facetsManager.listManager.addFilter(this.props.field, value.key)}
+								addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, value.key)}
 								active={(this.props.state.facets.get(this.props.field) as ListFacet).filters.has(value.key)}
 								key={value.key}
-								removeFilter={() => this.props.state.facetsManager.listManager.removeFilter(this.props.field, value.key)}
+								removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, value.key)}
 								value={value}
 							/>
 						)

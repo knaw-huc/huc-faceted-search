@@ -6,21 +6,8 @@ class ElasticSearchRequest {
         this.aggs = {};
         this.post_filter = {};
         this.size = 20;
-        const facetList = Object.keys(facets).map(field => facets.get(field));
-        const booleanFacets = facetList.filter(facet => facet.type === facet_1.FacetType.Boolean);
-        const listFacets = facetList.filter(facet => facet.type === facet_1.FacetType.List);
-        const rangeFacets = facetList.filter(facet => facet.type === facet_1.FacetType.Range);
-        this.setPostFilter(booleanFacets, listFacets, rangeFacets);
-        for (const listFacet of listFacets) {
-            this.aggs[listFacet.id] = this.createListAggregation(listFacet);
-        }
-        for (const booleanFacet of booleanFacets) {
-            this.aggs[booleanFacet.id] = this.createBooleanAggregation(booleanFacet);
-        }
-        for (const rangeFacet of rangeFacets) {
-            this.aggs[rangeFacet.id] = this.createRangeAggregation(rangeFacet);
-            this.aggs[`${rangeFacet.id}_histogram`] = this.createHistogramAggregation(rangeFacet);
-        }
+        this.setAggs(facets);
+        this.setPostFilter(facets);
         if (query.length) {
             this.query = { query_string: { query } };
             this.highlight = { fields: { text: {} }, require_field_match: false };
@@ -79,38 +66,42 @@ class ElasticSearchRequest {
             }
         };
     }
-    setPostFilter(booleanFacets, listFacets, rangeFacets) {
-        const booleanFilters = booleanFacets
-            .filter(facet => facet.filters.size > 0)
-            .map((facet) => {
-            const filters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }));
-            if (filters.length === 1)
-                return filters[0];
-            else if (filters.length > 1)
-                return { bool: { should: filters } };
-            return {};
-        });
-        const listFilters = listFacets
-            .filter(facet => facet.filters.size > 0)
-            .map((facet) => {
-            const filters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }));
-            if (filters.length === 1)
-                return filters[0];
-            else if (filters.length > 1)
-                return { bool: { should: filters } };
-            return {};
-        });
-        const rangeFilters = rangeFacets
-            .filter(facet => Array.isArray(facet.filter) && facet.filter.length === 2)
-            .map((facet) => ({
-            range: {
-                [facet.field]: {
-                    gte: facet.filter[0],
-                    lte: facet.filter[1]
-                }
+    setAggs(facets) {
+        for (const facet of facets.values()) {
+            if (facet.type === facet_1.FacetType.List)
+                this.aggs[facet.id] = this.createListAggregation(facet);
+            else if (facet.type === facet_1.FacetType.Boolean)
+                this.aggs[facet.id] = this.createBooleanAggregation(facet);
+            else if (facet.type === facet_1.FacetType.Range) {
+                this.aggs[facet.id] = this.createRangeAggregation(facet);
+                this.aggs[`${facet.id}_histogram`] = this.createHistogramAggregation(facet);
             }
-        }));
-        const filters = listFilters.concat(rangeFilters, booleanFilters);
+        }
+    }
+    setPostFilter(facets) {
+        const filters = [];
+        for (const facet of facets.values()) {
+            if (facet.type === facet_1.FacetType.List || facet.type === facet_1.FacetType.Boolean) {
+                let facetFilters;
+                const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }));
+                if (allFacetFilters.length === 1)
+                    facetFilters = allFacetFilters[0];
+                else if (allFacetFilters.length > 1)
+                    facetFilters = { bool: { should: allFacetFilters } };
+                if (facetFilters)
+                    filters.push(facetFilters);
+            }
+            else if (facet instanceof facet_1.RangeFacet && Array.isArray(facet.filter) && facet.filter.length === 2) {
+                filters.push({
+                    range: {
+                        [facet.field]: {
+                            gte: facet.filter[0],
+                            lte: facet.filter[1]
+                        }
+                    }
+                });
+            }
+        }
         if (!filters.length) {
             this.post_filter = {};
         }

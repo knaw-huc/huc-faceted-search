@@ -16,7 +16,7 @@ var SortDirection;
     SortDirection["Asc"] = "asc";
     SortDirection["Desc"] = "desc";
 })(SortDirection = exports.SortDirection || (exports.SortDirection = {}));
-class Facet {
+class BaseFacet {
     constructor(field, index, type) {
         this.field = field;
         this.index = index;
@@ -24,8 +24,8 @@ class Facet {
         this.id = `${field}_${index}`;
     }
 }
-exports.Facet = Facet;
-class ListFacet extends Facet {
+exports.BaseFacet = BaseFacet;
+class ListFacet extends BaseFacet {
     constructor(field, index, size) {
         super(field, index, FacetType.List);
         this.size = size;
@@ -33,6 +33,7 @@ class ListFacet extends Facet {
         this.order = [SortBy.Count, SortDirection.Desc];
         this.query = '';
         this.total = 0;
+        this.type = FacetType.List;
         this.values = [];
         this.viewSize = size;
     }
@@ -45,15 +46,16 @@ class ListFacet extends Facet {
     }
 }
 exports.ListFacet = ListFacet;
-class BooleanFacet extends Facet {
+class BooleanFacet extends BaseFacet {
     constructor(field, index) {
         super(field, index, FacetType.Boolean);
         this.filters = new Set();
+        this.type = FacetType.Boolean;
         this.values = [];
     }
 }
 exports.BooleanFacet = BooleanFacet;
-class RangeFacet extends Facet {
+class RangeFacet extends BaseFacet {
     constructor(field, index) {
         super(field, index, FacetType.Range);
         this.histogramValues = [];

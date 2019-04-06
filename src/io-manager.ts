@@ -1,6 +1,6 @@
-import { Facets } from './models/facet';
+import { Facets } from './models/facet'
 import backends, { Backend } from './backends'
-import { ParsedResponse } from './backends/elasticsearch/response-parser';
+import { ParsedResponse } from './backends/elasticsearch/response-parser'
 
 type DispatchResponse = { request: any, response: any, facets: Facets }
 

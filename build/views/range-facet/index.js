@@ -7,6 +7,7 @@ const facet_1 = tslib_1.__importDefault(require("../facet"));
 const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const histogram_1 = tslib_1.__importDefault(require("./histogram"));
+const facet_2 = require("../../models/facet");
 const Dates = styled_1.default('div') `
 	color: #888;
 	display: grid;
@@ -31,7 +32,7 @@ class RangeFacetView extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.facetsManager.rangeManager.addFacet(this.props.field, this.props.index);
+        this.props.state.facetsManager.addFacet(facet_2.FacetType.Range, this.props.field, this.props.index);
     }
     componentDidUpdate(prevProps) {
         const { facets } = prevProps.state;
@@ -72,7 +73,7 @@ class RangeFacetView extends React.PureComponent {
                         upperLimit: data.upperLimit,
                     });
                     if (data.refresh) {
-                        this.props.state.facetsManager.rangeManager.addFilter(this.props.field, rangeMin, rangeMax);
+                        this.props.state.facetsManager.addFilter(this.props.field, rangeMin, rangeMax);
                     }
                 }, style: {
                     marginTop: '-4px',

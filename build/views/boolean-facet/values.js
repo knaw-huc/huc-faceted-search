@@ -9,24 +9,11 @@ const List = styled_1.default('ul') `
 	padding: 0;
 `;
 class FacetValuesView extends React.PureComponent {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            values: []
-        };
-    }
-    static getDerivedStateFromProps(props) {
-        const { facets } = props.state;
-        const values = (facets == null || !facets.hasOwnProperty(props.field)) ?
-            [] :
-            facets.get(props.field).values;
-        return { values };
-    }
     render() {
+        if (this.props.facet == null)
+            return null;
         return (React.createElement("div", null,
-            React.createElement(List, null, this.state.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.booleanManager.addFilter(this.props.field, value.key), active: this.props.state.facets.get(this.props.field).filters.has(value.key), key: value.key, keyFormatter: (key) => {
-                    return this.props.labels[key];
-                }, removeFilter: () => this.props.state.facetsManager.booleanManager.removeFilter(this.props.field, value.key), value: value })))));
+            React.createElement(List, null, this.props.facet.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.facet.filters.has(value.key), key: value.key, keyFormatter: (key) => this.props.labels[key], removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value })))));
     }
 }
 exports.default = FacetValuesView;

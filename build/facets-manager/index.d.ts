@@ -1,18 +1,21 @@
-import RangeManager from './range-manager';
-import ListFacetManager from './list-manager';
-import BooleanFacetManager from './boolean-manager';
-import { Facets } from '../models/facet';
-export default class FacetsManager {
+import { Facets, FacetType, SortBy, SortDirection } from '../models/facet';
+import FacetGetters from './getters';
+export default class FacetsManager extends FacetGetters {
     private onChange;
     query: string;
     facetCount: number;
-    booleanManager: BooleanFacetManager;
-    listManager: ListFacetManager;
-    rangeManager: RangeManager;
     request: any;
     constructor(onChange: (facets: Facets, query: string) => void);
-    private handleChange;
+    addFacet(type: FacetType, field: string, index: number, thirdArg?: any): void;
+    addFilter(field: string, key: string): void;
+    addFilter(field: string, key: number, max: number): void;
+    removeFilter(field: string, key: string): void;
+    sortListBy(field: string, sortBy: SortBy, direction: SortDirection): void;
+    addListFilterQuery(field: string, query: string): void;
+    viewLess(field: string): void;
+    viewMore(field: string): void;
     addQuery(query: string): void;
     reset(): void;
     setFacetCount(count: number): void;
+    private handleChange;
 }

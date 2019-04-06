@@ -24,14 +24,18 @@ class ElasticSearchResponseParser {
         };
     }
     updateBooleanFacets() {
-        Object.keys(this.facets)
-            .map(key => this.facets.get(key))
-            .filter(facet => facet.type === facet_1.FacetType.Boolean)
-            .forEach((facet) => {
+        this.facets
+            .forEach(facet => {
+            if (facet.type !== facet_1.FacetType.Boolean)
+                return;
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
             let { buckets } = this.response.aggregations[facet.id][facet.field];
             facet.values = Array.isArray(buckets) ? buckets : [];
+            facet.values = facet.values.map(value => {
+                value.key = value.key.toString();
+                return value;
+            });
         });
     }
     updateListFacets() {
