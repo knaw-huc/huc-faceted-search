@@ -19,14 +19,23 @@ class FacetsManager extends getters_1.default {
         this.handleChange();
     }
     addFilter(field, key, max) {
-        const facet = this.facets.get(field);
-        if (facet.type === facet_1.FacetType.Range && typeof key === 'number')
-            facet.filter = [key, max];
-        else if (facet.type === facet_1.FacetType.Boolean && typeof key === 'string')
-            facet.filters.add(key);
-        else if (facet.type === facet_1.FacetType.List && typeof key === 'string')
-            facet.filters.add(key);
-        this.handleChange();
+        const facetType = this.facets.get(field).type;
+        if (facetType === facet_1.FacetType.Range && typeof key === 'number') {
+            const facet = this.getRangeFacet(field);
+            const [prevMin, prevMax] = facet.filter;
+            if (prevMin !== key || prevMax !== max) {
+                facet.filter = [key, max];
+                this.handleChange();
+            }
+        }
+        else if ((facetType === facet_1.FacetType.List || facetType === facet_1.FacetType.Boolean) &&
+            typeof key === 'string') {
+            const facet = this.getListFacet(field);
+            if (!facet.filters.has(key)) {
+                facet.filters.add(key);
+                this.handleChange();
+            }
+        }
     }
     removeFilter(field, key) {
         this.getListFacet(field).filters.delete(key);

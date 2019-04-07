@@ -23,11 +23,26 @@ export default class FacetsManager extends FacetGetters {
 	addFilter(field: string, key: string): void // ListFacet || BooleanFacet
 	addFilter(field: string, key: number, max: number): void // RangeFacet
 	addFilter(field: string, key: string | number, max?: number): void {
-		const facet = this.facets.get(field)
-		if (facet.type === FacetType.Range && typeof key === 'number') (facet as RangeFacet).filter = [key, max]
-		else if (facet.type === FacetType.Boolean && typeof key === 'string') (facet as BooleanFacet).filters.add(key)
-		else if (facet.type === FacetType.List && typeof key === 'string') (facet as ListFacet).filters.add(key)
-		this.handleChange()
+		const facetType = this.facets.get(field).type
+
+		if (facetType === FacetType.Range && typeof key === 'number') {
+			const facet = this.getRangeFacet(field)
+			const [prevMin, prevMax] = facet.filter
+			if (prevMin !== key || prevMax !== max) {
+				facet.filter = [key, max]
+				this.handleChange()
+			}
+		}
+		else if (
+			(facetType === FacetType.List || facetType === FacetType.Boolean) &&
+			typeof key === 'string'
+		) {
+			const facet = this.getListFacet(field)
+			if (!facet.filters.has(key)) {
+				facet.filters.add(key)
+				this.handleChange()
+			}
+		}
 	}
 
 	// Remove filter works on ListFacet and BooleanFacet
