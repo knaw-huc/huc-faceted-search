@@ -20,7 +20,7 @@ exports.Wrapper = styled_1.default.div `
 	}
 `;
 exports.Input = styled_1.default.input `
-	border: none;
+	border: 1px solid #AAA;
 	box-sizing: border-box;
 	font-size: 1.2em;
 	outline: none;

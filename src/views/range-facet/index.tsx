@@ -71,7 +71,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 		let max: number
 		let histogramValues = []
 
-		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
+		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
 		if (facet == null) return null;
 		[min, max] = facet.values
 		histogramValues = facet.histogramValues

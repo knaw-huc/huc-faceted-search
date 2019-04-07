@@ -2,12 +2,12 @@ import * as React from 'react'
 import FacetsManager from './facets-manager'
 
 export interface ContextState {
+	cycle: number,
 	facetsManager: FacetsManager,
-	response: any
 }
 export const defaultState: ContextState = {
+	cycle: 0,
 	facetsManager: null,
-	response: null
 }
 
 export default React.createContext(defaultState)

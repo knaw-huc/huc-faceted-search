@@ -10,7 +10,6 @@ const facetByType: Record<FacetType, any> = {
 export default class FacetsManager extends FacetGetters {
 	query: string = ''
 	facetCount: number
-	request: any
 
 	constructor(private onChange: (facets: Facets, query: string) => void) {
 		super()

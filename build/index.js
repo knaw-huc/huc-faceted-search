@@ -28,7 +28,7 @@ class FacetedSearch extends React.PureComponent {
         super(props);
         this.handleChange = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { request, response } = yield this.ioManager.dispatch();
-            this.setState({ response });
+            this.update();
             this.props.onChange(request, response, this.facetsManager.query);
         });
         this.facetsManager = new facets_manager_1.default(this.handleChange);
@@ -39,12 +39,18 @@ class FacetedSearch extends React.PureComponent {
         return (React.createElement(context_1.default.Provider, { value: this.state },
             React.createElement(Wrapper, null, this.props.children)));
     }
+    addFilter(field, key) {
+        this.facetsManager.addFilter(field, key);
+    }
     getNext() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { request, response, query } = yield this.ioManager.getNext();
-            this.setState({ response });
+            this.update();
             this.props.onChange(request, response, query);
         });
+    }
+    update() {
+        this.setState({ cycle: this.state.cycle++ });
     }
 }
 FacetedSearch.defaultProps = {

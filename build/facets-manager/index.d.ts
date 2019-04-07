@@ -4,7 +4,6 @@ export default class FacetsManager extends FacetGetters {
     private onChange;
     query: string;
     facetCount: number;
-    request: any;
     constructor(onChange: (facets: Facets, query: string) => void);
     addFacet(type: FacetType, field: string, index: number, thirdArg?: any): void;
     addFilter(field: string, key: string): void;

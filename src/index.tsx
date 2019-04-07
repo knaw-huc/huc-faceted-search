@@ -62,16 +62,23 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 		)
 	}
 
+	addFilter(field: string, key: string) {
+		this.facetsManager.addFilter(field, key)
+	}
+
 	async getNext() {
 		const { request, response, query } = await this.ioManager.getNext()
-		this.setState({ response })
+		this.update()
 		this.props.onChange(request, response, query)
-
 	}
 
 	private handleChange = async () => {
 		const { request, response } = await this.ioManager.dispatch()
-		this.setState({ response })
+		this.update()
 		this.props.onChange(request, response, this.facetsManager.query)
+	}
+
+	private update() {
+		this.setState({ cycle: this.state.cycle++ })
 	}
 }

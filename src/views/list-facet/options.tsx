@@ -82,6 +82,7 @@ export default class Options extends React.PureComponent<Props, State> {
 				<H4>Filter</H4>
 				<Input
 					onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+						// TODO use debounce
 						const { value } = ev.target
 						this.setState({ value })
 						this.props.state.facetsManager.addListFilterQuery(this.props.field, value)
