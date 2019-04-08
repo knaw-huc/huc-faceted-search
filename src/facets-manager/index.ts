@@ -1,6 +1,7 @@
 import { Facets, FacetType, BooleanFacet, ListFacet, RangeFacet, SortBy, SortDirection } from '../models/facet'
 import FacetGetters from './getters'
 
+// TODO fix typings
 const facetByType: Record<FacetType, any> = {
 	[FacetType.Boolean]: BooleanFacet,
 	[FacetType.List]: ListFacet,
@@ -89,10 +90,6 @@ export default class FacetsManager extends FacetGetters {
 		this.facetCount = count
 		this.handleChange()
 	}
-
-	// setValue(field: string, key: string) {
-
-	// }
 
 	private handleChange() {
 		// const facets: Facets = new Map()
