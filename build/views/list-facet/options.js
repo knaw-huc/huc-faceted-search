@@ -61,7 +61,9 @@ class Options extends React.PureComponent {
                     this.setState({ value });
                     this.props.state.facetsManager.addListFilterQuery(this.props.field, value);
                 }, style: {
-                    height: '2em'
+                    border: '1px solid #AAA',
+                    height: '2em',
+                    width: '100%',
                 }, type: "text", value: this.state.value })));
     }
 }

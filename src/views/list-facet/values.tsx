@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 // import { ListFacetProps, ListFacetState } from './index'
 // import { FacetsProps } from '../facets';
 import { ListFacet } from '../../models/facet';
-import MoreLessButtons from './more-less-buttons'
+import MoreLessButton from './more-less-buttons'
 import { ContextState } from '../../context';
 
 const DURATION = 500
@@ -57,7 +57,12 @@ export default class FacetValuesView extends React.PureComponent<Props> {
 						)
 					}
 				</List>
-				<MoreLessButtons {...this.props} />
+				{
+					// Don't show MoreLessButton, when the results are filtered by a query,
+					// because the MoreLess-count does not take the filter into account
+					!this.props.facet.query.length && 
+					<MoreLessButton {...this.props} />
+				}
 			</Wrapper>
 		)
 	}

@@ -35,7 +35,9 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 			<Facet>
 				<FacetHeader {...this.props}>
 					<div style={{ textAlign: 'right' }}>
-						<FacetMenuButton onClick={() => this.setState({ collapsed: !this.state.collapsed, options: false })}>
+						<FacetMenuButton
+							onClick={() => this.setState({ collapsed: !this.state.collapsed, options: false })}
+						>
 							<svg viewBox="0 0 401.998 401.998" width="12px" height="12px" fill="#AAA">
 								<g>
 									<path d="M73.092,164.452h255.813c4.949,0,9.233-1.807,12.848-5.424c3.613-3.616,5.427-7.898,5.427-12.847
@@ -47,7 +49,9 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 								</g>
 							</svg>
 						</FacetMenuButton>
-						<FacetMenuButton onClick={() => this.setState({ options: !this.state.options, collapsed: false })}>
+						<FacetMenuButton
+							onClick={() => this.setState({ options: !this.state.options, collapsed: false })}
+						>
 							<svg viewBox="0 0 21.589 21.589" width="12px" height="12px" fill="#AAA">
 								<path d="M18.622,8.371l-0.545-1.295c0,0,1.268-2.861,1.156-2.971l-1.679-1.639c-0.116-0.113-2.978,1.193-2.978,1.193l-1.32-0.533
 										c0,0-1.166-2.9-1.326-2.9H9.561c-0.165,0-1.244,2.906-1.244,2.906L6.999,3.667c0,0-2.922-1.242-3.034-1.131L2.289,4.177

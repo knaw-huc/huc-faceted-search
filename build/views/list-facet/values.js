@@ -33,7 +33,8 @@ class FacetValuesView extends React.PureComponent {
             return null;
         return (React.createElement(Wrapper, { ref: this.wrapperRef },
             React.createElement(List, null, this.props.facet.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value }))),
-            React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
+            !this.props.facet.query.length &&
+                React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
     }
     animate(reverse = false) {
         let elapsed = 0;

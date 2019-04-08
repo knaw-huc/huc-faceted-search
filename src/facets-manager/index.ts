@@ -92,15 +92,7 @@ export default class FacetsManager extends FacetGetters {
 	}
 
 	private handleChange() {
-		// const facets: Facets = new Map()
-		// this.allManagers().forEach(m => m.facets.forEach(facet => facets.set(facet.field, facet)))
-
 		if (this.facetCount == null || this.facets.size !== this.facetCount) return
-
 		this.onChange(new Map(this.facets), this.query)
 	}
-
-	// private allManagers() {
-	// 	return Object.keys(this.managers).map(m => (this.managers as Record<string, FacetManager<any>>)[m])
-	// }
 }
