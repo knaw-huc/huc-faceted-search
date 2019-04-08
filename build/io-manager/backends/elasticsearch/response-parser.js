@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const facet_1 = require("../../models/facet");
 class ElasticSearchResponseParser {
     constructor(response, facetsManager) {
         this.response = response;
@@ -24,7 +23,7 @@ class ElasticSearchResponseParser {
         };
     }
     updateBooleanFacets() {
-        this.facetsManager.getFacets(facet_1.FacetType.Boolean)
+        this.facetsManager.getFacets("boolean")
             .forEach(facet => {
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
@@ -37,7 +36,7 @@ class ElasticSearchResponseParser {
         });
     }
     updateListFacets() {
-        this.facetsManager.getFacets(facet_1.FacetType.List)
+        this.facetsManager.getFacets("list")
             .forEach((facet) => {
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
@@ -48,7 +47,7 @@ class ElasticSearchResponseParser {
         });
     }
     updateRangeFacets() {
-        this.facetsManager.getFacets(facet_1.FacetType.Range)
+        this.facetsManager.getFacets("range")
             .forEach(facet => {
             if (facet.values[0] != null && facet.values[1] != null)
                 return;

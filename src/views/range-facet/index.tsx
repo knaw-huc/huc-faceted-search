@@ -5,7 +5,6 @@ import Facet from '../facet'
 import FacetHeader from '../facet-header'
 import styled from '@emotion/styled'
 import Histogram from './histogram'
-import { FacetType } from '../../models/facet'
 
 const Dates = styled('div')`
 	color: #888;
@@ -22,37 +21,27 @@ const ActiveDates = styled('div')`
 	grid-template-columns: 1fr 16px 1fr;
 `
 
-interface Props {
-	field: string
-	granularity: 'year' | 'month' | 'day'
-	title: string
-	type?: 'number' | 'timestamp'
-}
-interface State {
-	lowerLimit: number
-	rangeMin: number,
-	rangeMax: number,
-	upperLimit: number
-}
-export default class RangeFacetView extends React.PureComponent<Props & FacetsProps, State> {
-	state: State = {
+export default class RangeFacetView extends React.PureComponent<RangeProps & FacetsProps, RangeState> {
+	state: RangeState = {
 		lowerLimit: 0,
 		rangeMin: null,
 		rangeMax: null,
 		upperLimit: 1,
 	}
 
-	static defaultProps: Partial<Props> = {
-		granularity: 'year',
+	static defaultProps: Partial<RangeProps> = {
+		interval: 'year',
 		type: 'number',
 	}
 
 	componentDidMount() {
-		this.props.state.facetsManager.addFacet(FacetType.Range, this.props.field, this.props.index)
+		this.props.state.facetsManager.setRangeFacet(this.props.field, this.props.index, {
+			interval: this.props.interval
+		})
 	}
 
 	// Reset the range facet when the filter is removed
-	componentDidUpdate(prevProps: Props & FacetsProps) {
+	componentDidUpdate(prevProps: RangeProps & FacetsProps) {
 		const prevFacet = prevProps.state.facetsManager.getRangeFacet(prevProps.field)
 		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
 
@@ -101,7 +90,7 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 						}
 					}}
 					style={{
-						marginTop: '-4px',
+						marginTop: '-6px',
 						position: 'absolute',
 					}}
 					upperLimit={this.state.upperLimit}
@@ -131,13 +120,13 @@ export default class RangeFacetView extends React.PureComponent<Props & FacetsPr
 			const d = new Date(num)
 			const year = d.getUTCFullYear()
 
-			if (this.props.granularity === 'year') {
+			if (this.props.interval === 'year') {
 				date = isNaN(year) ? '' : year.toString()
 			}
-			else if (this.props.granularity === 'month') {
+			else if (this.props.interval === 'month') {
 				date = `${year}-${d.getUTCMonth() + 1}`
 			}
-			else if (this.props.granularity === 'day') {
+			else if (this.props.interval === 'day') {
 				date = `${year}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`
 			}
 

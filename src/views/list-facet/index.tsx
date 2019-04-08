@@ -5,17 +5,7 @@ import FacetHeader from '../facet-header'
 import { FacetsProps } from '../facets'
 import { FacetMenuButton } from '../button'
 import Options from './options'
-import { FacetType } from '../../models/facet';
 
-export interface ListFacetProps {
-	field: string
-	size?: number
-	title: string
-}
-export interface ListFacetState {
-	collapsed: boolean
-	options: boolean
-}
 export default class ListFacet extends React.PureComponent<FacetsProps & ListFacetProps, ListFacetState> {
 	state: ListFacetState = {
 		collapsed: false,
@@ -27,7 +17,7 @@ export default class ListFacet extends React.PureComponent<FacetsProps & ListFac
 	}
 
 	componentDidMount() {
-		this.props.state.facetsManager.addFacet(FacetType.List, this.props.field, this.props.index, this.props.size)
+		this.props.state.facetsManager.setListFacet(this.props.field, this.props.index, { size: this.props.size })
 	}
 
 	render() {

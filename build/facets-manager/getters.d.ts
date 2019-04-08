@@ -1,6 +1,9 @@
-import { BooleanFacet, ListFacet, RangeFacet, FacetType, Facets, Facet } from '../models/facet';
+import { BooleanFacet, ListFacet, RangeFacet } from '../models/facet';
 export default class FacetGetter {
-    facets: Facets;
+    protected facets: Facets;
+    facetCount: number;
+    query: string;
+    onChange: OnFacetManagerChange;
     getFacets(): Facet[];
     getFacets(type: FacetType.Boolean): BooleanFacet[];
     getFacets(type: FacetType.List): ListFacet[];
@@ -8,4 +11,8 @@ export default class FacetGetter {
     getBooleanFacet(field: string): BooleanFacet;
     getRangeFacet(field: string): RangeFacet;
     getListFacet(field: string): ListFacet;
+    setBooleanFacet(field: string, index: number, settings: BooleanSettings): void;
+    setListFacet(field: string, index: number, settings: ListSettings): void;
+    setRangeFacet(field: string, index: number, settings: RangeSettings): void;
+    protected handleChange(): void;
 }

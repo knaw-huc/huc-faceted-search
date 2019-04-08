@@ -1,29 +1,12 @@
-export declare enum FacetType {
-    Boolean = 0,
-    List = 1,
-    Range = 2
-}
-export declare enum SortBy {
-    Count = "_count",
-    Key = "_term"
-}
-export declare enum SortDirection {
-    Asc = "asc",
-    Desc = "desc"
-}
-export declare class BaseFacet {
+declare abstract class BaseFacet {
     field: string;
     index: number;
     type: FacetType;
     id: string;
     constructor(field: string, index: number, type: FacetType);
 }
-export interface ListFacetValue {
-    key: string;
-    doc_count: number;
-}
 export declare class ListFacet extends BaseFacet {
-    size: number;
+    settings: ListSettings;
     filters: Set<string>;
     order: [SortBy, SortDirection];
     query: string;
@@ -31,22 +14,23 @@ export declare class ListFacet extends BaseFacet {
     type: FacetType;
     values: ListFacetValue[];
     viewSize: number;
-    constructor(field: string, index: number, size: number);
+    constructor(field: string, index: number, settings: ListSettings);
     viewLess(): void;
     viewMore(): void;
 }
 export declare class BooleanFacet extends BaseFacet {
+    settings: BooleanSettings;
     filters: Set<string>;
     type: FacetType;
     values: ListFacetValue[];
-    constructor(field: string, index: number);
+    constructor(field: string, index: number, settings: BooleanSettings);
 }
 export declare class RangeFacet extends BaseFacet {
+    settings: RangeSettings;
     filter: [number, number];
     histogramValues: any[];
     type: FacetType.Range;
     values: [number, number];
-    constructor(field: string, index: number);
+    constructor(field: string, index: number, settings: RangeSettings);
 }
-export declare type Facet = BooleanFacet | ListFacet | RangeFacet;
-export declare type Facets = Map<string, Facet>;
+export {};

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ListFacetValue } from '../../models/facet';
 interface Props {
     active: boolean;
     addFilter: () => void;

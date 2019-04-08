@@ -1,11 +1,9 @@
 import * as React from 'react'
 import FacetValueView from './value'
 import styled from '@emotion/styled'
-// import { ListFacetProps, ListFacetState } from './index'
-// import { FacetsProps } from '../facets';
-import { ListFacet } from '../../models/facet';
+import { ListFacet } from '../../models/facet'
 import MoreLessButton from './more-less-buttons'
-import { ContextState } from '../../context';
+import { ContextState } from '../../context'
 
 const DURATION = 500
 const FRAME_DURATION = 16
@@ -31,7 +29,10 @@ export default class FacetValuesView extends React.PureComponent<Props> {
 	private listHeight: number
 
 	componentDidUpdate(prevProps: Props) {
-		if (prevProps.facet != null && prevProps.facet.values.length !== this.props.facet.values.length) this.setHeight()
+		if (
+			prevProps.facet != null &&
+			this.listHeight == null
+		) this.setHeight()
 
 		if (!prevProps.collapsed && this.props.collapsed) this.animate()
 		else if (prevProps.collapsed && !this.props.collapsed) this.animate(true)

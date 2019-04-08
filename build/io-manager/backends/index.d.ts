@@ -1,4 +1,3 @@
-export declare type BackendType = 'none' | 'elasticsearch';
 export declare type Backend = {
     RequestCreator: any;
     ResponseParser: any;

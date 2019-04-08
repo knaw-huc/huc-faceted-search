@@ -5,10 +5,9 @@ const React = tslib_1.__importStar(require("react"));
 const facet_1 = tslib_1.__importDefault(require("../facet"));
 const values_1 = tslib_1.__importDefault(require("./values"));
 const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
-const facet_2 = require("../../models/facet");
 class BooleanFacet extends React.PureComponent {
     componentDidMount() {
-        this.props.state.facetsManager.addFacet(facet_2.FacetType.Boolean, this.props.field, this.props.index);
+        this.props.state.facetsManager.setBooleanFacet(this.props.field, this.props.index, {});
     }
     render() {
         return (React.createElement(facet_1.default, null,

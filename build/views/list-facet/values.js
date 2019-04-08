@@ -21,7 +21,8 @@ class FacetValuesView extends React.PureComponent {
         this.wrapperRef = React.createRef();
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.facet != null && prevProps.facet.values.length !== this.props.facet.values.length)
+        if (prevProps.facet != null &&
+            this.listHeight == null)
             this.setHeight();
         if (!prevProps.collapsed && this.props.collapsed)
             this.animate();

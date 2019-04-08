@@ -1,4 +1,3 @@
-import { Facets } from "../models/facet";
 export declare class NoneRequestCreator {
     facets: Facets;
     query: string;

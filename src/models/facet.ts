@@ -1,30 +1,9 @@
-export enum FacetType {
-	Boolean,
-	List,
-	Range,
-}
-
-export enum SortBy {
-	Count = '_count',
-	Key = '_term',
-}
-
-export enum SortDirection {
-	Asc = 'asc',
-	Desc = 'desc',
-}
-
-export class BaseFacet {
+abstract class BaseFacet {
 	id: string
 
 	constructor(public field: string, public index: number, public type: FacetType) {
 		this.id = `${field}_${index}`
 	}
-}
-
-export interface ListFacetValue {
-	key: string
-	doc_count: number
 }
 
 export class ListFacet extends BaseFacet {
@@ -36,17 +15,17 @@ export class ListFacet extends BaseFacet {
 	values: ListFacetValue[] = []
 	viewSize: number
 
-	constructor(field: string, index: number, public size: number) {
+	constructor(field: string, index: number, public settings: ListSettings) {
 		super(field, index, FacetType.List)
-		this.viewSize = size
+		this.viewSize = this.settings.size
 	}
 
 	viewLess() {
-		if (this.viewSize > this.size) this.viewSize -= this.size
+		if (this.viewSize > this.settings.size) this.viewSize -= this.settings.size
 	}
 
 	viewMore() {
-		this.viewSize += this.size
+		this.viewSize += this.settings.size
 	}
 }
 
@@ -55,10 +34,11 @@ export class BooleanFacet extends BaseFacet {
 	type = FacetType.Boolean
 	values: ListFacetValue[] = []
 
-	constructor(field: string, index: number) {
+	constructor(field: string, index: number, public settings: BooleanSettings) {
 		super(field, index, FacetType.Boolean)
 	}
 }
+
 
 export class RangeFacet extends BaseFacet {
 	filter: [number, number]
@@ -66,10 +46,7 @@ export class RangeFacet extends BaseFacet {
 	type: FacetType.Range
 	values: [number, number] = [null, null]
 
-	constructor(field: string, index: number) {
+	constructor(field: string, index: number, public settings: RangeSettings) {
 		super(field, index, FacetType.Range)
 	}
 }
-
-export type Facet = BooleanFacet | ListFacet | RangeFacet
-export type Facets = Map<string, Facet>

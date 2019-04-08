@@ -1,4 +1,4 @@
-import { Facets, FacetType, BooleanFacet, ListFacet, RangeFacet, SortBy, SortDirection } from '../models/facet'
+import { BooleanFacet, ListFacet, RangeFacet } from '../models/facet'
 import FacetGetters from './getters'
 
 // TODO fix typings
@@ -8,19 +8,7 @@ const facetByType: Record<FacetType, any> = {
 	[FacetType.Range]: RangeFacet,
 }
 
-export default class FacetsManager extends FacetGetters {
-	query: string = ''
-	facetCount: number
-
-	constructor(private onChange: (facets: Facets, query: string) => void) {
-		super()
-	}
-
-	addFacet(type: FacetType, field: string, index: number, thirdArg?: any): void {
-		this.facets.set(field, new facetByType[type](field, index, thirdArg))
-		this.handleChange()
-	}
-
+export default class FacetManager extends FacetGetters {
 	addFilter(field: string, key: string): void // ListFacet || BooleanFacet
 	addFilter(field: string, key: number, max: number): void // RangeFacet
 	addFilter(field: string, key: string | number, max?: number): void {
@@ -28,6 +16,8 @@ export default class FacetsManager extends FacetGetters {
 
 		if (facetType === FacetType.Range && typeof key === 'number') {
 			const facet = this.getRangeFacet(field)
+
+			if (facet.filter == null) facet.filter = [0, 1]
 			const [prevMin, prevMax] = facet.filter
 			if (prevMin !== key || prevMax !== max) {
 				facet.filter = [key, max]
@@ -52,6 +42,11 @@ export default class FacetsManager extends FacetGetters {
 		this.handleChange()
 	}
 
+	addQuery(query: string) {
+		this.query = query
+		this.handleChange()
+	}
+
 	sortListBy(field: string, sortBy: SortBy, direction: SortDirection) {
 		this.getListFacet(field).order = [sortBy, direction]
 		this.handleChange()
@@ -72,11 +67,6 @@ export default class FacetsManager extends FacetGetters {
 		this.handleChange()
 	}
 
-	addQuery(query: string) {
-		this.query = query
-		this.handleChange()
-	}
-
 	reset() {
 		this.query = ''
 		for (const [field, facet] of this.facets) {
@@ -89,10 +79,5 @@ export default class FacetsManager extends FacetGetters {
 	setFacetCount(count: number) {
 		this.facetCount = count
 		this.handleChange()
-	}
-
-	private handleChange() {
-		if (this.facetCount == null || this.facets.size !== this.facetCount) return
-		this.onChange(new Map(this.facets), this.query)
 	}
 }

@@ -1,4 +1,4 @@
-import { Facets, FacetType, ListFacet, RangeFacet } from "../models/facet"
+import { ListFacet, RangeFacet } from "../../models/facet"
 
 export class NoneRequestCreator {
 	constructor(public facets: Facets, public query: string) {}

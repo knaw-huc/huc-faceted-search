@@ -1,21 +1,5 @@
-import { BooleanFacet, ListFacet, RangeFacet, FacetType, Facets, Facet } from '../models/facet';
+import { BooleanFacet, ListFacet, RangeFacet } from '../models/facet'
 
-
-// function isBooleanFacet(facetValue: [string, BooleanFacet | ListFacet | RangeFacet]): facetValue is [string, BooleanFacet] {
-// 	return facetValue[1].type === FacetType.Boolean
-// }
-
-// function isListFacet(facetValue: [string, BooleanFacet | ListFacet | RangeFacet]): facetValue is [string, ListFacet] {
-// 	return facetValue[1].type === FacetType.List
-// }
-
-// function isRangeFacet(facetValue: [string, BooleanFacet | ListFacet | RangeFacet]): facetValue is [string, RangeFacet] {
-// 	return facetValue[1].type === FacetType.Range
-// }
-
-// function isOfType(type: FacetType.Range): (facetValue: [string, Facet]) => facetValue is [string, RangeFacet]
-// function isOfType(type: FacetType.Boolean): (facetValue: [string, Facet]) => facetValue is [string, BooleanFacet]
-// function isOfType(type: FacetType.List): (facetValue: [string, Facet]) => facetValue is [string, ListFacet]
 function isOfType(type: FacetType): (facetValue: [string, Facet]) => facetValue is [string, Facet] {
 	return function(facetValue: [string, Facet]): facetValue is [string, Facet] {
 		return facetValue[1].type === type
@@ -23,8 +7,10 @@ function isOfType(type: FacetType): (facetValue: [string, Facet]) => facetValue 
 }
 
 export default class FacetGetter {
-	// TODO make private
-	facets: Facets = new Map()
+	protected facets: Facets = new Map()
+	facetCount: number
+	query: string = ''
+	onChange: OnFacetManagerChange
 
 	getFacets(): Facet[]
 	getFacets(type: FacetType.Boolean): BooleanFacet[]
@@ -39,23 +25,36 @@ export default class FacetGetter {
 		return this.facets.get(field) as BooleanFacet
 	}
 
-	// getBooleanFacets(): BooleanFacet[] {
-	// 	return [...this.facets].filter(isBooleanFacet).map(f => f[1])
-	// }
-
 	getRangeFacet(field: string): RangeFacet {
 		return this.facets.get(field) as RangeFacet
 	}
-
-	// getRangeFacets(): RangeFacet[] {
-	// 	return [...this.facets].filter(isRangeFacet).map(f => f[1])
-	// }
 
 	getListFacet(field: string): ListFacet {
 		return this.facets.get(field) as ListFacet
 	}
 
-	// getListFacets(): ListFacet[] {
-	// 	return [...this.facets].filter(isListFacet).map(f => f[1])
-	// }
+	setBooleanFacet(field: string, index: number, settings: BooleanSettings): void {
+		this.facets.set(field, new BooleanFacet(field, index, settings))
+		this.handleChange()
+	}
+
+	setListFacet(field: string, index: number, settings: ListSettings): void {
+		this.facets.set(field, new ListFacet(field, index, settings))
+		this.handleChange()
+	}
+
+	setRangeFacet(field: string, index: number, settings: RangeSettings): void {
+		this.facets.set(field, new RangeFacet(field, index, settings))
+		this.handleChange()
+	}
+
+	protected handleChange() {
+		if (
+			this.onChange == null ||
+			this.facetCount == null ||
+			this.facets.size !== this.facetCount
+		) return
+		this.facets = new Map(this.facets)
+		this.onChange()
+	}
 }

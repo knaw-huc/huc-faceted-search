@@ -9,7 +9,7 @@ function default_1(props) {
         facet.total > 0 &&
             facet.total > facet.viewSize &&
             React.createElement(button_1.MoreLessButton, { onClick: () => props.state.facetsManager.viewMore(props.field) }, `View more (${facet.total - facet.viewSize})`),
-        facet.size < facet.viewSize &&
+        facet.settings.size < facet.viewSize &&
             React.createElement(button_1.MoreLessButton, { onClick: () => props.state.facetsManager.viewLess(props.field) }, "View less")));
 }
 exports.default = default_1;

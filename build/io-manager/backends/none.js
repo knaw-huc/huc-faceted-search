@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const facet_1 = require("../models/facet");
 class NoneRequestCreator {
     constructor(facets, query) {
         this.facets = facets;
@@ -15,10 +14,10 @@ class NoneResponseParser {
             .forEach(field => {
             const facet = facets.get(field);
             facet.values = response[field].values;
-            if (facet.type === facet_1.FacetType.List) {
+            if (facet.type === "list") {
                 facet.total = response[field].total;
             }
-            if (facet.type === facet_1.FacetType.Range) {
+            if (facet.type === "range") {
                 facet.histogramValues = response[field].histogramValues;
             }
         });

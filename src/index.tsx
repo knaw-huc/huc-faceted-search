@@ -1,16 +1,17 @@
+/// <reference path="./types.d.ts" />
+
 import * as React from 'react'
+import Context, { defaultState, ContextState } from './context'
+import styled from '@emotion/styled'
 import FacetsView from './views/facets'
 import ListFacet from './views/list-facet'
 import RangeFacet from './views/range-facet'
 import BooleanFacet from './views/boolean-facet'
 import FullTextSearch from './views/full-text-search'
-import Context, { defaultState, ContextState } from './context'
-import styled from '@emotion/styled'
-import FacetsManager from './facets-manager'
+import FacetManager from './facets-manager'
 import Reset from './views/reset'
-import IOManager from './io-manager'
-import { BackendType } from './backends'
 import SearchResults from './search-results'
+import IOManager from './io-manager'
 
 export {
 	BooleanFacet,
@@ -28,13 +29,15 @@ const Wrapper = styled('div')`
 
 interface Props {
 	backend?: BackendType
-	onChange: (request: any, response: any, query: string) => void
+	onChange: (response: OnChangeResponse) => void
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
-	state: ContextState
+	state: ContextState = {
+		...defaultState,
+		facetsManager: new FacetManager()
+	}
 	private ioManager: IOManager
-	private facetsManager: FacetsManager
 
 	static defaultProps: Partial<Props> = {
 		backend: 'none'
@@ -43,12 +46,10 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	constructor(props: Props) {
 		super(props)
 
-		this.facetsManager = new FacetsManager(this.handleChange)
-		this.ioManager = new IOManager({ backend: this.props.backend, url: props.url }, this.facetsManager)
-
-		this.state = {
-			...defaultState,
-			facetsManager: this.facetsManager
+		this.ioManager = new IOManager({ backend: props.backend, url: props.url }, this.state.facetsManager)
+		this.ioManager.onChange = (response: OnChangeResponse) => {
+			props.onChange(response)
+			this.setState({ cycle: this.state.cycle++ })
 		}
 	}
 
@@ -63,21 +64,10 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	}
 
 	addFilter(field: string, key: string) {
-		this.facetsManager.addFilter(field, key)
+		this.state.facetsManager.addFilter(field, key)
 	}
 
 	async getNext() {
-		const { request, response, query } = await this.ioManager.getNext()
-		this.update(request, response, query)
-	}
-
-	private handleChange = async () => {
-		const { request, response } = await this.ioManager.dispatch()
-		this.update(request, response, this.facetsManager.query)
-	}
-
-	private update(request: any, response: any, query: string) {
-		this.props.onChange(request, response, query)
-		this.setState({ cycle: this.state.cycle++ })
+		await this.ioManager.getNext()
 	}
 }

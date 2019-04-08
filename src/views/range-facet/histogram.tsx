@@ -10,33 +10,25 @@ interface Props {
 	values: any[]
 }
 export default class Histogram extends React.PureComponent<Props> {
-	private canvasRef: React.RefObject<HTMLCanvasElement>
-	private divRef: React.RefObject<HTMLDivElement>
+	private canvasRef = React.createRef() as React.RefObject<HTMLCanvasElement>
+	private divRef = React.createRef() as React.RefObject<HTMLDivElement>
 	private ctx: CanvasRenderingContext2D
 
-	constructor(props: Props) {
-		super(props)
-		this.canvasRef = React.createRef()
-		this.divRef = React.createRef()
+	static defaultProps: Pick<Props, 'values'> = {
+		values: []
 	}
 
 	componentDidMount() {
 		this.ctx = this.canvasRef.current.getContext('2d')
 		const { width, height } = this.divRef.current.getBoundingClientRect()
-		this.canvasRef.current.width = width
+		this.canvasRef.current.width = width - 8 
 		this.canvasRef.current.height = height
+		this.init()
 	}
 
 	componentDidUpdate(prevProps: Props) {
-		if (this.ctx != null && this.props.values.length && prevProps.values !== this.props.values) {
-			const values = this.props.values.map(value => value.doc_count)
-
-
-			const canvas = this.drawChart(ChartType.Bar, values, 24)
-			// const canvas = this.drawChart(ChartType.Horizon, values)
-
-			this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
-			this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
+		if (prevProps.values !== this.props.values) {
+			this.init()
 		}
 	}
 
@@ -46,6 +38,7 @@ export default class Histogram extends React.PureComponent<Props> {
 				ref={this.divRef}
 				style={{
 					height: '60px',
+					marginLeft: '8px',
 					position: 'relative',
 				}}
 			>
@@ -62,6 +55,15 @@ export default class Histogram extends React.PureComponent<Props> {
 				<canvas ref={this.canvasRef} />
 			</div>
 		)
+	}
+
+	private init() {
+		const values = this.props.values.map(value => value.doc_count)
+
+		const canvas = this.drawChart(ChartType.Bar, values, values.length)
+
+		this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
+		this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
 	}
 
 	private drawChart(chartType: ChartType, values: any[], maxBars?: number) {
@@ -94,7 +96,7 @@ export default class Histogram extends React.PureComponent<Props> {
 		return canvas
 	}
 
-	private drawBarChart(canvas: any, ctx: any, values: any[], maxValue: any, barWidth: any) {
+	private drawBarChart(canvas: any, ctx: any, values: number[], maxValue: number, barWidth: number) {
 		ctx.fillStyle = "#DDD"
 
 		for (let i = 0; i < values.length; i++) {
@@ -105,7 +107,7 @@ export default class Histogram extends React.PureComponent<Props> {
 		}
 	}
 
-	private drawHorizonChart(canvas: any, ctx: any, values: any[], maxValue: any, barWidth: any) {
+	private drawHorizonChart(canvas: any, ctx: any, values: number[], maxValue: number, barWidth: number) {
 		for (let i = 0; i < values.length; i++) {
 			const value = values[i]
 			ctx.fillStyle = `rgba(0, 0, 0, ${value/maxValue})`

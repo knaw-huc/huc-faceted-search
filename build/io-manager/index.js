@@ -8,13 +8,13 @@ class IOManager {
         this.facetsManager = facetsManager;
         this.cache = {};
         this.history = [];
-        this.backend = backends_1.default[options.backend];
-    }
-    dispatch() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.dispatch = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const requestBody = new this.backend.RequestCreator(this.facetsManager);
-            return this.handleFetch(requestBody);
+            const response = yield this.handleFetch(requestBody);
+            this.onChange(response);
         });
+        this.backend = backends_1.default[options.backend];
+        this.facetsManager.onChange = this.dispatch;
     }
     handleFetch(request) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -31,7 +31,8 @@ class IOManager {
             this.history.push({ request: body, response: responseParser.parsedResponse });
             return {
                 request,
-                response: responseParser.parsedResponse
+                response: responseParser.parsedResponse,
+                query: this.facetsManager.query
             };
         });
     }
@@ -63,9 +64,9 @@ class IOManager {
                 body.from += body.size;
             else
                 body.from = body.size;
-            const dispatchResponse = yield this.handleFetch(body);
-            dispatchResponse.response.hits = lastItem.response.hits.concat(dispatchResponse.response.hits);
-            return Object.assign({}, dispatchResponse, { query: this.facetsManager.query });
+            const response = yield this.handleFetch(body);
+            response.response.hits = lastItem.response.hits.concat(response.response.hits);
+            this.onChange(response);
         });
     }
 }

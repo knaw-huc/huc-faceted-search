@@ -1,21 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetType;
-(function (FacetType) {
-    FacetType[FacetType["Boolean"] = 0] = "Boolean";
-    FacetType[FacetType["List"] = 1] = "List";
-    FacetType[FacetType["Range"] = 2] = "Range";
-})(FacetType = exports.FacetType || (exports.FacetType = {}));
-var SortBy;
-(function (SortBy) {
-    SortBy["Count"] = "_count";
-    SortBy["Key"] = "_term";
-})(SortBy = exports.SortBy || (exports.SortBy = {}));
-var SortDirection;
-(function (SortDirection) {
-    SortDirection["Asc"] = "asc";
-    SortDirection["Desc"] = "desc";
-})(SortDirection = exports.SortDirection || (exports.SortDirection = {}));
 class BaseFacet {
     constructor(field, index, type) {
         this.field = field;
@@ -24,40 +8,41 @@ class BaseFacet {
         this.id = `${field}_${index}`;
     }
 }
-exports.BaseFacet = BaseFacet;
 class ListFacet extends BaseFacet {
-    constructor(field, index, size) {
-        super(field, index, FacetType.List);
-        this.size = size;
+    constructor(field, index, settings) {
+        super(field, index, "list");
+        this.settings = settings;
         this.filters = new Set();
-        this.order = [SortBy.Count, SortDirection.Desc];
+        this.order = ["_count", "desc"];
         this.query = '';
         this.total = 0;
-        this.type = FacetType.List;
+        this.type = "list";
         this.values = [];
-        this.viewSize = size;
+        this.viewSize = this.settings.size;
     }
     viewLess() {
-        if (this.viewSize > this.size)
-            this.viewSize -= this.size;
+        if (this.viewSize > this.settings.size)
+            this.viewSize -= this.settings.size;
     }
     viewMore() {
-        this.viewSize += this.size;
+        this.viewSize += this.settings.size;
     }
 }
 exports.ListFacet = ListFacet;
 class BooleanFacet extends BaseFacet {
-    constructor(field, index) {
-        super(field, index, FacetType.Boolean);
+    constructor(field, index, settings) {
+        super(field, index, "boolean");
+        this.settings = settings;
         this.filters = new Set();
-        this.type = FacetType.Boolean;
+        this.type = "boolean";
         this.values = [];
     }
 }
 exports.BooleanFacet = BooleanFacet;
 class RangeFacet extends BaseFacet {
-    constructor(field, index) {
-        super(field, index, FacetType.Range);
+    constructor(field, index, settings) {
+        super(field, index, "range");
+        this.settings = settings;
         this.histogramValues = [];
         this.values = [null, null];
     }

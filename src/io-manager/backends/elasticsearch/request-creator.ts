@@ -1,5 +1,5 @@
-import { FacetType, ListFacet, RangeFacet, BooleanFacet } from '../../models/facet'
-import FacetsManager from '../../facets-manager';
+import { ListFacet, RangeFacet, BooleanFacet } from '../../../models/facet'
+import FacetManager from '../../../facets-manager'
 
 interface AggregationRequest {
 	aggs: any
@@ -14,18 +14,18 @@ export default class ElasticSearchRequest {
 	query: any
 	size: number = 20
 
-	constructor(facetsManager: FacetsManager) {
+	constructor(facetsManager: FacetManager) {
 		this.setAggregations(facetsManager)
 		this.setQuery(facetsManager)
 	}
 
-	private setQuery(facetsManager: FacetsManager) {
+	private setQuery(facetsManager: FacetManager) {
 		if (!facetsManager.query.length) return
 		this.query = { query_string: { query: facetsManager.query } }
 		this.highlight = { fields: { text: {} }, require_field_match: false }
 	}
 
-	private setAggregations(facetsManager: FacetsManager) {
+	private setAggregations(facetsManager: FacetManager) {
 		this.setPostFilter(facetsManager)
 
 		facetsManager.getFacets(FacetType.Boolean)
@@ -43,17 +43,21 @@ export default class ElasticSearchRequest {
 			})
 	}
 
-	private setPostFilter(facetsManager: FacetsManager) {
-		const listAndBoolFilters = facetsManager.getFacets(FacetType.Boolean)
-			.concat(facetsManager.getFacets(FacetType.List))
-			.filter(facet => facet.filters.size)
-			.map(facet => {
-				const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }))
-				if (allFacetFilters.length === 1) return allFacetFilters[0]
-				else if (allFacetFilters.length > 1) return { bool: { should: allFacetFilters } }
-				return {}
-			})
+	private setPostFilter(facetsManager: FacetManager) {
+		function toFilter(facet: BooleanFacet | ListFacet) {
+			const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }))
+			if (allFacetFilters.length === 1) return allFacetFilters[0]
+			else if (allFacetFilters.length > 1) return { bool: { should: allFacetFilters } }
+			return {}
+		}
 
+		const booleanFilters = facetsManager.getFacets(FacetType.Boolean)
+			.filter(facet => facet.filters.size)
+			.map(toFilter)
+
+		const listFilters = facetsManager.getFacets(FacetType.List)
+			.filter(facet => facet.filters.size)
+			.map(toFilter)
 
 		const rangeFilters = facetsManager.getFacets(FacetType.Range)
 			.filter(facet => Array.isArray(facet.filter) && facet.filter.length === 2)
@@ -66,7 +70,7 @@ export default class ElasticSearchRequest {
 				}
 			}))
 
-		const filters = listAndBoolFilters.concat(rangeFilters as any)
+		const filters = booleanFilters.concat(listFilters, rangeFilters as any)
 
 		if (!filters.length) {
 			this.post_filter = {}
@@ -138,7 +142,7 @@ export default class ElasticSearchRequest {
 		return {
 			date_histogram: {
 				field: facet.field,
-				interval: "year",
+				interval: "month",
 			}
 		}
 	}

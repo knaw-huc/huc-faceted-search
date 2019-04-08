@@ -8,28 +8,27 @@ var ChartType;
     ChartType[ChartType["Horizon"] = 1] = "Horizon";
 })(ChartType || (ChartType = {}));
 class Histogram extends React.PureComponent {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super(...arguments);
         this.canvasRef = React.createRef();
         this.divRef = React.createRef();
     }
     componentDidMount() {
         this.ctx = this.canvasRef.current.getContext('2d');
         const { width, height } = this.divRef.current.getBoundingClientRect();
-        this.canvasRef.current.width = width;
+        this.canvasRef.current.width = width - 8;
         this.canvasRef.current.height = height;
+        this.init();
     }
     componentDidUpdate(prevProps) {
-        if (this.ctx != null && this.props.values.length && prevProps.values !== this.props.values) {
-            const values = this.props.values.map(value => value.doc_count);
-            const canvas = this.drawChart(ChartType.Bar, values, 24);
-            this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
-            this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
+        if (prevProps.values !== this.props.values) {
+            this.init();
         }
     }
     render() {
         return (React.createElement("div", { ref: this.divRef, style: {
                 height: '60px',
+                marginLeft: '8px',
                 position: 'relative',
             } },
             React.createElement("div", { style: {
@@ -41,6 +40,12 @@ class Histogram extends React.PureComponent {
                     width: `${(this.props.upperLimit - this.props.lowerLimit) * 100}%`,
                 } }),
             React.createElement("canvas", { ref: this.canvasRef })));
+    }
+    init() {
+        const values = this.props.values.map(value => value.doc_count);
+        const canvas = this.drawChart(ChartType.Bar, values, values.length);
+        this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
+        this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
     }
     drawChart(chartType, values, maxBars) {
         if (maxBars != null && values.length > maxBars) {
@@ -85,4 +90,7 @@ class Histogram extends React.PureComponent {
         }
     }
 }
+Histogram.defaultProps = {
+    values: []
+};
 exports.default = Histogram;

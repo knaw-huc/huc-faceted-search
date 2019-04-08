@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FacetsProps } from '../facets';
-import { ListFacetProps } from './index';
 declare type Props = FacetsProps & ListFacetProps;
 interface State {
     value: string;

@@ -1,36 +1,25 @@
 import backends, { Backend } from './backends'
-import { ParsedResponse } from './backends/elasticsearch/response-parser'
-import FacetsManager from './facets-manager';
+import FacetManager from '../facets-manager'
 
-type DispatchResponse = { request: any, response: any }
-
-interface History {
-	// facets: Facets,
-	// query: string,
-	request: string,
-	response: ParsedResponse,
-}
-
-interface Options {
-	backend: 'none' | 'elasticsearch'
-	url: string
-}
 export default class IOManager {
 	private backend: Backend
 	private cache: {[key: string]: string} = {}
-	private history: History[] = []
+	private history: IOHistory[] = []
+	onChange: OnIOManagerChange
 
-	constructor(private options: Options, private facetsManager: FacetsManager) {
+	constructor(private options: Options, private facetsManager: FacetManager) {
 		this.backend = backends[options.backend]
+		this.facetsManager.onChange = this.dispatch
 	}
 
-	async dispatch(): Promise<DispatchResponse> {
+	dispatch = async () => {
 		const requestBody = new this.backend.RequestCreator(this.facetsManager)
-		return this.handleFetch(requestBody)
+		const response = await this.handleFetch(requestBody)
+		this.onChange(response)
 	}
 
 	// TODO type request
-	async handleFetch(request: any) {
+	private async handleFetch(request: any): Promise<OnChangeResponse> {
 		const body = JSON.stringify(request)
 		let response: any
 		if (this.cache.hasOwnProperty(body)) {
@@ -47,11 +36,12 @@ export default class IOManager {
 
 		return {
 			request,
-			response: responseParser.parsedResponse
+			response: responseParser.parsedResponse,
+			query: this.facetsManager.query
 		}
 	}
 
-	private async fetch(body: any) {
+	private async fetch(body: string) {
 		let fetchResponse: Response
 		let response: any
 
@@ -77,12 +67,9 @@ export default class IOManager {
 		if (body.hasOwnProperty('from')) body.from += body.size
 		else body.from = body.size
 
-		const dispatchResponse = await this.handleFetch(body)
-		dispatchResponse.response.hits = lastItem.response.hits.concat(dispatchResponse.response.hits)
+		const response = await this.handleFetch(body)
+		response.response.hits = lastItem.response.hits.concat(response.response.hits)
 
-		return {
-			...dispatchResponse,
-			query: this.facetsManager.query,
-		}
+		this.onChange(response)
 	}
 }

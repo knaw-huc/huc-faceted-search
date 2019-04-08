@@ -1,23 +1,10 @@
 import * as React from 'react';
 import { FacetsProps } from '../facets';
-interface Props {
-    field: string;
-    granularity: 'year' | 'month' | 'day';
-    title: string;
-    type?: 'number' | 'timestamp';
-}
-interface State {
-    lowerLimit: number;
-    rangeMin: number;
-    rangeMax: number;
-    upperLimit: number;
-}
-export default class RangeFacetView extends React.PureComponent<Props & FacetsProps, State> {
-    state: State;
-    static defaultProps: Partial<Props>;
+export default class RangeFacetView extends React.PureComponent<RangeProps & FacetsProps, RangeState> {
+    state: RangeState;
+    static defaultProps: Partial<RangeProps>;
     componentDidMount(): void;
-    componentDidUpdate(prevProps: Props & FacetsProps): void;
+    componentDidUpdate(prevProps: RangeProps & FacetsProps): void;
     render(): JSX.Element;
     formatNumber(num: number): string | number;
 }
-export {};

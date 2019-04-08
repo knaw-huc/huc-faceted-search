@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { FacetsProps } from '../facets';
-import { ListFacetProps } from './index';
 import styled from '@emotion/styled';
 import { Input } from '../full-text-search';
-import { SortBy, SortDirection } from '../../models/facet';
 
 const Wrapper = styled('div')`
 	font-size: .9em;

@@ -17,7 +17,7 @@ export default function(props: Props) {
 				</MoreLessButton>
 			}
 			{
-				facet.size < facet.viewSize &&
+				facet.settings.size < facet.viewSize &&
 				<MoreLessButton
 					onClick={() => props.state.facetsManager.viewLess(props.field)}
 				>

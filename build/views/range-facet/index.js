@@ -7,7 +7,6 @@ const facet_1 = tslib_1.__importDefault(require("../facet"));
 const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const histogram_1 = tslib_1.__importDefault(require("./histogram"));
-const facet_2 = require("../../models/facet");
 const Dates = styled_1.default('div') `
 	color: #888;
 	display: grid;
@@ -32,7 +31,9 @@ class RangeFacetView extends React.PureComponent {
         };
     }
     componentDidMount() {
-        this.props.state.facetsManager.addFacet(facet_2.FacetType.Range, this.props.field, this.props.index);
+        this.props.state.facetsManager.setRangeFacet(this.props.field, this.props.index, {
+            interval: this.props.interval
+        });
     }
     componentDidUpdate(prevProps) {
         const prevFacet = prevProps.state.facetsManager.getRangeFacet(prevProps.field);
@@ -71,7 +72,7 @@ class RangeFacetView extends React.PureComponent {
                         this.props.state.facetsManager.addFilter(this.props.field, rangeMin, rangeMax);
                     }
                 }, style: {
-                    marginTop: '-4px',
+                    marginTop: '-6px',
                     position: 'absolute',
                 }, upperLimit: this.state.upperLimit }),
             React.createElement(Dates, null,
@@ -90,13 +91,13 @@ class RangeFacetView extends React.PureComponent {
             let date;
             const d = new Date(num);
             const year = d.getUTCFullYear();
-            if (this.props.granularity === 'year') {
+            if (this.props.interval === 'year') {
                 date = isNaN(year) ? '' : year.toString();
             }
-            else if (this.props.granularity === 'month') {
+            else if (this.props.interval === 'month') {
                 date = `${year}-${d.getUTCMonth() + 1}`;
             }
-            else if (this.props.granularity === 'day') {
+            else if (this.props.interval === 'day') {
                 date = `${year}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
             }
             return date;
@@ -104,7 +105,7 @@ class RangeFacetView extends React.PureComponent {
     }
 }
 RangeFacetView.defaultProps = {
-    granularity: 'year',
+    interval: 'year',
     type: 'number',
 };
 exports.default = RangeFacetView;

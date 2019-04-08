@@ -3,20 +3,14 @@ import Facet from '../facet'
 import FacetValuesView from './values'
 import FacetHeader from '../facet-header'
 import { FacetsProps } from '../facets'
-import { FacetType } from '../../models/facet'
 
-export interface BooleanFacetProps {
-	field: string
-	labels?: [string, string]
-	title: string
-}
 export default class BooleanFacet extends React.PureComponent<FacetsProps & BooleanFacetProps> {
 	static defaultProps: Partial<BooleanFacetProps> = {
 		labels: ["No", "Yes"]
 	}
 
 	componentDidMount() {
-		this.props.state.facetsManager.addFacet(FacetType.Boolean, this.props.field, this.props.index)
+		this.props.state.facetsManager.setBooleanFacet(this.props.field, this.props.index, {})
 	}
 
 	render() {

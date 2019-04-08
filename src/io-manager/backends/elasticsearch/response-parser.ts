@@ -1,19 +1,4 @@
-import { ListFacetValue, FacetType } from '../../models/facet'
-import FacetsManager from '../../facets-manager';
-
-export interface ParsedResponse {
-	aggregations: { [id: string]: any}
-	hits: any[]
-	total: number
-}
-
-export interface ElasticSearchResponse {
-	aggregations: { [id: string]: any}
-	hits: {
-		hits: { _source: any }[]
-		total: number
-	}
-}
+import FacetManager from '../../../facets-manager'
 
 export default class ElasticSearchResponseParser {
 	parsedResponse: ParsedResponse = {
@@ -22,7 +7,7 @@ export default class ElasticSearchResponseParser {
 		total: 0
 	}
 
-	constructor(private response: ElasticSearchResponse, private facetsManager: FacetsManager) {
+	constructor(private response: ElasticSearchResponse, private facetsManager: FacetManager) {
 		this.updateBooleanFacets()
 		this.updateListFacets()
 		this.updateRangeFacets()

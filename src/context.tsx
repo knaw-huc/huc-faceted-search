@@ -1,9 +1,9 @@
 import * as React from 'react'
-import FacetsManager from './facets-manager'
+import FacetManager from './facets-manager'
 
 export interface ContextState {
 	cycle: number,
-	facetsManager: FacetsManager,
+	facetsManager: FacetManager,
 }
 export const defaultState: ContextState = {
 	cycle: 0,
