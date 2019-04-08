@@ -6,5 +6,6 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
     componentDidMount(): void;
     componentDidUpdate(prevProps: RangeProps & FacetsProps): void;
     render(): JSX.Element;
-    formatNumber(num: number): string | number;
+    private formatRange;
+    private formatDate;
 }

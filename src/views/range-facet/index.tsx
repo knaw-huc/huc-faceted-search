@@ -6,6 +6,8 @@ import FacetHeader from '../facet-header'
 import styled from '@emotion/styled'
 import Histogram from './histogram'
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 const Dates = styled('div')`
 	color: #888;
 	display: grid;
@@ -65,6 +67,8 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 		[min, max] = facet.values
 		histogramValues = facet.histogramValues
 
+		const [fMin, fMax] = this.formatRange()
+
 		return (
 			<Facet style={{position: 'relative'}}>
 				<FacetHeader {...this.props} />
@@ -96,41 +100,54 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 					upperLimit={this.state.upperLimit}
 				/>
 				<Dates>
-					<span>{this.formatNumber(min)}</span>
+					<span>{this.formatDate(min)}</span>
 					<ActiveDates>
 						{
 							this.state.rangeMin != null && this.state.rangeMax != null &&
 							<>
-								<span style={{textAlign: 'right'}}>{this.formatNumber(this.state.rangeMin)}</span>
+								<span style={{textAlign: 'right'}}>{fMin}</span>
 								<span style={{textAlign: 'center'}}>-</span>
-								<span>{this.formatNumber(this.state.rangeMax)}</span>
+								<span>{fMax}</span>
 							</>
 						}
 					</ActiveDates>
-					<span style={{textAlign: 'right'}}>{this.formatNumber(max)}</span>
+					<span style={{textAlign: 'right'}}>{this.formatDate(max)}</span>
 				</Dates>
 			</Facet>
 		)
 	}
 
-	formatNumber(num: number) {
+	private formatRange() {
+		if (this.props.type === 'number') return [this.state.rangeMin, this.state.rangeMax]
+
+		const dateMin = new Date(this.state.rangeMin)
+		const yearMin = dateMin.getUTCFullYear()
+
+		const dateMax = new Date(this.state.rangeMax)
+		const yearMax = dateMax.getUTCFullYear()
+
+		return [this.formatDate(this.state.rangeMin, yearMin === yearMax), this.formatDate(this.state.rangeMax)]
+	}
+
+	private formatDate(num: number, sameYear?: boolean) {
 		if (this.props.type === 'number') return num
-		else if (this.props.type === 'timestamp') {
-			let date: string
-			const d = new Date(num)
-			const year = d.getUTCFullYear()
 
-			if (this.props.interval === 'year') {
-				date = isNaN(year) ? '' : year.toString()
-			}
-			else if (this.props.interval === 'month') {
-				date = `${year}-${d.getUTCMonth() + 1}`
-			}
-			else if (this.props.interval === 'day') {
-				date = `${year}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`
-			}
+		let date: string = ''
+		const d = new Date(num)
+		const year = d.getUTCFullYear()
 
-			return date
+		if (this.props.interval === 'year' && !sameYear) {
+			date = isNaN(year) ? '' : year.toString()
 		}
+		else if (this.props.interval === 'month') {
+			date = `${months[d.getUTCMonth()]}`
+			if (!sameYear) date += ` ${year}`
+		}
+		else if (this.props.interval === 'day') {
+			date = `${d.getUTCDate()} ${months[d.getUTCMonth()]}`
+			if (!sameYear) date += ` ${year}`
+		}
+
+		return date
 	}
 }

@@ -7,6 +7,7 @@ const facet_1 = tslib_1.__importDefault(require("../facet"));
 const facet_header_1 = tslib_1.__importDefault(require("../facet-header"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const histogram_1 = tslib_1.__importDefault(require("./histogram"));
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const Dates = styled_1.default('div') `
 	color: #888;
 	display: grid;
@@ -56,6 +57,7 @@ class RangeFacetView extends React.PureComponent {
             return null;
         [min, max] = facet.values;
         histogramValues = facet.histogramValues;
+        const [fMin, fMax] = this.formatRange();
         return (React.createElement(facet_1.default, { style: { position: 'relative' } },
             React.createElement(facet_header_1.default, Object.assign({}, this.props)),
             React.createElement(histogram_1.default, { lowerLimit: this.state.lowerLimit, upperLimit: this.state.upperLimit, values: histogramValues }),
@@ -76,32 +78,43 @@ class RangeFacetView extends React.PureComponent {
                     position: 'absolute',
                 }, upperLimit: this.state.upperLimit }),
             React.createElement(Dates, null,
-                React.createElement("span", null, this.formatNumber(min)),
+                React.createElement("span", null, this.formatDate(min)),
                 React.createElement(ActiveDates, null, this.state.rangeMin != null && this.state.rangeMax != null &&
                     React.createElement(React.Fragment, null,
-                        React.createElement("span", { style: { textAlign: 'right' } }, this.formatNumber(this.state.rangeMin)),
+                        React.createElement("span", { style: { textAlign: 'right' } }, fMin),
                         React.createElement("span", { style: { textAlign: 'center' } }, "-"),
-                        React.createElement("span", null, this.formatNumber(this.state.rangeMax)))),
-                React.createElement("span", { style: { textAlign: 'right' } }, this.formatNumber(max)))));
+                        React.createElement("span", null, fMax))),
+                React.createElement("span", { style: { textAlign: 'right' } }, this.formatDate(max)))));
     }
-    formatNumber(num) {
+    formatRange() {
+        if (this.props.type === 'number')
+            return [this.state.rangeMin, this.state.rangeMax];
+        const dateMin = new Date(this.state.rangeMin);
+        const yearMin = dateMin.getUTCFullYear();
+        const dateMax = new Date(this.state.rangeMax);
+        const yearMax = dateMax.getUTCFullYear();
+        return [this.formatDate(this.state.rangeMin, yearMin === yearMax), this.formatDate(this.state.rangeMax)];
+    }
+    formatDate(num, sameYear) {
         if (this.props.type === 'number')
             return num;
-        else if (this.props.type === 'timestamp') {
-            let date;
-            const d = new Date(num);
-            const year = d.getUTCFullYear();
-            if (this.props.interval === 'year') {
-                date = isNaN(year) ? '' : year.toString();
-            }
-            else if (this.props.interval === 'month') {
-                date = `${year}-${d.getUTCMonth() + 1}`;
-            }
-            else if (this.props.interval === 'day') {
-                date = `${year}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
-            }
-            return date;
+        let date = '';
+        const d = new Date(num);
+        const year = d.getUTCFullYear();
+        if (this.props.interval === 'year' && !sameYear) {
+            date = isNaN(year) ? '' : year.toString();
         }
+        else if (this.props.interval === 'month') {
+            date = `${months[d.getUTCMonth()]}`;
+            if (!sameYear)
+                date += ` ${year}`;
+        }
+        else if (this.props.interval === 'day') {
+            date = `${d.getUTCDate()} ${months[d.getUTCMonth()]}`;
+            if (!sameYear)
+                date += ` ${year}`;
+        }
+        return date;
     }
 }
 RangeFacetView.defaultProps = {
