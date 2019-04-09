@@ -8,15 +8,19 @@ class BaseFacet {
         this.id = `${field}_${index}`;
     }
 }
+exports.BaseFacet = BaseFacet;
 class ListFacet extends BaseFacet {
     constructor(field, index, settings) {
         super(field, index, "list");
         this.settings = settings;
+        this.type = "list";
+        this.reset();
+    }
+    reset() {
         this.filters = new Set();
         this.order = ["_count", "desc"];
         this.query = '';
         this.total = 0;
-        this.type = "list";
         this.values = [];
         this.viewSize = this.settings.size;
     }
@@ -33,8 +37,11 @@ class BooleanFacet extends BaseFacet {
     constructor(field, index, settings) {
         super(field, index, "boolean");
         this.settings = settings;
-        this.filters = new Set();
         this.type = "boolean";
+        this.reset();
+    }
+    reset() {
+        this.filters = new Set();
         this.values = [];
     }
 }
@@ -43,6 +50,10 @@ class RangeFacet extends BaseFacet {
     constructor(field, index, settings) {
         super(field, index, "range");
         this.settings = settings;
+        this.reset();
+    }
+    reset() {
+        this.filter = null;
         this.histogramValues = [];
         this.values = [null, null];
     }

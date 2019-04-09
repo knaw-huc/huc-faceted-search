@@ -1,12 +1,4 @@
-import { BooleanFacet, ListFacet, RangeFacet } from '../models/facet'
 import FacetGetters from './getters'
-
-// TODO fix typings
-const facetByType: Record<FacetType, any> = {
-	[FacetType.Boolean]: BooleanFacet,
-	[FacetType.List]: ListFacet,
-	[FacetType.Range]: RangeFacet,
-}
 
 export default class FacetManager extends FacetGetters {
 	addFilter(field: string, key: string): void // ListFacet || BooleanFacet
@@ -69,10 +61,7 @@ export default class FacetManager extends FacetGetters {
 
 	reset() {
 		this.query = ''
-		for (const [field, facet] of this.facets) {
-			const nextFacet = new facetByType[facet.type]()
-			this.facets.set(field, nextFacet)
-		}
+		for (const facet of this.facets.values()) facet.reset()
 		this.handleChange()
 	}
 

@@ -1,13 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const facet_1 = require("../models/facet");
 const getters_1 = tslib_1.__importDefault(require("./getters"));
-const facetByType = {
-    ["boolean"]: facet_1.BooleanFacet,
-    ["list"]: facet_1.ListFacet,
-    ["range"]: facet_1.RangeFacet,
-};
 class FacetManager extends getters_1.default {
     addFilter(field, key, max) {
         const facetType = this.facets.get(field).type;
@@ -56,10 +50,8 @@ class FacetManager extends getters_1.default {
     }
     reset() {
         this.query = '';
-        for (const [field, facet] of this.facets) {
-            const nextFacet = new facetByType[facet.type]();
-            this.facets.set(field, nextFacet);
-        }
+        for (const facet of this.facets.values())
+            facet.reset();
         this.handleChange();
     }
     setFacetCount(count) {

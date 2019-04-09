@@ -1,9 +1,10 @@
-declare abstract class BaseFacet {
+export declare abstract class BaseFacet {
     field: string;
     index: number;
     type: FacetType;
     id: string;
     constructor(field: string, index: number, type: FacetType);
+    abstract reset(): void;
 }
 export declare class ListFacet extends BaseFacet {
     settings: ListSettings;
@@ -15,6 +16,7 @@ export declare class ListFacet extends BaseFacet {
     values: ListFacetValue[];
     viewSize: number;
     constructor(field: string, index: number, settings: ListSettings);
+    reset(): void;
     viewLess(): void;
     viewMore(): void;
 }
@@ -24,6 +26,7 @@ export declare class BooleanFacet extends BaseFacet {
     type: FacetType;
     values: ListFacetValue[];
     constructor(field: string, index: number, settings: BooleanSettings);
+    reset(): void;
 }
 export declare class RangeFacet extends BaseFacet {
     settings: RangeSettings;
@@ -32,5 +35,5 @@ export declare class RangeFacet extends BaseFacet {
     type: FacetType.Range;
     values: [number, number];
     constructor(field: string, index: number, settings: RangeSettings);
+    reset(): void;
 }
-export {};
