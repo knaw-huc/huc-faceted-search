@@ -11,4 +11,5 @@ export default class IOManager {
     private handleFetch;
     private fetch;
     getNext(): Promise<void>;
+    goToPage: (pageNumber: number) => Promise<void>;
 }

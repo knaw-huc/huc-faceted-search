@@ -2,36 +2,35 @@
 
 import * as React from 'react'
 import { Section, Header, ResultList, Result } from './components'
+import Pagination from './pagination'
+import { ContextState } from '../context'
 
 interface Props {
-	onClickResult?: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
+	goToPage: (pageNumber: number) => void
+	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultBodyComponent: React.SFC<ResultBodyProps>
-	searchResults: SearchResults
+	resultsPerPage: number
+	state: ContextState
 }
 export default class HucSearchResults extends React.PureComponent<Props> {
-	static defaultProps: Pick<Props, 'searchResults'> = {
-		searchResults: {
-			hits: [],
-			id: null,
-			query: {},
-			total: 0,
-		}
-	}
-
 	render() {
 		return (
 			<Section>
 
 				<Header>
 					<div>
-						Found {this.props.searchResults.total} result{this.props.searchResults.total === 1 ? '' : 's'}
+						Found {this.props.state.searchResult.total} result{this.props.state.searchResult.total === 1 ? '' : 's'}
 					</div>
-
+					<Pagination
+						goToPage={this.props.goToPage}
+						resultsPerPage={this.props.resultsPerPage}
+						searchResults={this.props.state.searchResult}
+					/>
 					{/* <OrderBy /> */}
 				</Header>
 				<ResultList>
 					{
-						this.props.searchResults.hits.map((hit, i) =>
+						this.props.state.searchResult.hits.map((hit, i) =>
 							<Result
 								key={i}
 								onClick={(ev) => {

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ElasticSearchRequest {
-    constructor(facetsManager) {
+    constructor(facetsManager, size) {
+        this.size = size;
         this.aggs = {};
         this.post_filter = {};
-        this.size = 20;
         this.setAggregations(facetsManager);
         this.setQuery(facetsManager);
     }

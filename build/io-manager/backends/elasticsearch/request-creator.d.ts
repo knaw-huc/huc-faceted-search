@@ -7,6 +7,7 @@ declare type Aggregations = {
     [id: string]: AggregationRequest;
 };
 export default class ElasticSearchRequest {
+    size: number;
     aggs: Aggregations;
     highlight: {
         fields: {
@@ -16,8 +17,7 @@ export default class ElasticSearchRequest {
     };
     post_filter: any;
     query: any;
-    size: number;
-    constructor(facetsManager: FacetManager);
+    constructor(facetsManager: FacetManager, size: number);
     private setQuery;
     private setAggregations;
     private setPostFilter;

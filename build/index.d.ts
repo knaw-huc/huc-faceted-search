@@ -12,6 +12,9 @@ export { BooleanFacet, FacetsView as Facets, FullTextSearch, ListFacet, RangeFac
 interface Props {
     backend?: BackendType;
     onChange: (response: OnChangeResponse) => void;
+    onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void;
+    resultBodyComponent: React.SFC<ResultBodyProps>;
+    resultsPerPage?: number;
     url: string;
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {

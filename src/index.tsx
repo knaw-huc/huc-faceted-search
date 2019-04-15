@@ -23,13 +23,29 @@ export {
 	SearchResults
 }
 
-const Wrapper = styled('div')`
+const Wrapper = styled.div`
+	display: grid;
 	font-family: sans-serif;
+	grid-template-columns: minmax(32px, auto) 352px minmax(320px, 672px) minmax(32px, auto);
+	margin-bottom: 10vh;
+	
+	& > aside {
+		grid-column: 2;
+		padding-right: 32px;
+	}
+
+	& > section {
+		grid-column: 3;
+		padding-left: 32px;
+	}
 `
 
 interface Props {
 	backend?: BackendType
 	onChange: (response: OnChangeResponse) => void
+	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
+	resultBodyComponent: React.SFC<ResultBodyProps>
+	resultsPerPage?: number
 	url: string
 }
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
@@ -40,16 +56,17 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	private ioManager: IOManager
 
 	static defaultProps: Partial<Props> = {
-		backend: 'none'
+		backend: 'none',
+		resultsPerPage: 10,
 	}
 
 	constructor(props: Props) {
 		super(props)
 
-		this.ioManager = new IOManager({ backend: props.backend, url: props.url }, this.state.facetsManager)
-		this.ioManager.onChange = (response: OnChangeResponse) => {
-			props.onChange(response)
-			this.setState({ cycle: this.state.cycle++ })
+		this.ioManager = new IOManager({ backend: props.backend, resultsPerPage: props.resultsPerPage, url: props.url }, this.state.facetsManager)
+		this.ioManager.onChange = (changeResponse: OnChangeResponse) => {
+			props.onChange(changeResponse)
+			this.setState({ searchResult: changeResponse.response })
 		}
 	}
 
@@ -57,7 +74,20 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 		return (
 			<Context.Provider value={this.state}>
 				<Wrapper>
-					{this.props.children}
+					<aside>
+						<FullTextSearch autoSuggest={async () => []} />
+						<Reset />
+						<FacetsView>
+							{this.props.children}
+						</FacetsView>
+					</aside>
+					<SearchResults
+						goToPage={this.ioManager.goToPage}
+						onClickResult={this.props.onClickResult}
+						resultBodyComponent={this.props.resultBodyComponent}
+						resultsPerPage={this.props.resultsPerPage}
+						state={this.state}
+					/>
 				</Wrapper>
 			</Context.Provider>
 		)

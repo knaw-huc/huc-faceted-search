@@ -2,12 +2,15 @@ import * as React from 'react'
 import FacetManager from './facets-manager'
 
 export interface ContextState {
-	cycle: number,
 	facetsManager: FacetManager,
+	searchResult: SearchResults
 }
 export const defaultState: ContextState = {
-	cycle: 0,
 	facetsManager: null,
+	searchResult: {
+		hits: [],
+		total: 0
+	}
 }
 
 export default React.createContext(defaultState)

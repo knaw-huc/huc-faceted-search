@@ -13,7 +13,7 @@ export default class IOManager {
 	}
 
 	dispatch = async () => {
-		const requestBody = new this.backend.RequestCreator(this.facetsManager)
+		const requestBody = new this.backend.RequestCreator(this.facetsManager, this.options.resultsPerPage)
 		const response = await this.handleFetch(requestBody)
 		this.onChange(response)
 	}
@@ -69,6 +69,17 @@ export default class IOManager {
 
 		const response = await this.handleFetch(body)
 		response.response.hits = lastItem.response.hits.concat(response.response.hits)
+
+		this.onChange(response)
+	}
+
+	goToPage = async (pageNumber: number) => {
+		if (!this.history.length) return
+		const lastItem = this.history[this.history.length - 1]
+		const body = JSON.parse(lastItem.request)
+		body.from = body.size * (pageNumber - 1)
+
+		const response = await this.handleFetch(body)
 
 		this.onChange(response)
 	}

@@ -20,22 +20,40 @@ exports.Reset = reset_1.default;
 const search_results_1 = tslib_1.__importDefault(require("./search-results"));
 exports.SearchResults = search_results_1.default;
 const io_manager_1 = tslib_1.__importDefault(require("./io-manager"));
-const Wrapper = styled_1.default('div') `
+const Wrapper = styled_1.default.div `
+	display: grid;
 	font-family: sans-serif;
+	grid-template-columns: minmax(32px, auto) 352px minmax(320px, 672px) minmax(32px, auto);
+	margin-bottom: 10vh;
+	
+	& > aside {
+		grid-column: 2;
+		padding-right: 32px;
+	}
+
+	& > section {
+		grid-column: 3;
+		padding-left: 32px;
+	}
 `;
 class FacetedSearch extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, context_1.defaultState, { facetsManager: new facets_manager_1.default() });
-        this.ioManager = new io_manager_1.default({ backend: props.backend, url: props.url }, this.state.facetsManager);
-        this.ioManager.onChange = (response) => {
-            props.onChange(response);
-            this.setState({ cycle: this.state.cycle++ });
+        this.ioManager = new io_manager_1.default({ backend: props.backend, resultsPerPage: props.resultsPerPage, url: props.url }, this.state.facetsManager);
+        this.ioManager.onChange = (changeResponse) => {
+            props.onChange(changeResponse);
+            this.setState({ searchResult: changeResponse.response });
         };
     }
     render() {
         return (React.createElement(context_1.default.Provider, { value: this.state },
-            React.createElement(Wrapper, null, this.props.children)));
+            React.createElement(Wrapper, null,
+                React.createElement("aside", null,
+                    React.createElement(full_text_search_1.default, { autoSuggest: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return []; }) }),
+                    React.createElement(reset_1.default, null),
+                    React.createElement(facets_1.default, null, this.props.children)),
+                React.createElement(search_results_1.default, { goToPage: this.ioManager.goToPage, onClickResult: this.props.onClickResult, resultBodyComponent: this.props.resultBodyComponent, resultsPerPage: this.props.resultsPerPage, state: this.state }))));
     }
     addFilter(field, key) {
         this.state.facetsManager.addFilter(field, key);
@@ -47,6 +65,7 @@ class FacetedSearch extends React.PureComponent {
     }
 }
 FacetedSearch.defaultProps = {
-    backend: 'none'
+    backend: 'none',
+    resultsPerPage: 10,
 };
 exports.default = FacetedSearch;

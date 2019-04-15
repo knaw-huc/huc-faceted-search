@@ -9,8 +9,17 @@ class IOManager {
         this.cache = {};
         this.history = [];
         this.dispatch = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const requestBody = new this.backend.RequestCreator(this.facetsManager);
+            const requestBody = new this.backend.RequestCreator(this.facetsManager, this.options.resultsPerPage);
             const response = yield this.handleFetch(requestBody);
+            this.onChange(response);
+        });
+        this.goToPage = (pageNumber) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this.history.length)
+                return;
+            const lastItem = this.history[this.history.length - 1];
+            const body = JSON.parse(lastItem.request);
+            body.from = body.size * (pageNumber - 1);
+            const response = yield this.handleFetch(body);
             this.onChange(response);
         });
         this.backend = backends_1.default[options.backend];

@@ -8,6 +8,7 @@ type OnChangeResponse = { request: any, response: any, query: string }
 
 interface Options {
 	backend: BackendType
+	resultsPerPage: number
 	url: string
 }
 

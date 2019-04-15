@@ -12,9 +12,8 @@ export default class ElasticSearchRequest {
 	highlight: { fields: { text: {} }, require_field_match: boolean }
 	post_filter: any = {}
 	query: any
-	size: number = 20
 
-	constructor(facetsManager: FacetManager) {
+	constructor(facetsManager: FacetManager, public size: number) {
 		this.setAggregations(facetsManager)
 		this.setQuery(facetsManager)
 	}
