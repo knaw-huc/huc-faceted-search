@@ -105,6 +105,7 @@ export default class ElasticSearchRequest {
 	private createListAggregation(facet: ListFacet) {
 		const terms = {
 			field: facet.field,
+			min_doc_count: 0,
 			size: facet.viewSize,
 			order: {
 				[facet.order[0]]: facet.order[1]
@@ -138,11 +139,30 @@ export default class ElasticSearchRequest {
 	}
 
 	private createHistogramAggregation(facet: RangeFacet) {
-		return {
+
+		let histAgg = {
 			date_histogram: {
 				field: facet.field,
 				interval: "month",
 			}
+		} as any
+
+		if (Object.keys(this.post_filter).length) {
+			histAgg = {
+				aggs: {
+					[`${facet.field}_histogram`]: {
+						date_histogram: {
+							extended_bounds: { min: facet.values[0], max: facet.values[1]},
+							field: facet.field,
+							interval: "month",
+							min_doc_count: 0,
+						}
+					}
+				},
+				filter: this.post_filter
+			}
 		}
+
+		return histAgg
 	}
 }

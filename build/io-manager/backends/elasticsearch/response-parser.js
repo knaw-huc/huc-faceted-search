@@ -49,13 +49,14 @@ class ElasticSearchResponseParser {
     updateRangeFacets() {
         this.facetsManager.getFacets("range")
             .forEach(facet => {
-            if (facet.values[0] != null && facet.values[1] != null)
-                return;
             if (!this.response.aggregations.hasOwnProperty(facet.id))
                 return;
             const { min, max } = this.response.aggregations[facet.id][facet.field];
-            facet.values = [min, max];
-            facet.histogramValues = this.response.aggregations[`${facet.id}_histogram`].buckets;
+            if (min != null && max != null)
+                facet.values = [min, max];
+            const histogramAggs = this.response.aggregations[`${facet.id}_histogram`];
+            let histogramValues = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
+            facet.histogramValues = histogramValues != null ? histogramValues : [];
         });
     }
 }

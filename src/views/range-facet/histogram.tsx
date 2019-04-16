@@ -66,7 +66,10 @@ export default class Histogram extends React.PureComponent<Props> {
 		this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
 	}
 
-	private drawChart(chartType: ChartType, values: any[], maxBars?: number) {
+	private drawChart(chartType: ChartType, values: any[], maxBars?: number): HTMLCanvasElement {
+		const canvas = document.createElement('canvas')
+		if (!values.length) return canvas
+
 		if (maxBars != null && values.length > maxBars) {
 			const valuesPerBar = Math.ceil(values.length/maxBars)
 			values = values.reduce((prev, _curr, index, array) => {
@@ -82,7 +85,6 @@ export default class Histogram extends React.PureComponent<Props> {
 		const barWidth = Math.ceil(this.canvasRef.current.width / values.length)
 		const maxValue = values.reduce((prev, curr) => Math.max(prev, curr))
 
-		const canvas = document.createElement('canvas')
 		canvas.width = barWidth * values.length
 		canvas.height = this.canvasRef.current.height
 		const ctx = canvas.getContext('2d')
