@@ -142,7 +142,9 @@ export default class ElasticSearchRequest {
 
 		let histAgg = {
 			date_histogram: {
+				extended_bounds: { min: facet.values[0], max: facet.values[1]},
 				field: facet.field,
+				min_doc_count: 0,
 				interval: "month",
 			}
 		} as any
