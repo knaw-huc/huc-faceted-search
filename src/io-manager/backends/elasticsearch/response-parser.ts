@@ -57,7 +57,7 @@ export default class ElasticSearchResponseParser {
 			.forEach(facet => {
 				if (!this.response.aggregations.hasOwnProperty(facet.id)) return
 				const { min, max } = this.response.aggregations[facet.id][facet.field]
-				if (min != null && max != null) facet.values = [min, max]
+				if (!facet.values.filter(v => v != null).length && min != null && max != null) facet.values = [min, max]
 
 				const histogramAggs = this.response.aggregations[`${facet.id}_histogram`]
 				let histogramValues = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets
