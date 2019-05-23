@@ -5,7 +5,6 @@ type OnFacetManagerChange = () => void
 type OnIOManagerChange = (response: OnChangeResponse) =>  void
 type OnChangeResponse = { request: any, response: any, query: string }
 
-
 interface Options {
 	backend: BackendType
 	resultsPerPage: number
@@ -30,7 +29,6 @@ interface ElasticSearchResponse {
 		total: number
 	}
 }
-
 
 // ENUMS
 declare const enum FacetType {
