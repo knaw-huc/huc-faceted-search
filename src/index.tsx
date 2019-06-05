@@ -24,27 +24,36 @@ export {
 }
 
 const Wrapper = styled.div`
-	display: grid;
-	font-family: sans-serif;
-	grid-template-columns: minmax(32px, auto) 352px minmax(320px, 672px) minmax(32px, auto);
-	margin-bottom: 10vh;
-	
-	& > aside {
-		grid-column: 2;
-		padding-right: 32px;
-	}
+	${(props: { disableDefaultStyle: boolean}) => {
+		if (!props.disableDefaultStyle) {
+			return `
+				display: grid;
+				font-family: sans-serif;
+				grid-template-columns: minmax(32px, auto) 352px minmax(320px, 672px) minmax(32px, auto);
+				margin-bottom: 10vh;
+				
+				& > aside {
+					grid-column: 2;
+					padding-right: 32px;
+				}
 
-	& > section {
-		grid-column: 3;
-		padding-left: 32px;
-	}
+				& > section {
+					grid-column: 3;
+					padding-left: 32px;
+				}
+			`
+		}
+	}}
 `
 
 interface Props {
 	backend?: BackendType
+	className?: string
+	disableDefaultStyle?: boolean
 	onChange: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultBodyComponent: React.SFC<ResultBodyProps>
+	resultBodyProps?: Record<string, any>
 	resultsPerPage?: number
 	url: string
 }
@@ -57,7 +66,9 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 
 	static defaultProps: Partial<Props> = {
 		backend: 'none',
+		disableDefaultStyle: false,
 		resultsPerPage: 10,
+		resultBodyProps: {}
 	}
 
 	constructor(props: Props) {
@@ -73,7 +84,10 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	render() {
 		return (
 			<Context.Provider value={this.state}>
-				<Wrapper>
+				<Wrapper
+					className={this.props.className}
+					disableDefaultStyle={this.props.disableDefaultStyle}
+				>
 					<aside>
 						<FullTextSearch autoSuggest={async () => []} />
 						<Reset />
@@ -82,9 +96,11 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 						</FacetsView>
 					</aside>
 					<SearchResults
+						pageNumber={this.ioManager.currentPage}
 						goToPage={this.ioManager.goToPage}
 						onClickResult={this.props.onClickResult}
 						resultBodyComponent={this.props.resultBodyComponent}
+						resultBodyProps={this.props.resultBodyProps}
 						resultsPerPage={this.props.resultsPerPage}
 						state={this.state}
 					/>
@@ -97,7 +113,11 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 		this.state.facetsManager.addFilter(field, key)
 	}
 
-	async getNext() {
-		await this.ioManager.getNext()
+	getPrevNext(id: string): [Hit, Hit] {
+		return this.ioManager.getPrevNext(id)
 	}
+
+	// async getNext() {
+	// 	await this.ioManager.getNext()
+	// }
 }

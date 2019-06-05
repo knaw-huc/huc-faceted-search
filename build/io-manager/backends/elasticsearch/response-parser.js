@@ -55,7 +55,6 @@ class ElasticSearchResponseParser {
             if (!facet.values.filter(v => v != null).length && min != null && max != null)
                 facet.values = [min, max];
             const histogramAggs = this.response.aggregations[`${facet.id}_histogram`];
-            console.log(facet);
             let histogramValues = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
             facet.histogramValues = histogramValues != null ? histogramValues : [];
         });

@@ -12,7 +12,7 @@ interface Options {
 }
 
 interface IOHistory {
-	request: string,
+	request: any,
 	response: ParsedResponse,
 }
 

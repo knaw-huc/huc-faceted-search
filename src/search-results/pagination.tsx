@@ -44,17 +44,11 @@ const PageNumber = styled(Prev)`
 
 interface Props {
 	goToPage: (pageNumber: number) => void
+	pageNumber: number
 	resultsPerPage: number
 	searchResults: SearchResults
 }
-interface State {
-	pageNumber: number
-}
-export default class Pagination extends React.PureComponent<Props, State> {
-	state: State = {
-		pageNumber: 1
-	}
-
+export default class Pagination extends React.PureComponent<Props> {
 	componentDidUpdate(prevProps: Props) {
 		if (prevProps.searchResults.total !== this.props.searchResults.total) {
 			this.setState({ pageNumber: 1 })
@@ -69,8 +63,8 @@ export default class Pagination extends React.PureComponent<Props, State> {
 
 		return (
 			<Wrapper>
-				{this.state.pageNumber !== 1 ?
-					<Prev onClick={() => this.handlePageNumberClick(this.state.pageNumber - 1)}>◂</Prev> :
+				{this.props.pageNumber !== 1 ?
+					<Prev onClick={() => this.handlePageNumberClick(this.props.pageNumber - 1)}>◂</Prev> :
 					<div />
 				}
 				<PageNumbers>
@@ -80,8 +74,8 @@ export default class Pagination extends React.PureComponent<Props, State> {
 					{last.length > 0 && <div>…</div>}
 					{last.length > 0 && last.map(this.toPageNumber)}
 				</PageNumbers>
-				{this.state.pageNumber !== pageCount ?
-					<Next onClick={() => this.handlePageNumberClick(this.state.pageNumber + 1)}>▸</Next> :
+				{this.props.pageNumber !== pageCount ?
+					<Next onClick={() => this.handlePageNumberClick(this.props.pageNumber + 1)}>▸</Next> :
 					<div />
 				}
 			</Wrapper>
@@ -99,14 +93,14 @@ export default class Pagination extends React.PureComponent<Props, State> {
 			first = [1]
 			last = [pageCount]
 
-			if (this.state.pageNumber < 6) {
+			if (this.props.pageNumber < 6) {
 				first = getRange(1, 7)
 			}
-			else if (this.state.pageNumber > pageCount - 6) {
+			else if (this.props.pageNumber > pageCount - 6) {
 				last = getRange(pageCount - 6, pageCount)
 			}
 			else {
-				current = getRange(this.state.pageNumber - 2, this.state.pageNumber + 2)
+				current = getRange(this.props.pageNumber - 2, this.props.pageNumber + 2)
 			}
 		}
 
@@ -114,7 +108,7 @@ export default class Pagination extends React.PureComponent<Props, State> {
 	}
 	private toPageNumber = (pageNumber: number) =>
 		<PageNumber
-			active={pageNumber === this.state.pageNumber}
+			active={pageNumber === this.props.pageNumber}
 			key={pageNumber}
 			onClick={() => this.handlePageNumberClick(pageNumber)}
 		>
@@ -122,7 +116,6 @@ export default class Pagination extends React.PureComponent<Props, State> {
 		</PageNumber>
 
 	private handlePageNumberClick = (pageNumber: number) => {
-		console.log(pageNumber)
 		this.setState({ pageNumber })
 		this.props.goToPage(pageNumber)
 	}

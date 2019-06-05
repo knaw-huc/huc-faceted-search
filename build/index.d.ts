@@ -11,9 +11,12 @@ import SearchResults from './search-results';
 export { BooleanFacet, FacetsView as Facets, FullTextSearch, ListFacet, RangeFacet, Reset, SearchResults };
 interface Props {
     backend?: BackendType;
+    className?: string;
+    disableDefaultStyle?: boolean;
     onChange: (response: OnChangeResponse) => void;
     onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void;
     resultBodyComponent: React.SFC<ResultBodyProps>;
+    resultBodyProps?: Record<string, any>;
     resultsPerPage?: number;
     url: string;
 }
@@ -24,5 +27,5 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
     constructor(props: Props);
     render(): JSX.Element;
     addFilter(field: string, key: string): void;
-    getNext(): Promise<void>;
+    getPrevNext(id: string): [Hit, Hit];
 }

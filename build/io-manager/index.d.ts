@@ -4,12 +4,14 @@ export default class IOManager {
     private facetsManager;
     private backend;
     private cache;
-    private history;
+    private hitsCache;
+    private lastRequest;
+    currentPage: number;
     onChange: OnIOManagerChange;
     constructor(options: Options, facetsManager: FacetManager);
-    dispatch: () => Promise<void>;
     private handleFetch;
+    private updateHitsCache;
     private fetch;
-    getNext(): Promise<void>;
     goToPage: (pageNumber: number) => Promise<void>;
+    getPrevNext(id: string): [Hit, Hit];
 }

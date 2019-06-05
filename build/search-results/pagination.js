@@ -39,12 +39,8 @@ const PageNumber = styled_1.default(Prev) `
 class Pagination extends React.PureComponent {
     constructor() {
         super(...arguments);
-        this.state = {
-            pageNumber: 1
-        };
-        this.toPageNumber = (pageNumber) => React.createElement(PageNumber, { active: pageNumber === this.state.pageNumber, key: pageNumber, onClick: () => this.handlePageNumberClick(pageNumber) }, pageNumber);
+        this.toPageNumber = (pageNumber) => React.createElement(PageNumber, { active: pageNumber === this.props.pageNumber, key: pageNumber, onClick: () => this.handlePageNumberClick(pageNumber) }, pageNumber);
         this.handlePageNumberClick = (pageNumber) => {
-            console.log(pageNumber);
             this.setState({ pageNumber });
             this.props.goToPage(pageNumber);
         };
@@ -60,8 +56,8 @@ class Pagination extends React.PureComponent {
             return null;
         const { first, current, last } = this.getPages(pageCount);
         return (React.createElement(Wrapper, null,
-            this.state.pageNumber !== 1 ?
-                React.createElement(Prev, { onClick: () => this.handlePageNumberClick(this.state.pageNumber - 1) }, "\u25C2") :
+            this.props.pageNumber !== 1 ?
+                React.createElement(Prev, { onClick: () => this.handlePageNumberClick(this.props.pageNumber - 1) }, "\u25C2") :
                 React.createElement("div", null),
             React.createElement(PageNumbers, null,
                 first.length > 0 && first.map(this.toPageNumber),
@@ -69,8 +65,8 @@ class Pagination extends React.PureComponent {
                 current.map(this.toPageNumber),
                 last.length > 0 && React.createElement("div", null, "\u2026"),
                 last.length > 0 && last.map(this.toPageNumber)),
-            this.state.pageNumber !== pageCount ?
-                React.createElement(Next, { onClick: () => this.handlePageNumberClick(this.state.pageNumber + 1) }, "\u25B8") :
+            this.props.pageNumber !== pageCount ?
+                React.createElement(Next, { onClick: () => this.handlePageNumberClick(this.props.pageNumber + 1) }, "\u25B8") :
                 React.createElement("div", null)));
     }
     getPages(pageCount) {
@@ -83,14 +79,14 @@ class Pagination extends React.PureComponent {
         else {
             first = [1];
             last = [pageCount];
-            if (this.state.pageNumber < 6) {
+            if (this.props.pageNumber < 6) {
                 first = getRange(1, 7);
             }
-            else if (this.state.pageNumber > pageCount - 6) {
+            else if (this.props.pageNumber > pageCount - 6) {
                 last = getRange(pageCount - 6, pageCount);
             }
             else {
-                current = getRange(this.state.pageNumber - 2, this.state.pageNumber + 2);
+                current = getRange(this.props.pageNumber - 2, this.props.pageNumber + 2);
             }
         }
         return { first, current, last };

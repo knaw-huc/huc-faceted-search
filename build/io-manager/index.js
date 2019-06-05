@@ -7,43 +7,56 @@ class IOManager {
         this.options = options;
         this.facetsManager = facetsManager;
         this.cache = {};
-        this.history = [];
-        this.dispatch = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const requestBody = new this.backend.RequestCreator(this.facetsManager, this.options.resultsPerPage);
-            const response = yield this.handleFetch(requestBody);
-            this.onChange(response);
-        });
+        this.hitsCache = {};
+        this.currentPage = 1;
         this.goToPage = (pageNumber) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            if (!this.history.length)
+            if (this.lastRequest == null)
                 return;
-            const lastItem = this.history[this.history.length - 1];
-            const body = JSON.parse(lastItem.request);
+            this.currentPage = pageNumber;
+            const body = this.lastRequest;
             body.from = body.size * (pageNumber - 1);
             const response = yield this.handleFetch(body);
             this.onChange(response);
         });
         this.backend = backends_1.default[options.backend];
-        this.facetsManager.onChange = this.dispatch;
+        this.facetsManager.onChange = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const requestBody = new this.backend.RequestCreator(this.facetsManager, this.options.resultsPerPage);
+            const response = yield this.handleFetch(requestBody);
+            this.onChange(response);
+        });
     }
     handleFetch(request) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const body = JSON.stringify(request);
             let response;
+            const body = JSON.stringify(request);
             if (this.cache.hasOwnProperty(body)) {
                 response = JSON.parse(this.cache[body]);
             }
             else {
-                response = yield this.fetch(body);
+                this.lastRequest = request;
+                const fetchResponse = yield this.fetch(body);
+                const responseParser = new this.backend.ResponseParser(fetchResponse, this.facetsManager);
+                response = responseParser.parsedResponse;
                 this.cache[body] = JSON.stringify(response);
+                this.updateHitsCache(request, response.hits);
             }
-            const responseParser = new this.backend.ResponseParser(response, this.facetsManager);
-            this.history.push({ request: body, response: responseParser.parsedResponse });
             return {
                 request,
-                response: responseParser.parsedResponse,
+                response,
                 query: this.facetsManager.query
             };
         });
+    }
+    updateHitsCache(request, hits) {
+        let { from } = request, rest = tslib_1.__rest(request, ["from"]);
+        const hitsKey = JSON.stringify(rest);
+        if (from == null)
+            from = 0;
+        const arr = this.hitsCache[hitsKey] || [];
+        hits.forEach((hit, index) => {
+            arr[from + index] = hit;
+        });
+        this.hitsCache[hitsKey] = arr;
     }
     fetch(body) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -63,20 +76,14 @@ class IOManager {
             return fetchResponse.status === 200 ? response : null;
         });
     }
-    getNext() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            if (!this.history.length)
-                return;
-            const lastItem = this.history[this.history.length - 1];
-            const body = JSON.parse(lastItem.request);
-            if (body.hasOwnProperty('from'))
-                body.from += body.size;
-            else
-                body.from = body.size;
-            const response = yield this.handleFetch(body);
-            response.response.hits = lastItem.response.hits.concat(response.response.hits);
-            this.onChange(response);
-        });
+    getPrevNext(id) {
+        if (this.lastRequest == null)
+            return;
+        const _a = this.lastRequest, { from } = _a, rest = tslib_1.__rest(_a, ["from"]);
+        const hits = this.hitsCache[JSON.stringify(rest)];
+        const index = hits.findIndex(hit => hit.id === id);
+        console.log(index);
+        return [hits[index - 1], hits[index + 1]];
     }
 }
 exports.default = IOManager;

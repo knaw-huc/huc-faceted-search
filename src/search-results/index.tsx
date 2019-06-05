@@ -8,7 +8,9 @@ import { ContextState } from '../context'
 interface Props {
 	goToPage: (pageNumber: number) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
+	pageNumber: number
 	resultBodyComponent: React.SFC<ResultBodyProps>
+	resultBodyProps: Record<string, any>
 	resultsPerPage: number
 	state: ContextState
 }
@@ -23,6 +25,7 @@ export default class HucSearchResults extends React.PureComponent<Props> {
 					</div>
 					<Pagination
 						goToPage={this.props.goToPage}
+						pageNumber={this.props.pageNumber}
 						resultsPerPage={this.props.resultsPerPage}
 						searchResults={this.props.state.searchResult}
 					/>
@@ -37,11 +40,20 @@ export default class HucSearchResults extends React.PureComponent<Props> {
 									if (this.props.onClickResult != null) this.props.onClickResult(hit, ev)
 								}}
 							>
-								<this.props.resultBodyComponent result={hit} />
+								<this.props.resultBodyComponent
+									{...this.props.resultBodyProps}
+									result={hit}
+								/>
 							</Result>
 						)
 					}
 				</ResultList>
+				<Pagination
+					goToPage={this.props.goToPage}
+					pageNumber={this.props.pageNumber}
+					resultsPerPage={this.props.resultsPerPage}
+					searchResults={this.props.state.searchResult}
+				/>
 			</Section>
 		)
 	}
