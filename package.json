@@ -1,6 +1,6 @@
 {
   "name": "huc-faceted-search",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
