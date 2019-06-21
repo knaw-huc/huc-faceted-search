@@ -8,6 +8,8 @@ const Header = styled_1.default('header') `
 	grid-template-columns: 2fr 1fr;
 `;
 const H3 = styled_1.default('h3') `
+	color: #444;
+	font-size: 1rem;
 	margin: 0 0 .5em 0;
 `;
 class FacetHeader extends React.PureComponent {

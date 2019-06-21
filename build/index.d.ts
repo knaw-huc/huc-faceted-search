@@ -13,7 +13,7 @@ interface Props {
     backend?: BackendType;
     className?: string;
     disableDefaultStyle?: boolean;
-    onChange: (response: OnChangeResponse) => void;
+    onChange?: (response: OnChangeResponse) => void;
     onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void;
     resultBodyComponent: React.SFC<ResultBodyProps>;
     resultBodyProps?: Record<string, any>;

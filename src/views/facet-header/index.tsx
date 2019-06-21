@@ -7,6 +7,8 @@ const Header = styled('header')`
 `
 
 const H3 = styled('h3')`
+	color: #444;
+	font-size: 1rem;
 	margin: 0 0 .5em 0;
 `
 

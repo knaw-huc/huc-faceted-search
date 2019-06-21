@@ -50,7 +50,7 @@ interface Props {
 	backend?: BackendType
 	className?: string
 	disableDefaultStyle?: boolean
-	onChange: (response: OnChangeResponse) => void
+	onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultBodyComponent: React.SFC<ResultBodyProps>
 	resultBodyProps?: Record<string, any>
@@ -67,6 +67,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	static defaultProps: Partial<Props> = {
 		backend: 'none',
 		disableDefaultStyle: false,
+		onChange: () => {},
 		resultsPerPage: 10,
 		resultBodyProps: {}
 	}

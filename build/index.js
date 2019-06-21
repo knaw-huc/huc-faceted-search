@@ -71,6 +71,7 @@ class FacetedSearch extends React.PureComponent {
 FacetedSearch.defaultProps = {
     backend: 'none',
     disableDefaultStyle: false,
+    onChange: () => { },
     resultsPerPage: 10,
     resultBodyProps: {}
 };
