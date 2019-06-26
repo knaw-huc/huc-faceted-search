@@ -27,7 +27,6 @@ const Wrapper = styled_1.default.div `
 				display: grid;
 				font-family: sans-serif;
 				grid-template-columns: minmax(32px, auto) 352px minmax(320px, 672px) minmax(32px, auto);
-				margin-bottom: 10vh;
 				
 				& > aside {
 					grid-column: 2;
