@@ -33,6 +33,12 @@ class ElasticSearchResponseParser {
                 value.key = value.key.toString();
                 return value;
             });
+            if (facet.values.length === 1) {
+                if (facet.values[0].key === '1')
+                    facet.values.push({ key: '0', doc_count: 0 });
+                else
+                    facet.values = [{ key: '1', doc_count: 0 }].concat(facet.values[0]);
+            }
         });
     }
     updateListFacets() {
