@@ -2,11 +2,38 @@ type Facet = import('./models/facet').BooleanFacet | import('./models/facet').Li
 type Facets = Map<string, Facet>
 type BackendType = 'none' | 'elasticsearch'
 type OnFacetManagerChange = () => void
-type OnIOManagerChange = (response: OnChangeResponse) =>  void
-type OnChangeResponse = { request: any, response: any, query: string }
+type OnIOManagerChange = (response: IOManagerOnChangeResponse) =>  void
+interface IOManagerOnChangeResponse {
+	request: any,
+	response: FSResponse
+}
+interface OnChangeResponse extends IOManagerOnChangeResponse {
+	query: string
+}
+
+interface ListFacetValue {
+	key: string,
+	count: number
+}
+interface ListFacetValues {
+	total: number
+	values: ListFacetValue[]
+}
+type RangeFacetValues = [number, number]
+interface BooleanFacetValues {
+	true: number
+	false: number
+}
+type FacetValues = ListFacetValues | BooleanFacetValues | RangeFacetValues
+interface FSResponse {
+	facetValues: Record<string, FacetValues>
+	results: Hit[]
+	total: number
+}
 
 interface Options {
 	backend: BackendType
+	onChange: OnIOManagerChange
 	resultsPerPage: number
 	url: string
 }
@@ -22,13 +49,13 @@ interface ParsedResponse {
 	total: number
 }
 
-interface ElasticSearchResponse {
-	aggregations: { [id: string]: any}
-	hits: {
-		hits: { _source: any }[]
-		total: number
-	}
-}
+// interface ElasticSearchResponse {
+// 	aggregations: { [id: string]: any}
+// 	hits: {
+// 		hits: { _source: any }[]
+// 		total: number
+// 	}
+// }
 
 // ENUMS
 declare const enum FacetType {
@@ -55,7 +82,10 @@ interface FacetProps {
 
 // BOOLEAN
 interface BooleanSettings {
-	labels?: [string, string]
+	labels?: {
+		true: string,
+		false: string
+	}
 }
 type BooleanFacetProps = FacetProps & BooleanSettings
 
@@ -70,10 +100,10 @@ interface ListFacetState {
 	options: boolean
 }
 
-interface ListFacetValue {
-	key: string
-	doc_count: number
-}
+// interface ListFacetValue {
+// 	key: string
+// 	doc_count: number
+// }
 
 // RANGE
 interface RangeSettings {
@@ -87,4 +117,9 @@ interface RangeState {
 	rangeMin: number,
 	rangeMax: number,
 	upperLimit: number
+}
+
+interface Backend {
+	RequestCreator: any
+	responseParser: (response: any, facets: Facet[]) => FSResponse
 }

@@ -58,5 +58,10 @@ class FacetManager extends getters_1.default {
         this.facetCount = count;
         this.handleChange();
     }
+    update(response) {
+        this.getFacets().forEach(facet => {
+            facet.values = response.facetValues[facet.id];
+        });
+    }
 }
 exports.default = FacetManager;

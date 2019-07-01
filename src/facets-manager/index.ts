@@ -49,11 +49,13 @@ export default class FacetManager extends FacetGetters {
 		this.handleChange()
 	}
 
+	// TODO move to Facet?
 	viewLess(field: string) {
 		this.getListFacet(field).viewLess()
 		this.handleChange()
 	}
 
+	// TODO move to Facet?
 	viewMore(field: string) {
 		this.getListFacet(field).viewMore()
 		this.handleChange()
@@ -68,5 +70,17 @@ export default class FacetManager extends FacetGetters {
 	setFacetCount(count: number) {
 		this.facetCount = count
 		this.handleChange()
+	}
+
+	update(response: FSResponse) {
+		this.getFacets().forEach(facet => {
+			facet.values = response.facetValues[facet.id]
+		})
+		// Object.keys(response.aggregations)
+		// 	.forEach(field => {
+		// 		const facet = this.getFacet(field)
+		// 		console.log(field)
+		// 		console.log(response.aggregations, response.aggregations[field])
+		// 	})
 	}
 }

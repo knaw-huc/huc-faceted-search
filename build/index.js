@@ -44,12 +44,19 @@ const Wrapper = styled_1.default.div `
 class FacetedSearch extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = Object.assign({}, context_1.defaultState, { facetsManager: new facets_manager_1.default() });
-        this.ioManager = new io_manager_1.default({ backend: props.backend, resultsPerPage: props.resultsPerPage, url: props.url }, this.state.facetsManager);
-        this.ioManager.onChange = (changeResponse) => {
-            props.onChange(changeResponse);
-            this.setState({ searchResult: changeResponse.response });
-        };
+        this.state = Object.assign({}, context_1.defaultState, { facetsManager: new facets_manager_1.default({
+                onChange: () => this.ioManager.sendRequest(this.state.facetsManager.getFacets(), this.state.facetsManager.query)
+            }) });
+        this.ioManager = new io_manager_1.default({
+            backend: props.backend,
+            resultsPerPage: props.resultsPerPage,
+            url: props.url,
+            onChange: (changeResponse) => {
+                this.state.facetsManager.update(changeResponse.response);
+                props.onChange(Object.assign({}, changeResponse, { query: this.state.facetsManager.query }));
+                this.setState({ searchResult: changeResponse.response });
+            }
+        });
     }
     render() {
         return (React.createElement(context_1.default.Provider, { value: this.state },
@@ -58,7 +65,7 @@ class FacetedSearch extends React.PureComponent {
                     React.createElement(full_text_search_1.default, { autoSuggest: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return []; }) }),
                     React.createElement(reset_1.default, null),
                     React.createElement(facets_1.default, null, this.props.children)),
-                React.createElement(search_results_1.default, { pageNumber: this.ioManager.currentPage, goToPage: this.ioManager.goToPage, onClickResult: this.props.onClickResult, resultBodyComponent: this.props.resultBodyComponent, resultBodyProps: this.props.resultBodyProps, resultsPerPage: this.props.resultsPerPage, state: this.state }))));
+                React.createElement(search_results_1.default, { pageNumber: this.ioManager.currentPage, goToPage: pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets()), onClickResult: this.props.onClickResult, resultBodyComponent: this.props.resultBodyComponent, resultBodyProps: this.props.resultBodyProps, resultsPerPage: this.props.resultsPerPage, state: this.state }))));
     }
     addFilter(field, key) {
         this.state.facetsManager.addFilter(field, key);

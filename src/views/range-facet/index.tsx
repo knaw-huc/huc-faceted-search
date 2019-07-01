@@ -58,13 +58,11 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 	}
 
 	render() {
-		let min: number
-		let max: number
 		let histogramValues = []
 
 		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
-		if (facet == null) return null;
-		[min, max] = facet.values
+		if (facet == null) return null
+		const [min, max] = facet.values
 		histogramValues = facet.histogramValues
 
 		const [fMin, fMax] = this.formatRange()

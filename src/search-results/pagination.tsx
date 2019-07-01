@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled';
+import { ContextState } from '../context';
 
 function getRange(start: number, end: number) {
 	return Array.from({length: end - start + 1}, (_value, key) => key + start)
@@ -46,7 +47,7 @@ interface Props {
 	goToPage: (pageNumber: number) => void
 	pageNumber: number
 	resultsPerPage: number
-	searchResults: SearchResults
+	searchResults: ContextState['searchResult']
 }
 export default class Pagination extends React.PureComponent<Props> {
 	componentDidUpdate(prevProps: Props) {

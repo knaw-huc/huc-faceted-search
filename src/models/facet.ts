@@ -14,7 +14,7 @@ export class ListFacet extends BaseFacet {
 	query: string
 	total: number
 	type = FacetType.List
-	values: ListFacetValue[]
+	values: ListFacetValues
 	viewSize: number
 
 	constructor(field: string, index: number, public settings: ListSettings) {
@@ -27,7 +27,10 @@ export class ListFacet extends BaseFacet {
 		this.order = [SortBy.Count, SortDirection.Desc]
 		this.query = ''
 		this.total = 0
-		this.values = []
+		this.values = {
+			total: 0,
+			values: [],
+		}
 		this.viewSize = this.settings.size
 	}
 
@@ -43,7 +46,7 @@ export class ListFacet extends BaseFacet {
 export class BooleanFacet extends BaseFacet {
 	filters: Set<string>
 	type = FacetType.Boolean
-	values: ListFacetValue[]
+	values: BooleanFacetValues
 
 	constructor(field: string, index: number, public settings: BooleanSettings) {
 		super(field, index, FacetType.Boolean)
@@ -52,16 +55,15 @@ export class BooleanFacet extends BaseFacet {
 
 	reset() {
 		this.filters = new Set()
-		this.values = []
+		this.values = { true: 0, false: 0 }
 	}
 }
-
 
 export class RangeFacet extends BaseFacet {
 	filter: [number, number]
 	histogramValues: any[]
 	type: FacetType.Range
-	values: [number, number]
+	values: RangeFacetValues
 
 	constructor(field: string, index: number, public settings: RangeSettings) {
 		super(field, index, FacetType.Range)

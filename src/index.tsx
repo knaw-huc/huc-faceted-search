@@ -59,7 +59,9 @@ interface Props {
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
 	state: ContextState = {
 		...defaultState,
-		facetsManager: new FacetManager()
+		facetsManager: new FacetManager({
+			onChange: () => this.ioManager.sendRequest(this.state.facetsManager.getFacets(), this.state.facetsManager.query)
+		})
 	}
 	private ioManager: IOManager
 
@@ -74,11 +76,16 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	constructor(props: Props) {
 		super(props)
 
-		this.ioManager = new IOManager({ backend: props.backend, resultsPerPage: props.resultsPerPage, url: props.url }, this.state.facetsManager)
-		this.ioManager.onChange = (changeResponse: OnChangeResponse) => {
-			props.onChange(changeResponse)
-			this.setState({ searchResult: changeResponse.response })
-		}
+		this.ioManager = new IOManager({
+			backend: props.backend,
+			resultsPerPage: props.resultsPerPage,
+			url: props.url,
+			onChange: (changeResponse: Pick<OnChangeResponse, 'request' | 'response'>) => {
+				this.state.facetsManager.update(changeResponse.response)
+				props.onChange({ ...changeResponse, query: this.state.facetsManager.query})
+				this.setState({ searchResult: changeResponse.response })
+			}
+		})
 	}
 
 	render() {
@@ -97,7 +104,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 					</aside>
 					<SearchResults
 						pageNumber={this.ioManager.currentPage}
-						goToPage={this.ioManager.goToPage}
+						goToPage={pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets())}
 						onClickResult={this.props.onClickResult}
 						resultBodyComponent={this.props.resultBodyComponent}
 						resultBodyProps={this.props.resultBodyProps}

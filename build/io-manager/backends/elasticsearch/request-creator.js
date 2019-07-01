@@ -1,32 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ElasticSearchRequest {
-    constructor(facetsManager, size) {
+    constructor(facets, facetsManagerQuery, size) {
         this.size = size;
         this.aggs = {};
         this.post_filter = {};
-        this.setAggregations(facetsManager);
-        this.setQuery(facetsManager);
+        this.setPostFilter(facets);
+        this.setAggregations(facets);
+        this.setQuery(facetsManagerQuery);
     }
-    setQuery(facetsManager) {
-        if (!facetsManager.query.length)
+    setQuery(query) {
+        if (!query.length)
             return;
-        this.query = { query_string: { query: facetsManager.query } };
+        this.query = { query_string: { query } };
         this.highlight = { fields: { text: {} }, require_field_match: false };
     }
-    setAggregations(facetsManager) {
-        this.setPostFilter(facetsManager);
-        facetsManager.getFacets("boolean")
+    setAggregations(facets) {
+        facets.filter(f => f.type === "boolean")
             .forEach(facet => this.aggs[facet.id] = this.createBooleanAggregation(facet));
-        facetsManager.getFacets("list")
+        facets.filter(f => f.type === "list")
             .forEach(facet => this.aggs[facet.id] = this.createListAggregation(facet));
-        facetsManager.getFacets("range")
-            .forEach(facet => {
+        facets.filter(f => f.type === "range")
+            .forEach((facet) => {
             this.aggs[facet.id] = this.createRangeAggregation(facet);
             this.aggs[`${facet.id}_histogram`] = this.createHistogramAggregation(facet);
         });
     }
-    setPostFilter(facetsManager) {
+    setPostFilter(facets) {
         function toFilter(facet) {
             const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }));
             if (allFacetFilters.length === 1)
@@ -35,15 +35,15 @@ class ElasticSearchRequest {
                 return { bool: { should: allFacetFilters } };
             return {};
         }
-        const booleanFilters = facetsManager.getFacets("boolean")
-            .filter(facet => facet.filters.size)
+        const booleanFilters = facets.filter(f => f.type === "boolean")
+            .filter((facet) => facet.filters.size)
             .map(toFilter);
-        const listFilters = facetsManager.getFacets("list")
-            .filter(facet => facet.filters.size)
+        const listFilters = facets.filter(f => f.type === "list")
+            .filter((facet) => facet.filters.size)
             .map(toFilter);
-        const rangeFilters = facetsManager.getFacets("range")
-            .filter(facet => Array.isArray(facet.filter) && facet.filter.length === 2)
-            .map(facet => ({
+        const rangeFilters = facets.filter(f => f.type === "range")
+            .filter((facet) => Array.isArray(facet.filter) && facet.filter.length === 2)
+            .map((facet) => ({
             range: {
                 [facet.field]: {
                     gte: facet.filter[0],

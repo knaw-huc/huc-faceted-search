@@ -1,5 +1,4 @@
 import { ListFacet, RangeFacet, BooleanFacet } from '../../../models/facet'
-import FacetManager from '../../../facets-manager'
 
 interface AggregationRequest {
 	aggs: any
@@ -13,28 +12,28 @@ export default class ElasticSearchRequest {
 	post_filter: any = {}
 	query: any
 
-	constructor(facetsManager: FacetManager, public size: number) {
-		this.setAggregations(facetsManager)
-		this.setQuery(facetsManager)
+	constructor(facets: Facet[], facetsManagerQuery: string, public size: number) {
+		this.setPostFilter(facets)
+		this.setAggregations(facets)
+		this.setQuery(facetsManagerQuery)
 	}
 
-	private setQuery(facetsManager: FacetManager) {
-		if (!facetsManager.query.length) return
-		this.query = { query_string: { query: facetsManager.query } }
+	private setQuery(query: string) {
+		if (!query.length) return
+		this.query = { query_string: { query } }
 		this.highlight = { fields: { text: {} }, require_field_match: false }
 	}
 
-	private setAggregations(facetsManager: FacetManager) {
-		this.setPostFilter(facetsManager)
+	private setAggregations(facets: Facet[]) {
+		// facetsManager.getFacets(FacetType.Boolean)
+		facets.filter(f => f.type === FacetType.Boolean)
+			.forEach(facet => this.aggs[facet.id] = this.createBooleanAggregation(facet as BooleanFacet))
 
-		facetsManager.getFacets(FacetType.Boolean)
-			.forEach(facet => this.aggs[facet.id] = this.createBooleanAggregation(facet))
+		facets.filter(f => f.type === FacetType.List)
+			.forEach(facet => this.aggs[facet.id] = this.createListAggregation(facet as ListFacet))
 
-		facetsManager.getFacets(FacetType.List)
-			.forEach(facet => this.aggs[facet.id] = this.createListAggregation(facet))
-
-		facetsManager.getFacets(FacetType.Range)
-			.forEach(facet => {
+		facets.filter(f => f.type === FacetType.Range)
+			.forEach((facet: RangeFacet) => {
 				this.aggs[facet.id] = this.createRangeAggregation(facet)
 				// TODO fix typings
 				this.aggs[`${facet.id}_histogram`] = this.createHistogramAggregation(facet) as any
@@ -42,7 +41,7 @@ export default class ElasticSearchRequest {
 			})
 	}
 
-	private setPostFilter(facetsManager: FacetManager) {
+	private setPostFilter(facets: Facet[]) {
 		function toFilter(facet: BooleanFacet | ListFacet) {
 			const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }))
 			if (allFacetFilters.length === 1) return allFacetFilters[0]
@@ -50,17 +49,17 @@ export default class ElasticSearchRequest {
 			return {}
 		}
 
-		const booleanFilters = facetsManager.getFacets(FacetType.Boolean)
-			.filter(facet => facet.filters.size)
+		const booleanFilters = facets.filter(f => f.type === FacetType.Boolean)
+			.filter((facet: BooleanFacet) => facet.filters.size)
 			.map(toFilter)
 
-		const listFilters = facetsManager.getFacets(FacetType.List)
-			.filter(facet => facet.filters.size)
+		const listFilters = facets.filter(f => f.type === FacetType.List)
+			.filter((facet: ListFacet) => facet.filters.size)
 			.map(toFilter)
 
-		const rangeFilters = facetsManager.getFacets(FacetType.Range)
-			.filter(facet => Array.isArray(facet.filter) && facet.filter.length === 2)
-			.map(facet => ({
+		const rangeFilters = facets.filter(f => f.type === FacetType.Range)
+			.filter((facet: RangeFacet) => Array.isArray(facet.filter) && facet.filter.length === 2)
+			.map((facet: RangeFacet) => ({
 				range: {
 					[facet.field]: {
 						gte: facet.filter[0],

@@ -1,4 +1,3 @@
-import FacetManager from '../../../facets-manager';
 interface AggregationRequest {
     aggs: any;
     filter?: any;
@@ -17,7 +16,7 @@ export default class ElasticSearchRequest {
     };
     post_filter: any;
     query: any;
-    constructor(facetsManager: FacetManager, size: number);
+    constructor(facets: Facet[], facetsManagerQuery: string, size: number);
     private setQuery;
     private setAggregations;
     private setPostFilter;

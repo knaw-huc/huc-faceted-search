@@ -12,8 +12,11 @@ class FacetValuesView extends React.PureComponent {
     render() {
         if (this.props.facet == null)
             return null;
+        const { true: trueCount, false: falseCount } = this.props.facet.values;
         return (React.createElement("div", null,
-            React.createElement(List, null, this.props.facet.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.facet.filters.has(value.key), key: value.key, keyFormatter: (key) => this.props.labels[key], removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value })))));
+            React.createElement(List, null,
+                React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, 'true'), active: this.props.facet.filters.has('true'), key: 'true', keyFormatter: () => this.props.labels.true, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, 'true'), value: { key: 'true', count: trueCount } }),
+                React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, 'false'), active: this.props.facet.filters.has('false'), key: 'false', keyFormatter: () => this.props.labels.false, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, 'false'), value: { key: 'false', count: falseCount } }))));
     }
 }
 exports.default = FacetValuesView;

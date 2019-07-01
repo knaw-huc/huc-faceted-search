@@ -7,20 +7,7 @@ class NoneRequestCreator {
     }
 }
 exports.NoneRequestCreator = NoneRequestCreator;
-class NoneResponseParser {
-    constructor(response, facets) {
-        this.facets = facets;
-        Object.keys(facets)
-            .forEach(field => {
-            const facet = facets.get(field);
-            facet.values = response[field].values;
-            if (facet.type === "list") {
-                facet.total = response[field].total;
-            }
-            if (facet.type === "range") {
-                facet.histogramValues = response[field].histogramValues;
-            }
-        });
-    }
+function noneResponseParser(response) {
+    return response;
 }
-exports.NoneResponseParser = NoneResponseParser;
+exports.noneResponseParser = noneResponseParser;

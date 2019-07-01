@@ -12,28 +12,34 @@ const List = styled('ul')`
 export interface Props {
 	facet: BooleanFacet
 	field: string
-	labels: [string, string]
+	labels: { true: string, false: string }
 	state: ContextState
 }
 export default class FacetValuesView extends React.PureComponent<Props> {
 	render() {
 		if (this.props.facet == null) return null
 
+		const { true: trueCount, false: falseCount } = this.props.facet.values
+
 		return (
 			<div>
 				<List>
-					{
-						this.props.facet.values.map(value =>
-							<FacetValueView
-								addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, value.key)}
-								active={this.props.facet.filters.has(value.key)}
-								key={value.key}
-								keyFormatter={(key: string | number) => this.props.labels[key as number]}
-								removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, value.key)}
-								value={value}
-							/>
-						)
-					}
+					<FacetValueView
+						addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'true')}
+						active={this.props.facet.filters.has('true')}
+						key={'true'}
+						keyFormatter={() => this.props.labels.true}
+						removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'true')}
+						value={{ key: 'true', count: trueCount }}
+					/>
+					<FacetValueView
+						addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'false')}
+						active={this.props.facet.filters.has('false')}
+						key={'false'}
+						keyFormatter={() => this.props.labels.false}
+						removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'false')}
+						value={{ key: 'false', count: falseCount }}
+					/>
 				</List>
 			</div>
 		)

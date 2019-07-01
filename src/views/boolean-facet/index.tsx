@@ -6,7 +6,7 @@ import { FacetsProps } from '../facets'
 
 export default class BooleanFacet extends React.PureComponent<FacetsProps & BooleanFacetProps> {
 	static defaultProps: Partial<BooleanFacetProps> = {
-		labels: ["No", "Yes"]
+		labels: { false: "No", true: "Yes" }
 	}
 
 	componentDidMount() {

@@ -1,5 +1,7 @@
-import backends, { Backend } from './backends'
-import FacetManager from '../facets-manager'
+import backends from './backends'
+// import FacetManager from '../facets-manager'
+
+// TODO IOManager has knowledge of `from` and `size`, too ES specific?
 
 export default class IOManager {
 	private backend: Backend
@@ -24,36 +26,32 @@ export default class IOManager {
 	// this.goToPage and this.hitsCache, this is a more logical place
 	currentPage: number = 1
 
-	onChange: OnIOManagerChange
-
-	constructor(private options: Options, private facetsManager: FacetManager) {
+	constructor(private options: Options) {//, private facetsManager: FacetManager) {
 		this.backend = backends[options.backend]
-		this.facetsManager.onChange = async () => {
-			const requestBody = new this.backend.RequestCreator(this.facetsManager, this.options.resultsPerPage)
-			const response = await this.handleFetch(requestBody)
-			this.onChange(response)
-		}
 	}
 
-	// TODO type request
-	private async handleFetch(request: any): Promise<OnChangeResponse> {
-		let response: any
+	async sendRequest(facets: Facet[], query: string) {
+		const requestBody = new this.backend.RequestCreator(facets, query, this.options.resultsPerPage)
+		const response = await this.handleFetch(requestBody, facets)
+		this.options.onChange({ ...response })
+	}
+
+	private async handleFetch(request: any, facets: Facet[]): Promise<IOManagerOnChangeResponse> {
+		let response: FSResponse
 		const body = JSON.stringify(request)
 		if (this.cache.hasOwnProperty(body)) {
 			response = JSON.parse(this.cache[body])
 		} else {
 			this.lastRequest = request
 			const fetchResponse = await this.fetch(body)
-			const responseParser = new this.backend.ResponseParser(fetchResponse, this.facetsManager)
-			response = responseParser.parsedResponse
+			response = this.backend.responseParser(fetchResponse, facets)//, this.facetsManager)
 			this.cache[body] = JSON.stringify(response)
-			this.updateHitsCache(request, response.hits)
+			this.updateHitsCache(request, response.results)
 		}
 
 		return {
 			request,
 			response,
-			query: this.facetsManager.query
 		}
 	}
 
@@ -86,7 +84,7 @@ export default class IOManager {
 		return fetchResponse.status === 200 ? response : null
 	}
 
-	goToPage = async (pageNumber: number) => {
+	goToPage = async (pageNumber: number, facets: Facet[]) => {
 		if (this.lastRequest == null) return
 
 		this.currentPage = pageNumber
@@ -94,9 +92,9 @@ export default class IOManager {
 		const body = this.lastRequest
 		body.from = body.size * (pageNumber - 1)
 
-		const response = await this.handleFetch(body)
+		const response = await this.handleFetch(body, facets)
 
-		this.onChange(response)
+		this.options.onChange(response)
 	}
 
 	getPrevNext(id: string): [Hit, Hit] {
@@ -105,11 +103,10 @@ export default class IOManager {
 		const { from, ...rest } = this.lastRequest
 		const hits = this.hitsCache[JSON.stringify(rest)]
 		const index = hits.findIndex(hit => hit.id === id)
-		console.log(index)
+		
 		return [hits[index - 1], hits[index + 1]]
 	}
 
-	// TODO the `from` and `size` props might be too ES specific?
 	// async getNext() {
 	// 	if (!this.history.length) return
 	// 	const lastItem = this.history[this.history.length - 1]

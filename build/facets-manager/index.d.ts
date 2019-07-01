@@ -10,4 +10,5 @@ export default class FacetManager extends FacetGetters {
     viewMore(field: string): void;
     reset(): void;
     setFacetCount(count: number): void;
+    update(response: FSResponse): void;
 }

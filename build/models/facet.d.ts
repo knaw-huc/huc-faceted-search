@@ -13,7 +13,7 @@ export declare class ListFacet extends BaseFacet {
     query: string;
     total: number;
     type: FacetType;
-    values: ListFacetValue[];
+    values: ListFacetValues;
     viewSize: number;
     constructor(field: string, index: number, settings: ListSettings);
     reset(): void;
@@ -24,7 +24,7 @@ export declare class BooleanFacet extends BaseFacet {
     settings: BooleanSettings;
     filters: Set<string>;
     type: FacetType;
-    values: ListFacetValue[];
+    values: BooleanFacetValues;
     constructor(field: string, index: number, settings: BooleanSettings);
     reset(): void;
 }
@@ -33,7 +33,7 @@ export declare class RangeFacet extends BaseFacet {
     filter: [number, number];
     histogramValues: any[];
     type: FacetType.Range;
-    values: [number, number];
+    values: RangeFacetValues;
     constructor(field: string, index: number, settings: RangeSettings);
     reset(): void;
 }

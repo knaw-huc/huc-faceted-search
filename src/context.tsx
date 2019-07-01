@@ -3,12 +3,13 @@ import FacetManager from './facets-manager'
 
 export interface ContextState {
 	facetsManager: FacetManager,
-	searchResult: SearchResults
+	searchResult: FSResponse
 }
 export const defaultState: ContextState = {
 	facetsManager: null,
 	searchResult: {
-		hits: [],
+		facetValues: {},
+		results: [],
 		total: 0
 	}
 }

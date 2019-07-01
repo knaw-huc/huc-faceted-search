@@ -1,20 +1,15 @@
 import ElasticSearchRequest from "./elasticsearch/request-creator"
-import ElasticSearchResponseParser from "./elasticsearch/response-parser"
-import { NoneRequestCreator, NoneResponseParser } from './none'
-
-export type Backend = {
-	RequestCreator: any
-	ResponseParser: any
-}
+import elasticSearchResponseParser from "./elasticsearch/response-parser"
+import { NoneRequestCreator, noneResponseParser } from './none'
 
 const backends: Record<BackendType, Backend> = {
 	none: {
 		RequestCreator: NoneRequestCreator,
-		ResponseParser: NoneResponseParser,
+		responseParser: noneResponseParser,
 	},
 	elasticsearch: {
 		RequestCreator: ElasticSearchRequest,
-		ResponseParser: ElasticSearchResponseParser,
+		responseParser: elasticSearchResponseParser,
 	}
 }
 

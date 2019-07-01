@@ -14,7 +14,7 @@ class HucSearchResults extends React.PureComponent {
                     " result",
                     this.props.state.searchResult.total === 1 ? '' : 's'),
                 React.createElement(pagination_1.default, { goToPage: this.props.goToPage, pageNumber: this.props.pageNumber, resultsPerPage: this.props.resultsPerPage, searchResults: this.props.state.searchResult })),
-            React.createElement(components_1.ResultList, null, this.props.state.searchResult.hits.map((hit, i) => React.createElement(components_1.Result, { key: i, onClick: (ev) => {
+            React.createElement(components_1.ResultList, null, this.props.state.searchResult.results.map((hit, i) => React.createElement(components_1.Result, { key: i, onClick: (ev) => {
                     if (this.props.onClickResult != null)
                         this.props.onClickResult(hit, ev);
                 } },

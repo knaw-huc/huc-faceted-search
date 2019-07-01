@@ -16,6 +16,6 @@ class BooleanFacet extends React.PureComponent {
     }
 }
 BooleanFacet.defaultProps = {
-    labels: ["No", "Yes"]
+    labels: { false: "No", true: "Yes" }
 };
 exports.default = BooleanFacet;

@@ -1,69 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ElasticSearchResponseParser {
-    constructor(response, facetsManager) {
-        this.response = response;
-        this.facetsManager = facetsManager;
-        this.parsedResponse = {
-            aggregations: {},
-            hits: [],
-            total: 0
-        };
-        this.updateBooleanFacets();
-        this.updateListFacets();
-        this.updateRangeFacets();
-        this.parseResponse(response);
-    }
-    parseResponse(response) {
-        this.parsedResponse = {
-            aggregations: response.aggregations,
-            hits: response.hits.hits
-                .map((hit) => (Object.assign({ id: hit._id, snippets: hit.highlight ? hit.highlight.text : [] }, hit._source))),
-            total: response.hits.total,
-        };
-    }
-    updateBooleanFacets() {
-        this.facetsManager.getFacets("boolean")
-            .forEach(facet => {
-            if (!this.response.aggregations.hasOwnProperty(facet.id))
-                return;
-            let { buckets } = this.response.aggregations[facet.id][facet.field];
-            facet.values = Array.isArray(buckets) ? buckets : [];
-            facet.values = facet.values.map(value => {
-                value.key = value.key.toString();
-                return value;
-            });
-            if (facet.values.length === 1) {
-                if (facet.values[0].key === '1')
-                    facet.values.push({ key: '0', doc_count: 0 });
-                else
-                    facet.values = [{ key: '1', doc_count: 0 }].concat(facet.values[0]);
-            }
-        });
-    }
-    updateListFacets() {
-        this.facetsManager.getFacets("list")
-            .forEach((facet) => {
-            if (!this.response.aggregations.hasOwnProperty(facet.id))
-                return;
-            let { buckets } = this.response.aggregations[facet.id][facet.field];
-            facet.values = Array.isArray(buckets) ? buckets : [];
-            const { value } = this.response.aggregations[facet.id][`${facet.field}-count`];
-            facet.total = value;
-        });
-    }
-    updateRangeFacets() {
-        this.facetsManager.getFacets("range")
-            .forEach(facet => {
-            if (!this.response.aggregations.hasOwnProperty(facet.id))
-                return;
-            const { min, max } = this.response.aggregations[facet.id][facet.field];
-            if (!facet.values.filter(v => v != null).length && min != null && max != null)
-                facet.values = [min, max];
-            const histogramAggs = this.response.aggregations[`${facet.id}_histogram`];
+const elasticSearchResponseParser = function elasticSearchResponseParser(response, facets) {
+    const facetValues = response.aggregations;
+    facets.forEach(facet => {
+        if (facet.type === "list") {
+            facetValues[facet.id] = {
+                total: response.aggregations[facet.id][`${facet.field}-count`].value,
+                values: response.aggregations[facet.id][facet.field].buckets.map((b) => ({ key: b.key, count: b.doc_count }))
+            };
+        }
+        else if (facet.type === "boolean") {
+            const trueBucket = response.aggregations[facet.id][facet.field].buckets.find((b) => b.key === 1);
+            const trueCount = trueBucket != null ? trueBucket.doc_count : 0;
+            const falseBucket = response.aggregations[facet.id][facet.field].buckets.find((b) => b.key === 0);
+            const falseCount = falseBucket != null ? falseBucket.doc_count : 0;
+            facetValues[facet.id] = {
+                true: trueCount,
+                false: falseCount
+            };
+        }
+        else if (facet.type === "range") {
+            const rangeResponse = response.aggregations[facet.id][facet.field];
+            facetValues[facet.id] = [rangeResponse.min, rangeResponse.max];
+            const histogramAggs = response.aggregations[`${facet.id}_histogram`];
             let histogramValues = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
             facet.histogramValues = histogramValues != null ? histogramValues : [];
-        });
-    }
-}
-exports.default = ElasticSearchResponseParser;
+        }
+    });
+    return {
+        facetValues,
+        results: response.hits.hits
+            .map((hit) => (Object.assign({ id: hit._id, snippets: hit.highlight ? hit.highlight.text : [] }, hit._source))),
+        total: response.hits.total,
+    };
+};
+exports.default = elasticSearchResponseParser;

@@ -64,7 +64,7 @@ export default class FacetValueView extends React.PureComponent<Props, State> {
 					type="checkbox"
 				/>
 				<Key {...this.state}>{key}</Key>
-				<Count {...this.state}>{this.props.value.doc_count}</Count>
+				<Count {...this.state}>{this.props.value.count}</Count>
 			</Wrapper>
 
 		)

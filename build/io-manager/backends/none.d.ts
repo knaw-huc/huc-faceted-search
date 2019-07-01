@@ -3,7 +3,4 @@ export declare class NoneRequestCreator {
     query: string;
     constructor(facets: Facets, query: string);
 }
-export declare class NoneResponseParser {
-    facets: Facets;
-    constructor(response: any, facets: Facets);
-}
+export declare function noneResponseParser(response: any): any;

@@ -4,7 +4,10 @@ import { ContextState } from '../../context';
 export interface Props {
     facet: BooleanFacet;
     field: string;
-    labels: [string, string];
+    labels: {
+        true: string;
+        false: string;
+    };
     state: ContextState;
 }
 export default class FacetValuesView extends React.PureComponent<Props> {

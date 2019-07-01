@@ -21,7 +21,10 @@ class ListFacet extends BaseFacet {
         this.order = ["_count", "desc"];
         this.query = '';
         this.total = 0;
-        this.values = [];
+        this.values = {
+            total: 0,
+            values: [],
+        };
         this.viewSize = this.settings.size;
     }
     viewLess() {
@@ -42,7 +45,7 @@ class BooleanFacet extends BaseFacet {
     }
     reset() {
         this.filters = new Set();
-        this.values = [];
+        this.values = { true: 0, false: 0 };
     }
 }
 exports.BooleanFacet = BooleanFacet;

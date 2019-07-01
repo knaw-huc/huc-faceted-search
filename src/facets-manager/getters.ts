@@ -1,7 +1,8 @@
 import { BooleanFacet, ListFacet, RangeFacet } from '../models/facet'
 
-function isOfType(type: FacetType): (facetValue: [string, Facet]) => facetValue is [string, Facet] {
+function isOfType(type: FacetType): (facetValue?: [string, Facet]) => facetValue is [string, Facet] {
 	return function(facetValue: [string, Facet]): facetValue is [string, Facet] {
+		if (type == null) return true
 		return facetValue[1].type === type
 	}
 }
@@ -10,15 +11,19 @@ export default class FacetGetter {
 	protected facets: Facets = new Map()
 	facetCount: number
 	query: string = ''
-	onChange: OnFacetManagerChange
+
+	constructor(private options: { onChange: OnFacetManagerChange}) {}
 
 	getFacets(): Facet[]
 	getFacets(type: FacetType.Boolean): BooleanFacet[]
 	getFacets(type: FacetType.List): ListFacet[]
 	getFacets(type: FacetType.Range): RangeFacet[]
 	getFacets(type?: FacetType): Facet[] {
-		// if (type == null) return this.facets
 		return [...this.facets].filter(isOfType(type)).map(f => f[1])
+	}
+
+	getFacet(field: string): Facet {
+		return this.facets.get(field)
 	}
 
 	getBooleanFacet(field: string): BooleanFacet {
@@ -50,11 +55,11 @@ export default class FacetGetter {
 
 	protected handleChange() {
 		if (
-			this.onChange == null ||
+			this.options.onChange == null ||
 			this.facetCount == null ||
 			this.facets.size !== this.facetCount
 		) return
 		this.facets = new Map(this.facets)
-		this.onChange()
+		this.options.onChange()
 	}
 }

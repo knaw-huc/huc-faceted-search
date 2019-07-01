@@ -33,7 +33,7 @@ export default class HucSearchResults extends React.PureComponent<Props> {
 				</Header>
 				<ResultList>
 					{
-						this.props.state.searchResult.hits.map((hit, i) =>
+						this.props.state.searchResult.results.map((hit, i) =>
 							<Result
 								key={i}
 								onClick={(ev) => {
