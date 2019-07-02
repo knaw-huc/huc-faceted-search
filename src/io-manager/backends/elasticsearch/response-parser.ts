@@ -26,7 +26,17 @@ const elasticSearchResponseParser: Backend['responseParser'] = function elasticS
 
 			const histogramAggs = response.aggregations[`${facet.id}_histogram`]
 			let histogramValues: any[] = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
-			(facet as RangeFacet).histogramValues = histogramValues != null ? histogramValues : []
+			if (histogramValues == null) histogramValues = []
+			histogramValues = histogramValues.map(hv => ({
+				key: hv.key,
+				count: hv.doc_count,
+			}));
+			(facet as RangeFacet).histogramValues = histogramValues
+			
+			// if ((facet as RangeFacet).histogramValues == null) {
+			// } else {
+			// 	(facet as RangeFacet).filteredHistogramValues = histogramValues
+			// }
 		}
 	})
 

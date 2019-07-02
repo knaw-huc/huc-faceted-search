@@ -31,7 +31,7 @@ interface Props {
 	addFilter: () => void
 	keyFormatter?: (key: string | number) => string
 	removeFilter: () => void
-	value: ListFacetValue
+	value: KeyCount
 }
 interface State {
 	active: boolean

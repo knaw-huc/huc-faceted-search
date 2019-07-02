@@ -2,7 +2,7 @@ import * as React from 'react';
 interface Props {
     lowerLimit: number;
     upperLimit: number;
-    values: any[];
+    values: KeyCount[];
 }
 export default class Histogram extends React.PureComponent<Props> {
     private canvasRef;

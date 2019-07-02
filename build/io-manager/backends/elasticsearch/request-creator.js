@@ -46,8 +46,8 @@ class ElasticSearchRequest {
             .map((facet) => ({
             range: {
                 [facet.field]: {
-                    gte: facet.filter[0],
-                    lte: facet.filter[1]
+                    gte: facet.values[0],
+                    lte: facet.values[1]
                 }
             }
         }));
@@ -113,25 +113,19 @@ class ElasticSearchRequest {
         return this.addFilter(agg);
     }
     createHistogramAggregation(facet) {
+        const [min, max] = facet.values;
         let histAgg = {
             date_histogram: {
-                extended_bounds: { min: facet.values[0], max: facet.values[1] },
+                extended_bounds: { min, max },
                 field: facet.field,
+                interval: "year",
                 min_doc_count: 0,
-                interval: "month",
             }
         };
         if (Object.keys(this.post_filter).length) {
             histAgg = {
                 aggs: {
-                    [`${facet.field}_histogram`]: {
-                        date_histogram: {
-                            extended_bounds: { min: facet.values[0], max: facet.values[1] },
-                            field: facet.field,
-                            interval: "month",
-                            min_doc_count: 0,
-                        }
-                    }
+                    [`${facet.field}_histogram`]: histAgg,
                 },
                 filter: this.post_filter
             };

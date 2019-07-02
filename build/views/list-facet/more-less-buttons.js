@@ -6,9 +6,9 @@ const button_1 = require("../button");
 function default_1(props) {
     const facet = props.state.facetsManager.getListFacet(props.field);
     return (React.createElement(React.Fragment, null,
-        facet.total > 0 &&
-            facet.total > facet.viewSize &&
-            React.createElement(button_1.MoreLessButton, { onClick: () => props.state.facetsManager.viewMore(props.field) }, `View more (${facet.total - facet.viewSize})`),
+        facet.values.total > 0 &&
+            facet.values.total > facet.viewSize &&
+            React.createElement(button_1.MoreLessButton, { onClick: () => props.state.facetsManager.viewMore(props.field) }, `View more (${facet.values.total - facet.viewSize})`),
         facet.settings.size < facet.viewSize &&
             React.createElement(button_1.MoreLessButton, { onClick: () => props.state.facetsManager.viewLess(props.field) }, "View less")));
 }

@@ -24,7 +24,13 @@ const elasticSearchResponseParser = function elasticSearchResponseParser(respons
             facetValues[facet.id] = [rangeResponse.min, rangeResponse.max];
             const histogramAggs = response.aggregations[`${facet.id}_histogram`];
             let histogramValues = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
-            facet.histogramValues = histogramValues != null ? histogramValues : [];
+            if (histogramValues == null)
+                histogramValues = [];
+            histogramValues = histogramValues.map(hv => ({
+                key: hv.key,
+                count: hv.doc_count,
+            }));
+            facet.histogramValues = histogramValues;
         }
     });
     return {

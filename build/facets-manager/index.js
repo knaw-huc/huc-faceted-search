@@ -7,11 +7,11 @@ class FacetManager extends getters_1.default {
         const facetType = this.facets.get(field).type;
         if (facetType === "range" && typeof key === 'number') {
             const facet = this.getRangeFacet(field);
-            if (facet.filter == null)
-                facet.filter = [0, 1];
-            const [prevMin, prevMax] = facet.filter;
+            if (facet.values.filter == null)
+                facet.values = [0, 1];
+            const [prevMin, prevMax] = facet.values;
             if (prevMin !== key || prevMax !== max) {
-                facet.filter = [key, max];
+                facet.values = [key, max];
                 this.handleChange();
             }
         }
@@ -50,8 +50,7 @@ class FacetManager extends getters_1.default {
     }
     reset() {
         this.query = '';
-        for (const facet of this.facets.values())
-            facet.reset();
+        this.getFacets().forEach(f => f.reset());
         this.handleChange();
     }
     setFacetCount(count) {

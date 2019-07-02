@@ -11,13 +11,13 @@ interface OnChangeResponse extends IOManagerOnChangeResponse {
 	query: string
 }
 
-interface ListFacetValue {
+interface KeyCount {
 	key: string,
 	count: number
 }
 interface ListFacetValues {
 	total: number
-	values: ListFacetValue[]
+	values: KeyCount[]
 }
 type RangeFacetValues = [number, number]
 interface BooleanFacetValues {

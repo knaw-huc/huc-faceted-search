@@ -8,12 +8,12 @@ export default function(props: Props) {
 	return (
 		<>
 			{
-				facet.total > 0 &&
-				facet.total > facet.viewSize &&
+				facet.values.total > 0 &&
+				facet.values.total > facet.viewSize &&
 				<MoreLessButton
 					onClick={() => props.state.facetsManager.viewMore(props.field)}
 				>
-					{`View more (${facet.total - facet.viewSize})`}
+					{`View more (${facet.values.total - facet.viewSize})`}
 				</MoreLessButton>
 			}
 			{

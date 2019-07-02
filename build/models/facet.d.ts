@@ -11,7 +11,6 @@ export declare class ListFacet extends BaseFacet {
     filters: Set<string>;
     order: [SortBy, SortDirection];
     query: string;
-    total: number;
     type: FacetType;
     values: ListFacetValues;
     viewSize: number;
@@ -30,9 +29,10 @@ export declare class BooleanFacet extends BaseFacet {
 }
 export declare class RangeFacet extends BaseFacet {
     settings: RangeSettings;
-    filter: [number, number];
-    histogramValues: any[];
-    type: FacetType.Range;
+    filter: RangeFacetValues;
+    histogramValues: KeyCount[];
+    filteredHistogramValues: KeyCount[];
+    type: FacetType;
     values: RangeFacetValues;
     constructor(field: string, index: number, settings: RangeSettings);
     reset(): void;

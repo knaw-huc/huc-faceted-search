@@ -7,7 +7,7 @@ enum ChartType {
 interface Props {
 	lowerLimit: number
 	upperLimit: number
-	values: any[]
+	values: KeyCount[]
 }
 export default class Histogram extends React.PureComponent<Props> {
 	private canvasRef = React.createRef() as React.RefObject<HTMLCanvasElement>
@@ -58,20 +58,21 @@ export default class Histogram extends React.PureComponent<Props> {
 	}
 
 	private init() {
-		const values = this.props.values.map(value => value.doc_count)
+		const values = this.props.values.map(value => value.count)
 
-		const canvas = this.drawChart(ChartType.Bar, values, values.length)
+		const canvas = this.drawChart(ChartType.Bar, values)
 
 		this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
 		this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
 	}
 
-	private drawChart(chartType: ChartType, values: any[], maxBars?: number): HTMLCanvasElement {
+	private drawChart(chartType: ChartType, values: any[]): HTMLCanvasElement {
 		const canvas = document.createElement('canvas')
 		if (!values.length) return canvas
 
-		if (maxBars != null && values.length > maxBars) {
-			const valuesPerBar = Math.ceil(values.length/maxBars)
+		// Maximize the bars to 64
+		if (values.length > 64) {
+			const valuesPerBar = Math.ceil(values.length/64)
 			values = values.reduce((prev, _curr, index, array) => {
 				if (index > 0 && index % valuesPerBar === 0) {
 					const arr = array.slice(index - valuesPerBar, index)
@@ -83,7 +84,7 @@ export default class Histogram extends React.PureComponent<Props> {
 		}
 
 		const barWidth = Math.ceil(this.canvasRef.current.width / values.length)
-		const maxValue = values.reduce((prev, curr) => Math.max(prev, curr))
+		const maxValue = Math.max(...values)
 
 		canvas.width = barWidth * values.length
 		canvas.height = this.canvasRef.current.height

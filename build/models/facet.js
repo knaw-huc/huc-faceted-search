@@ -20,7 +20,6 @@ class ListFacet extends BaseFacet {
         this.filters = new Set();
         this.order = ["_count", "desc"];
         this.query = '';
-        this.total = 0;
         this.values = {
             total: 0,
             values: [],
@@ -45,7 +44,6 @@ class BooleanFacet extends BaseFacet {
     }
     reset() {
         this.filters = new Set();
-        this.values = { true: 0, false: 0 };
     }
 }
 exports.BooleanFacet = BooleanFacet;
@@ -53,12 +51,13 @@ class RangeFacet extends BaseFacet {
     constructor(field, index, settings) {
         super(field, index, "range");
         this.settings = settings;
+        this.type = "range";
+        this.values = [null, null];
         this.reset();
     }
     reset() {
         this.filter = null;
-        this.histogramValues = [];
-        this.values = [null, null];
+        this.filteredHistogramValues = null;
     }
 }
 exports.RangeFacet = RangeFacet;

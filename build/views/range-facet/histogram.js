@@ -42,17 +42,17 @@ class Histogram extends React.PureComponent {
             React.createElement("canvas", { ref: this.canvasRef })));
     }
     init() {
-        const values = this.props.values.map(value => value.doc_count);
-        const canvas = this.drawChart(ChartType.Bar, values, values.length);
+        const values = this.props.values.map(value => value.count);
+        const canvas = this.drawChart(ChartType.Bar, values);
         this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
         this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height);
     }
-    drawChart(chartType, values, maxBars) {
+    drawChart(chartType, values) {
         const canvas = document.createElement('canvas');
         if (!values.length)
             return canvas;
-        if (maxBars != null && values.length > maxBars) {
-            const valuesPerBar = Math.ceil(values.length / maxBars);
+        if (values.length > 64) {
+            const valuesPerBar = Math.ceil(values.length / 64);
             values = values.reduce((prev, _curr, index, array) => {
                 if (index > 0 && index % valuesPerBar === 0) {
                     const arr = array.slice(index - valuesPerBar, index);
@@ -63,7 +63,7 @@ class Histogram extends React.PureComponent {
             }, []);
         }
         const barWidth = Math.ceil(this.canvasRef.current.width / values.length);
-        const maxValue = values.reduce((prev, curr) => Math.max(prev, curr));
+        const maxValue = Math.max(...values);
         canvas.width = barWidth * values.length;
         canvas.height = this.canvasRef.current.height;
         const ctx = canvas.getContext('2d');
