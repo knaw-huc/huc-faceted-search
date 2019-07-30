@@ -125,7 +125,7 @@ interface Backend {
 }
 
 interface Hit {
-	facsimiles?: { id: string, path: string[] }[]
+	// facsimiles?: { id: string, path: string[] }[]
 	id: string
 	snippets: string[]
 	[key: string]: any
