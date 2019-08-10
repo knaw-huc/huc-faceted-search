@@ -6,7 +6,7 @@ const components_1 = require("./components");
 const pagination_1 = tslib_1.__importDefault(require("./pagination"));
 class HucSearchResults extends React.PureComponent {
     render() {
-        return (React.createElement(components_1.Section, null,
+        return (React.createElement(components_1.Section, { id: "huc-fs-search-results" },
             React.createElement(components_1.Header, null,
                 React.createElement("div", null,
                     "Found ",

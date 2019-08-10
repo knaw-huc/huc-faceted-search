@@ -17,8 +17,7 @@ interface Props {
 export default class HucSearchResults extends React.PureComponent<Props> {
 	render() {
 		return (
-			<Section>
-
+			<Section id="huc-fs-search-results">
 				<Header>
 					<div>
 						Found {this.props.state.searchResult.total} result{this.props.state.searchResult.total === 1 ? '' : 's'}

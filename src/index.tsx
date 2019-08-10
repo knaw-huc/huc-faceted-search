@@ -94,6 +94,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 				<Wrapper
 					className={this.props.className}
 					disableDefaultStyle={this.props.disableDefaultStyle}
+					id="huc-fs"
 				>
 					<aside>
 						<FullTextSearch autoSuggest={async () => []} />

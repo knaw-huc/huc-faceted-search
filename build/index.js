@@ -60,7 +60,7 @@ class FacetedSearch extends React.PureComponent {
     }
     render() {
         return (React.createElement(context_1.default.Provider, { value: this.state },
-            React.createElement(Wrapper, { className: this.props.className, disableDefaultStyle: this.props.disableDefaultStyle },
+            React.createElement(Wrapper, { className: this.props.className, disableDefaultStyle: this.props.disableDefaultStyle, id: "huc-fs" },
                 React.createElement("aside", null,
                     React.createElement(full_text_search_1.default, { autoSuggest: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return []; }) }),
                     React.createElement(reset_1.default, null),
