@@ -14,8 +14,8 @@ export default class ElasticSearchRequest {
         };
         require_field_match: boolean;
     };
-    post_filter: any;
-    query: any;
+    post_filter: Record<string, any>;
+    query: Record<string, any>;
     constructor(facets: Facet[], facetsManagerQuery: string, size: number);
     private setQuery;
     private setAggregations;

@@ -74,7 +74,7 @@ export default class FacetManager extends FacetGetters {
 
 	update(response: FSResponse) {
 		this.getFacets().forEach(facet => {
-			facet.values = response.facetValues[facet.id]
+			facet.values = response.facetValues[facet.field]
 		})
 		// Object.keys(response.aggregations)
 		// 	.forEach(field => {

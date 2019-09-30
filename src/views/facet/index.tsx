@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-// TODO turn into HOF (higher order function)
+// TODO turn into HOF (higher order function)?
 
 const Wrapper = styled('div')`
 	margin-top: 2em;

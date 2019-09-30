@@ -10,6 +10,6 @@ export interface Props {
     };
     state: ContextState;
 }
-export default class FacetValuesView extends React.PureComponent<Props> {
+export default class BooleanFacetValuesView extends React.PureComponent<Props> {
     render(): JSX.Element;
 }

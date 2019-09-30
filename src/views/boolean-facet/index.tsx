@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Facet from '../facet'
-import FacetValuesView from './values'
+import BooleanFacetValuesView from './values'
 import FacetHeader from '../facet-header'
 import { FacetsProps } from '../facets'
 
@@ -17,7 +17,7 @@ export default class BooleanFacet extends React.PureComponent<FacetsProps & Bool
 		return (
 			<Facet>
 				<FacetHeader {...this.props}/>
-				<FacetValuesView
+				<BooleanFacetValuesView
 					facet={this.props.state.facetsManager.getBooleanFacet(this.props.field)}
 					field={this.props.field}
 					labels={this.props.labels}

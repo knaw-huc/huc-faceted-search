@@ -59,7 +59,7 @@ class FacetManager extends getters_1.default {
     }
     update(response) {
         this.getFacets().forEach(facet => {
-            facet.values = response.facetValues[facet.id];
+            facet.values = response.facetValues[facet.field];
         });
     }
 }

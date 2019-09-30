@@ -15,7 +15,7 @@ export interface Props {
 	labels: { true: string, false: string }
 	state: ContextState
 }
-export default class FacetValuesView extends React.PureComponent<Props> {
+export default class BooleanFacetValuesView extends React.PureComponent<Props> {
 	render() {
 		if (this.props.facet == null) return null
 
