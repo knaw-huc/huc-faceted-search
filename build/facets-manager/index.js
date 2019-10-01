@@ -7,11 +7,10 @@ class FacetManager extends getters_1.default {
         const facetType = this.facets.get(field).type;
         if (facetType === "range" && typeof key === 'number') {
             const facet = this.getRangeFacet(field);
-            if (facet.values.filter == null)
-                facet.values = [0, 1];
-            const [prevMin, prevMax] = facet.values;
+            const prevMin = facet.values[0].key;
+            const prevMax = facet.values[facet.values.length - 1].key;
             if (prevMin !== key || prevMax !== max) {
-                facet.values = [key, max];
+                facet.filter = [key, max];
                 this.handleChange();
             }
         }

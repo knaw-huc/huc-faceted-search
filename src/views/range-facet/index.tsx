@@ -60,9 +60,10 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 	render() {
 		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
 		if (facet == null) return null
-		const [min, max] = facet.values
-		const histogramValues = facet.histogramValues
+
 		const [fMin, fMax] = this.formatRange()
+		const minValue = facet.values[0].key
+		const maxValue = facet.values[facet.values.length - 1].key
 
 		return (
 			<Facet style={{position: 'relative'}}>
@@ -70,13 +71,13 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 				<Histogram
 					lowerLimit={this.state.lowerLimit}
 					upperLimit={this.state.upperLimit}
-					values={histogramValues}
+					values={facet.values}
 				/>
 				<HireRangeSlider
 					lowerLimit={this.state.lowerLimit}
 					onChange={(data: any) => {
-						const rangeMin = Math.floor(min + (data.lowerLimit * (max - min)))
-						const rangeMax = Math.ceil(min + (data.upperLimit * (max - min)))
+						const rangeMin = Math.floor(minValue + (data.lowerLimit * (maxValue - minValue)))
+						const rangeMax = Math.ceil(minValue + (data.upperLimit * (maxValue - minValue)))
 						this.setState({
 							rangeMin,
 							rangeMax,
@@ -95,7 +96,7 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 					upperLimit={this.state.upperLimit}
 				/>
 				<Dates>
-					<span>{this.formatDate(min)}</span>
+					<span>{this.formatDate(minValue)}</span>
 					<ActiveDates>
 						{
 							this.state.rangeMin != null && this.state.rangeMax != null &&
@@ -106,7 +107,7 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 							</>
 						}
 					</ActiveDates>
-					<span style={{textAlign: 'right'}}>{this.formatDate(max)}</span>
+					<span style={{textAlign: 'right'}}>{this.formatDate(maxValue)}</span>
 				</Dates>
 			</Facet>
 		)

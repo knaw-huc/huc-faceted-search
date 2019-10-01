@@ -1,4 +1,4 @@
-// import { RangeFacet } from '../../../models/facet'
+import { RangeFacet } from '../../../models/facet'
 
 const elasticSearchResponseParser: Backend['responseParser'] = function elasticSearchResponseParser(response, facets) {
 	const facetValues: FSResponse['facetValues'] = {}
@@ -32,7 +32,7 @@ const elasticSearchResponseParser: Backend['responseParser'] = function elasticS
 				key: hv.key,
 				count: hv.doc_count,
 			}));
-			// (facet as RangeFacet).histogramValues = histogramValues
+			(facet as RangeFacet).interval = response.aggregations[facet.field].interval
 			
 			// if ((facet as RangeFacet).histogramValues == null) {
 			// } else {

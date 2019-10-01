@@ -64,21 +64,24 @@ export default class ElasticSearchRequest {
 			return {}
 		}
 
-		const booleanFilters = facets.filter(f => f.type === FacetType.Boolean)
+		const booleanFilters = facets
+			.filter(f => f.type === FacetType.Boolean)
 			.filter((facet: BooleanFacet) => facet.filters.size)
 			.map(toFilter)
 
-		const listFilters = facets.filter(f => f.type === FacetType.List)
+		const listFilters = facets
+			.filter(f => f.type === FacetType.List)
 			.filter((facet: ListFacet) => facet.filters.size)
 			.map(toFilter)
 
-		const rangeFilters = facets.filter(f => f.type === FacetType.Range)
+		const rangeFilters = facets
+			.filter(f => f.type === FacetType.Range)
 			.filter((facet: RangeFacet) => Array.isArray(facet.filter) && facet.filter.length === 2)
 			.map((facet: RangeFacet) => ({
 				range: {
 					[facet.field]: {
-						gte: facet.values[0],
-						lte: facet.values[1]
+						gte: new Date(facet.filter[0]).toISOString(),
+						lte: new Date(facet.filter[1]).toISOString()
 					}
 				}
 			}))
@@ -167,14 +170,14 @@ export default class ElasticSearchRequest {
 			}
 		} as any
 
-		if (this.post_filter != null) {
-			histAgg = {
-				aggs: {
-					[`${facet.field}_histogram`]: histAgg,
-				},
-				filter: this.post_filter
-			}
-		}
+		// if (this.post_filter != null) {
+		// 	histAgg = {
+		// 		aggs: {
+		// 			[`${facet.field}_histogram`]: histAgg,
+		// 		},
+		// 		filter: this.post_filter
+		// 	}
+		// }
 
 		return histAgg
 	}

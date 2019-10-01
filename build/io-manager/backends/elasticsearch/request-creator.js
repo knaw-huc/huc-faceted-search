@@ -37,19 +37,22 @@ class ElasticSearchRequest {
                 return { bool: { should: allFacetFilters } };
             return {};
         }
-        const booleanFilters = facets.filter(f => f.type === "boolean")
+        const booleanFilters = facets
+            .filter(f => f.type === "boolean")
             .filter((facet) => facet.filters.size)
             .map(toFilter);
-        const listFilters = facets.filter(f => f.type === "list")
+        const listFilters = facets
+            .filter(f => f.type === "list")
             .filter((facet) => facet.filters.size)
             .map(toFilter);
-        const rangeFilters = facets.filter(f => f.type === "range")
+        const rangeFilters = facets
+            .filter(f => f.type === "range")
             .filter((facet) => Array.isArray(facet.filter) && facet.filter.length === 2)
             .map((facet) => ({
             range: {
                 [facet.field]: {
-                    gte: facet.values[0],
-                    lte: facet.values[1]
+                    gte: new Date(facet.filter[0]).toISOString(),
+                    lte: new Date(facet.filter[1]).toISOString()
                 }
             }
         }));
@@ -121,14 +124,6 @@ class ElasticSearchRequest {
                 }
             }
         };
-        if (this.post_filter != null) {
-            histAgg = {
-                aggs: {
-                    [`${facet.field}_histogram`]: histAgg,
-                },
-                filter: this.post_filter
-            };
-        }
         return histAgg;
     }
 }

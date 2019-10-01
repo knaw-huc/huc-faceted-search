@@ -118,6 +118,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	}
 
 	addFilter(field: string, key: string) {
+		console.log(field, key)
 		this.state.facetsManager.addFilter(field, key)
 	}
 

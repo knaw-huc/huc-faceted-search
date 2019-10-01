@@ -29,9 +29,8 @@ export declare class BooleanFacet extends BaseFacet {
 }
 export declare class RangeFacet extends BaseFacet {
     settings: RangeSettings;
-    filter: RangeFacetValues;
-    histogramValues: KeyCount[];
-    filteredHistogramValues: KeyCount[];
+    filter: [number, number];
+    interval: string;
     type: FacetType;
     values: RangeFacetValues;
     constructor(field: string, index: number, settings: RangeSettings);

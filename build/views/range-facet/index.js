@@ -52,15 +52,15 @@ class RangeFacetView extends React.PureComponent {
         const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
         if (facet == null)
             return null;
-        const [min, max] = facet.values;
-        const histogramValues = facet.histogramValues;
         const [fMin, fMax] = this.formatRange();
+        const minValue = facet.values[0].key;
+        const maxValue = facet.values[facet.values.length - 1].key;
         return (React.createElement(facet_1.default, { style: { position: 'relative' } },
             React.createElement(facet_header_1.default, Object.assign({}, this.props)),
-            React.createElement(histogram_1.default, { lowerLimit: this.state.lowerLimit, upperLimit: this.state.upperLimit, values: histogramValues }),
+            React.createElement(histogram_1.default, { lowerLimit: this.state.lowerLimit, upperLimit: this.state.upperLimit, values: facet.values }),
             React.createElement(hire_range_slider_1.default, { lowerLimit: this.state.lowerLimit, onChange: (data) => {
-                    const rangeMin = Math.floor(min + (data.lowerLimit * (max - min)));
-                    const rangeMax = Math.ceil(min + (data.upperLimit * (max - min)));
+                    const rangeMin = Math.floor(minValue + (data.lowerLimit * (maxValue - minValue)));
+                    const rangeMax = Math.ceil(minValue + (data.upperLimit * (maxValue - minValue)));
                     this.setState({
                         rangeMin,
                         rangeMax,
@@ -75,13 +75,13 @@ class RangeFacetView extends React.PureComponent {
                     position: 'absolute',
                 }, upperLimit: this.state.upperLimit }),
             React.createElement(Dates, null,
-                React.createElement("span", null, this.formatDate(min)),
+                React.createElement("span", null, this.formatDate(minValue)),
                 React.createElement(ActiveDates, null, this.state.rangeMin != null && this.state.rangeMax != null &&
                     React.createElement(React.Fragment, null,
                         React.createElement("span", { style: { textAlign: 'right' } }, fMin),
                         React.createElement("span", { style: { textAlign: 'center' } }, "-"),
                         React.createElement("span", null, fMax))),
-                React.createElement("span", { style: { textAlign: 'right' } }, this.formatDate(max)))));
+                React.createElement("span", { style: { textAlign: 'right' } }, this.formatDate(maxValue)))));
     }
     formatRange() {
         if (this.props.type === 'number')

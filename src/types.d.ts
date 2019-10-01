@@ -19,7 +19,7 @@ interface ListFacetValues {
 	total: number
 	values: KeyCount[]
 }
-type RangeFacetValues = [number, number]
+type RangeFacetValues = { key: number, count: number }[]
 interface BooleanFacetValues {
 	true: number
 	false: number

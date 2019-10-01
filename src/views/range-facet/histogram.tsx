@@ -7,7 +7,7 @@ enum ChartType {
 interface Props {
 	lowerLimit: number
 	upperLimit: number
-	values: KeyCount[]
+	values: RangeFacetValues
 }
 export default class Histogram extends React.PureComponent<Props> {
 	private canvasRef = React.createRef() as React.RefObject<HTMLCanvasElement>

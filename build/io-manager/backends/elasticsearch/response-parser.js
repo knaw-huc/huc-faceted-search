@@ -24,6 +24,7 @@ const elasticSearchResponseParser = function elasticSearchResponseParser(respons
                 key: hv.key,
                 count: hv.doc_count,
             }));
+            facet.interval = response.aggregations[facet.field].interval;
         }
     });
     return {

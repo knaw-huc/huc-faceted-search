@@ -68,6 +68,7 @@ class FacetedSearch extends React.PureComponent {
                 React.createElement(search_results_1.default, { pageNumber: this.ioManager.currentPage, goToPage: pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets()), onClickResult: this.props.onClickResult, resultBodyComponent: this.props.resultBodyComponent, resultBodyProps: this.props.resultBodyProps, resultsPerPage: this.props.resultsPerPage, state: this.state }))));
     }
     addFilter(field, key) {
+        console.log(field, key);
         this.state.facetsManager.addFilter(field, key);
     }
     getPrevNext(id) {

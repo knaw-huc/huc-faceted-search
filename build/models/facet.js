@@ -52,12 +52,11 @@ class RangeFacet extends BaseFacet {
         super(field, index, "range");
         this.settings = settings;
         this.type = "range";
-        this.values = [null, null];
+        this.values = [];
         this.reset();
     }
     reset() {
         this.filter = null;
-        this.filteredHistogramValues = null;
     }
 }
 exports.RangeFacet = RangeFacet;
