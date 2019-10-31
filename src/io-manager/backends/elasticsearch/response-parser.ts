@@ -28,10 +28,33 @@ const elasticSearchResponseParser: Backend['responseParser'] = function elasticS
 			// const histogramAggs = response.aggregations[`${facet.field}_histogram`]
 			// let histogramValues: any[] = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
 			// if (histogramValues == null) histogramValues = []
-			facetValues[facet.field] = response.aggregations[facet.field].buckets.map((hv: any) => ({
-				key: hv.key,
-				count: hv.doc_count,
-			}));
+			// if  facetValues[facet.field] = facet.values
+			const values = facet.values as RangeFacetValues
+			const { buckets } = response.aggregations[facet.field]
+
+			if (!values.length) {
+				facetValues[facet.field] = buckets.map((hv: any) => ({
+					key: hv.key,
+					count: hv.doc_count,
+				}))
+			} else {
+				facetValues[facet.field] = values;
+
+				(facet as RangeFacet).filter = buckets.length ?
+					[buckets[0].key, buckets[buckets.length - 1].key] :
+					null
+			}
+
+			// facetValues[facet.field] = response.aggregations[facet.field].buckets.length ? 
+			// 	response.aggregations[facet.field].buckets.map((hv: any) => ({
+			// 		key: hv.key,
+			// 		count: hv.doc_count,
+			// 	})) :
+			// 	facet.values;
+				
+			// }
+
+
 			(facet as RangeFacet).interval = response.aggregations[facet.field].interval
 			
 			// if ((facet as RangeFacet).histogramValues == null) {

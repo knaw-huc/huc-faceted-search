@@ -20,10 +20,20 @@ const elasticSearchResponseParser = function elasticSearchResponseParser(respons
             };
         }
         else if (facet.type === "range") {
-            facetValues[facet.field] = response.aggregations[facet.field].buckets.map((hv) => ({
-                key: hv.key,
-                count: hv.doc_count,
-            }));
+            const values = facet.values;
+            const { buckets } = response.aggregations[facet.field];
+            if (!values.length) {
+                facetValues[facet.field] = buckets.map((hv) => ({
+                    key: hv.key,
+                    count: hv.doc_count,
+                }));
+            }
+            else {
+                facetValues[facet.field] = values;
+                facet.filter = buckets.length ?
+                    [buckets[0].key, buckets[buckets.length - 1].key] :
+                    null;
+            }
             facet.interval = response.aggregations[facet.field].interval;
         }
     });

@@ -21,14 +21,24 @@ const ActiveDates = styled_1.default('div') `
 	font-weight: bold;
 	grid-template-columns: 1fr 16px 1fr;
 `;
+function ratioToTimestamp(ratio, facet) {
+    const minValue = facet.values[0].key;
+    const maxValue = facet.values[facet.values.length - 1].key;
+    return Math.floor(minValue + (ratio * (maxValue - minValue)));
+}
+exports.ratioToTimestamp = ratioToTimestamp;
+function timestampToRatio(timestamp, facet) {
+    const minValue = facet.values[0].key;
+    const maxValue = facet.values[facet.values.length - 1].key;
+    return (timestamp - minValue) / (maxValue - minValue);
+}
+exports.timestampToRatio = timestampToRatio;
 class RangeFacetView extends React.PureComponent {
     constructor() {
         super(...arguments);
         this.state = {
-            lowerLimit: 0,
             rangeMin: null,
             rangeMax: null,
-            upperLimit: 1,
         };
     }
     componentDidMount() {
@@ -39,12 +49,16 @@ class RangeFacetView extends React.PureComponent {
     componentDidUpdate(prevProps) {
         const prevFacet = prevProps.state.facetsManager.getRangeFacet(prevProps.field);
         const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
-        if (prevFacet.values.filter != null && facet.values.filter == null) {
+        if (prevFacet.filter != null && facet.filter == null) {
             this.setState({
-                lowerLimit: 0,
                 rangeMin: null,
                 rangeMax: null,
-                upperLimit: 1,
+            });
+        }
+        else if (Array.isArray(facet.filter) && facet.filter.length === 2) {
+            this.setState({
+                rangeMin: facet.filter[0],
+                rangeMax: facet.filter[1],
             });
         }
     }
@@ -55,25 +69,22 @@ class RangeFacetView extends React.PureComponent {
         const [fMin, fMax] = this.formatRange();
         const minValue = facet.values[0].key;
         const maxValue = facet.values[facet.values.length - 1].key;
+        const lowerLimit = timestampToRatio(this.state.rangeMin || minValue, facet);
+        const upperLimit = timestampToRatio(this.state.rangeMax || maxValue, facet);
         return (React.createElement(facet_1.default, { style: { position: 'relative' } },
             React.createElement(facet_header_1.default, Object.assign({}, this.props)),
-            React.createElement(histogram_1.default, { lowerLimit: this.state.lowerLimit, upperLimit: this.state.upperLimit, values: facet.values }),
-            React.createElement(hire_range_slider_1.default, { lowerLimit: this.state.lowerLimit, onChange: (data) => {
-                    const rangeMin = Math.floor(minValue + (data.lowerLimit * (maxValue - minValue)));
-                    const rangeMax = Math.ceil(minValue + (data.upperLimit * (maxValue - minValue)));
-                    this.setState({
-                        rangeMin,
-                        rangeMax,
-                        lowerLimit: data.lowerLimit,
-                        upperLimit: data.upperLimit,
-                    });
+            React.createElement(histogram_1.default, { lowerLimit: lowerLimit, upperLimit: upperLimit, values: facet.values }),
+            React.createElement(hire_range_slider_1.default, { lowerLimit: lowerLimit, onChange: (data) => {
+                    const rangeMin = ratioToTimestamp(data.lowerLimit, facet);
+                    const rangeMax = ratioToTimestamp(data.upperLimit, facet);
+                    this.setState({ rangeMin, rangeMax });
                     if (data.refresh) {
                         this.props.state.facetsManager.addFilter(this.props.field, rangeMin, rangeMax);
                     }
                 }, style: {
                     marginTop: '-6px',
                     position: 'absolute',
-                }, upperLimit: this.state.upperLimit }),
+                }, upperLimit: upperLimit }),
             React.createElement(Dates, null,
                 React.createElement("span", null, this.formatDate(minValue)),
                 React.createElement(ActiveDates, null, this.state.rangeMin != null && this.state.rangeMax != null &&

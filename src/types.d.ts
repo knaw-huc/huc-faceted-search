@@ -113,10 +113,10 @@ interface RangeSettings {
 type RangeProps = FacetProps & RangeSettings
 
 interface RangeState {
-	lowerLimit: number
+	// lowerLimit: number
 	rangeMin: number,
 	rangeMax: number,
-	upperLimit: number
+	// upperLimit: number
 }
 
 interface Backend {
