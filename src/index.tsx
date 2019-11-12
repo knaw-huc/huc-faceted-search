@@ -120,15 +120,10 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	}
 
 	addFilter(field: string, key: string) {
-		console.log(field, key)
 		this.state.facetsManager.addFilter(field, key)
 	}
 
 	getPrevNext(id: string): [Hit, Hit] {
 		return this.ioManager.getPrevNext(id)
 	}
-
-	// async getNext() {
-	// 	await this.ioManager.getNext()
-	// }
 }

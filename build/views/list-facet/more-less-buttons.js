@@ -5,7 +5,6 @@ const React = tslib_1.__importStar(require("react"));
 const button_1 = require("../button");
 function default_1(props) {
     const facet = props.state.facetsManager.getListFacet(props.field);
-    console.log(facet.values);
     return (React.createElement(React.Fragment, null,
         facet.values.total > 0 &&
             facet.values.total > facet.viewSize &&

@@ -5,7 +5,6 @@ import { Props } from './values'
 export default function(props: Props) {
 	const facet = props.state.facetsManager.getListFacet(props.field)
 
-	console.log(facet.values)
 	return (
 		<>
 			{

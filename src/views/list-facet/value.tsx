@@ -63,7 +63,7 @@ export default class FacetValueView extends React.PureComponent<Props, State> {
 					onChange={this.toggleActive}
 					type="checkbox"
 				/>
-				<Key {...this.state}>{key}</Key>
+				<Key {...this.state} dangerouslySetInnerHTML={{ __html: key }}></Key>
 				<Count {...this.state}>{this.props.value.count}</Count>
 			</Wrapper>
 

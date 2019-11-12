@@ -79,11 +79,5 @@ export default class FacetManager extends FacetGetters {
 		this.getFacets().forEach(facet => {
 			facet.values = response.facetValues[facet.field]
 		})
-		// Object.keys(response.aggregations)
-		// 	.forEach(field => {
-		// 		const facet = this.getFacet(field)
-		// 		console.log(field)
-		// 		console.log(response.aggregations, response.aggregations[field])
-		// 	})
 	}
 }
