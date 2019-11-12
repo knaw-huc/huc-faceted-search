@@ -16,16 +16,16 @@ class ElasticSearchRequest {
     }
     setAggregations(facets) {
         facets.filter(f => f.type === "boolean")
-            .forEach(facet => {
-            this.aggs = Object.assign({}, this.aggs, this.createBooleanAggregation(facet).aggs);
+            .forEach((facet) => {
+            this.aggs = Object.assign({}, this.aggs, this.createBooleanAggregation(facet));
         });
         facets.filter(f => f.type === "list")
-            .forEach(facet => {
-            this.aggs = Object.assign({}, this.aggs, this.createListAggregation(facet).aggs);
+            .forEach((facet) => {
+            this.aggs = Object.assign({}, this.aggs, this.createListAggregation(facet));
         });
         facets.filter(f => f.type === "range")
             .forEach((facet) => {
-            this.aggs = Object.assign({}, this.aggs, this.createRangeAggregation(facet).aggs, this.createHistogramAggregation(facet));
+            this.aggs = Object.assign({}, this.aggs, this.createHistogramAggregation(facet));
         });
     }
     setPostFilter(facets) {
@@ -68,21 +68,25 @@ class ElasticSearchRequest {
             };
         }
     }
-    addFilter(aggs) {
-        const req = { aggs };
-        if (this.post_filter != null)
-            req.filter = this.post_filter;
-        return req;
+    addFilter(key, values) {
+        const tmp = {
+            [key]: {
+                aggs: { [key]: values },
+                filter: { match_all: {} }
+            }
+        };
+        if (this.post_filter != null) {
+            tmp[key].filter = this.post_filter;
+        }
+        return tmp;
     }
     createBooleanAggregation(facet) {
-        const agg = {
-            [facet.field]: {
-                terms: {
-                    field: facet.field
-                }
-            },
+        const values = {
+            terms: {
+                field: facet.field
+            }
         };
-        return this.addFilter(agg);
+        return this.addFilter(facet.field, values);
     }
     createListAggregation(facet) {
         const terms = {
@@ -95,36 +99,21 @@ class ElasticSearchRequest {
         };
         if (facet.query.length)
             terms.include = `.*${facet.query}.*`;
-        const agg = {
-            [facet.field]: { terms },
-            [`${facet.field}-count`]: {
+        const agg = Object.assign({}, this.addFilter(facet.field, { terms }), { [`${facet.field}-count`]: {
                 cardinality: {
                     field: facet.field
                 }
-            }
-        };
-        const listAggs = this.addFilter(agg);
-        return listAggs;
-    }
-    createRangeAggregation(facet) {
-        const agg = {
-            [facet.field]: {
-                stats: {
-                    field: facet.field,
-                }
-            },
-        };
-        return this.addFilter(agg);
+            } });
+        console.log(agg);
+        return agg;
     }
     createHistogramAggregation(facet) {
-        let histAgg = {
-            [facet.field]: {
-                auto_date_histogram: {
-                    field: facet.field,
-                }
+        const values = {
+            auto_date_histogram: {
+                field: facet.field,
             }
         };
-        return histAgg;
+        return this.addFilter(facet.field, values);
     }
 }
 exports.default = ElasticSearchRequest;

@@ -39,7 +39,7 @@ const PageNumber = styled_1.default(Prev) `
 class Pagination extends React.PureComponent {
     constructor() {
         super(...arguments);
-        this.toPageNumber = (pageNumber) => React.createElement(PageNumber, { active: pageNumber === this.props.pageNumber, key: pageNumber, onClick: () => this.handlePageNumberClick(pageNumber) }, pageNumber);
+        this.toPageNumber = (pageNumber) => React.createElement(PageNumber, { active: pageNumber === this.props.pageNumber, className: pageNumber === this.props.pageNumber ? 'active' : null, key: pageNumber, onClick: () => this.handlePageNumberClick(pageNumber) }, pageNumber);
         this.handlePageNumberClick = (pageNumber) => {
             this.setState({ pageNumber });
             this.props.goToPage(pageNumber);
@@ -55,11 +55,11 @@ class Pagination extends React.PureComponent {
         if (isNaN(pageCount) || pageCount === 1)
             return null;
         const { first, current, last } = this.getPages(pageCount);
-        return (React.createElement(Wrapper, null,
+        return (React.createElement(Wrapper, { className: "pagination" },
             this.props.pageNumber !== 1 ?
                 React.createElement(Prev, { onClick: () => this.handlePageNumberClick(this.props.pageNumber - 1) }, "\u25C2") :
                 React.createElement("div", null),
-            React.createElement(PageNumbers, null,
+            React.createElement(PageNumbers, { className: "pagenumbers" },
                 first.length > 0 && first.map(this.toPageNumber),
                 current.length > 0 && React.createElement("div", null, "\u2026"),
                 current.map(this.toPageNumber),

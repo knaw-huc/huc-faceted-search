@@ -23,7 +23,6 @@ export default class ElasticSearchRequest {
     private addFilter;
     private createBooleanAggregation;
     private createListAggregation;
-    private createRangeAggregation;
     private createHistogramAggregation;
 }
 export {};

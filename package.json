@@ -18,12 +18,12 @@
     "@types/elasticsearch": "^5.0.34",
     "@types/jest": "^24.0.17",
     "@types/lodash.debounce": "^4.0.6",
-    "@types/react": "^16.8.24",
+    "@types/react": "^16.9.5",
     "express": "^4.17.1",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
     "random-words": "^1.1.0",
-    "react": "^16.8.6",
+    "react": "^16.10.2",
     "react-emotion": "^10.0.0",
     "reload": "^3.0.1",
     "ts-jest": "^24.0.2",
@@ -34,8 +34,8 @@
     "webpack-cli": "^3.3.6"
   },
   "peerDependencies": {
-    "@types/react": "^16.8.24",
-    "react": "^16.8.6",
+    "@types/react": "^16.9.5",
+    "react": "^16.10.2",
     "react-emotion": "^10.0.0"
   },
   "dependencies": {

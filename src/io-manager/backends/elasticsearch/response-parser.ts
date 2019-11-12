@@ -1,19 +1,26 @@
 import { RangeFacet } from '../../../models/facet'
 
-const elasticSearchResponseParser: Backend['responseParser'] = function elasticSearchResponseParser(response, facets) {
+function getBuckets(response: any, field: string) {
+	const buckets = response.aggregations[field][field].buckets
+	return buckets == null ? [] : buckets
+}
+
+const elasticSearchResponseParser: Backend['responseParser'] = function elasticSearchResponseParser(response, facets): FSResponse {
 	const facetValues: FSResponse['facetValues'] = {}
 
 	facets.forEach(facet => {
+		const buckets = getBuckets(response, facet.field)
+
 		if (facet.type === FacetType.List) {
 			facetValues[facet.field] = {
 				total: response.aggregations[`${facet.field}-count`].value,
-				values: response.aggregations[facet.field].buckets.map((b: any) => ({ key: b.key, count: b.doc_count }))
+				values: buckets.map((b: any) => ({ key: b.key, count: b.doc_count }))
 			}
 		}
 		else if (facet.type === FacetType.Boolean) {
-			const trueBucket = response.aggregations[facet.field].buckets.find((b: any) => b.key === 1)
+			const trueBucket = buckets.find((b: any) => b.key === 1)
 			const trueCount = trueBucket != null ? trueBucket.doc_count : 0
-			const falseBucket = response.aggregations[facet.field].buckets.find((b: any) => b.key === 0)
+			const falseBucket = buckets.find((b: any) => b.key === 0)
 			const falseCount = falseBucket != null ? falseBucket.doc_count : 0
 			facetValues[facet.field] = {
 				true: trueCount,
@@ -21,46 +28,35 @@ const elasticSearchResponseParser: Backend['responseParser'] = function elasticS
 			}
 		}
 		else if (facet.type === FacetType.Range) {
-			// const rangeResponse = response.aggregations[facet.field]
-			// console.log(rangeResponse)
-			// facetValues[facet.field] = [rangeResponse.min, rangeResponse.max]
-
-			// const histogramAggs = response.aggregations[`${facet.field}_histogram`]
-			// let histogramValues: any[] = histogramAggs.hasOwnProperty('buckets') ? histogramAggs.buckets : histogramAggs.date_histogram.buckets;
-			// if (histogramValues == null) histogramValues = []
-			// if  facetValues[facet.field] = facet.values
-			const values = facet.values as RangeFacetValues
-			const { buckets } = response.aggregations[facet.field]
+			const rangeFacet = facet as RangeFacet
+			const values = rangeFacet.values
 
 			if (!values.length) {
-				facetValues[facet.field] = buckets.map((hv: any) => ({
+				facetValues[rangeFacet.field] = buckets.map((hv: any) => ({
 					key: hv.key,
 					count: hv.doc_count,
 				}))
 			} else {
-				facetValues[facet.field] = values;
+				facetValues[rangeFacet.field] = values
 
-				(facet as RangeFacet).filter = buckets.length ?
-					[buckets[0].key, buckets[buckets.length - 1].key] :
-					null
+				if (buckets.length) {
+					const minValue = values[0].key
+					const maxValue = values[values.length - 1].key
+					const lowerLimitTimestamp = buckets[0].key as number
+					const upperLimitTimestamp = buckets[buckets.length - 1].key as number
+
+					if (
+						minValue !== lowerLimitTimestamp ||
+						maxValue !== upperLimitTimestamp
+					) {
+						rangeFacet.filter = buckets.length ?
+							[lowerLimitTimestamp, upperLimitTimestamp] :
+							null
+					}
+				}
 			}
 
-			// facetValues[facet.field] = response.aggregations[facet.field].buckets.length ? 
-			// 	response.aggregations[facet.field].buckets.map((hv: any) => ({
-			// 		key: hv.key,
-			// 		count: hv.doc_count,
-			// 	})) :
-			// 	facet.values;
-				
-			// }
-
-
-			(facet as RangeFacet).interval = response.aggregations[facet.field].interval
-			
-			// if ((facet as RangeFacet).histogramValues == null) {
-			// } else {
-			// 	(facet as RangeFacet).filteredHistogramValues = histogramValues
-			// }
+			rangeFacet.interval = response.aggregations[facet.field][facet.field].interval
 		}
 	})
 

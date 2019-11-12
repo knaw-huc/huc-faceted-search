@@ -81,6 +81,9 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 		const lowerLimit = timestampToRatio(this.state.rangeMin || minValue, facet)
 		const upperLimit = timestampToRatio(this.state.rangeMax || maxValue, facet)
 
+		// console.log('values', minValue, maxValue)
+		// console.log('limits', lowerLimit, upperLimit)
+
 		return (
 			<Facet style={{position: 'relative'}}>
 				<FacetHeader {...this.props} />

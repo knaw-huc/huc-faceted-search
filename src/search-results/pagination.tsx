@@ -63,12 +63,12 @@ export default class Pagination extends React.PureComponent<Props> {
 		const { first, current, last } = this.getPages(pageCount)
 
 		return (
-			<Wrapper>
+			<Wrapper className="pagination">
 				{this.props.pageNumber !== 1 ?
 					<Prev onClick={() => this.handlePageNumberClick(this.props.pageNumber - 1)}>◂</Prev> :
 					<div />
 				}
-				<PageNumbers>
+				<PageNumbers className="pagenumbers">
 					{first.length > 0 && first.map(this.toPageNumber)}
 					{current.length > 0 && <div>…</div>}
 					{current.map(this.toPageNumber)}
@@ -110,6 +110,7 @@ export default class Pagination extends React.PureComponent<Props> {
 	private toPageNumber = (pageNumber: number) =>
 		<PageNumber
 			active={pageNumber === this.props.pageNumber}
+			className={pageNumber === this.props.pageNumber ? 'active' : null}
 			key={pageNumber}
 			onClick={() => this.handlePageNumberClick(pageNumber)}
 		>

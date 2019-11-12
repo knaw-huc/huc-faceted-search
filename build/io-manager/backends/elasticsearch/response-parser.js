@@ -1,18 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+function getBuckets(response, field) {
+    const buckets = response.aggregations[field][field].buckets;
+    return buckets == null ? [] : buckets;
+}
 const elasticSearchResponseParser = function elasticSearchResponseParser(response, facets) {
     const facetValues = {};
     facets.forEach(facet => {
+        const buckets = getBuckets(response, facet.field);
         if (facet.type === "list") {
             facetValues[facet.field] = {
                 total: response.aggregations[`${facet.field}-count`].value,
-                values: response.aggregations[facet.field].buckets.map((b) => ({ key: b.key, count: b.doc_count }))
+                values: buckets.map((b) => ({ key: b.key, count: b.doc_count }))
             };
         }
         else if (facet.type === "boolean") {
-            const trueBucket = response.aggregations[facet.field].buckets.find((b) => b.key === 1);
+            const trueBucket = buckets.find((b) => b.key === 1);
             const trueCount = trueBucket != null ? trueBucket.doc_count : 0;
-            const falseBucket = response.aggregations[facet.field].buckets.find((b) => b.key === 0);
+            const falseBucket = buckets.find((b) => b.key === 0);
             const falseCount = falseBucket != null ? falseBucket.doc_count : 0;
             facetValues[facet.field] = {
                 true: trueCount,
@@ -20,21 +25,30 @@ const elasticSearchResponseParser = function elasticSearchResponseParser(respons
             };
         }
         else if (facet.type === "range") {
-            const values = facet.values;
-            const { buckets } = response.aggregations[facet.field];
+            const rangeFacet = facet;
+            const values = rangeFacet.values;
             if (!values.length) {
-                facetValues[facet.field] = buckets.map((hv) => ({
+                facetValues[rangeFacet.field] = buckets.map((hv) => ({
                     key: hv.key,
                     count: hv.doc_count,
                 }));
             }
             else {
-                facetValues[facet.field] = values;
-                facet.filter = buckets.length ?
-                    [buckets[0].key, buckets[buckets.length - 1].key] :
-                    null;
+                facetValues[rangeFacet.field] = values;
+                if (buckets.length) {
+                    const minValue = values[0].key;
+                    const maxValue = values[values.length - 1].key;
+                    const lowerLimitTimestamp = buckets[0].key;
+                    const upperLimitTimestamp = buckets[buckets.length - 1].key;
+                    if (minValue !== lowerLimitTimestamp ||
+                        maxValue !== upperLimitTimestamp) {
+                        rangeFacet.filter = buckets.length ?
+                            [lowerLimitTimestamp, upperLimitTimestamp] :
+                            null;
+                    }
+                }
             }
-            facet.interval = response.aggregations[facet.field].interval;
+            rangeFacet.interval = response.aggregations[facet.field][facet.field].interval;
         }
     });
     return {
