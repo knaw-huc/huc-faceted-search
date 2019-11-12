@@ -21,6 +21,8 @@ const search_results_1 = tslib_1.__importDefault(require("./search-results"));
 exports.SearchResults = search_results_1.default;
 const io_manager_1 = tslib_1.__importDefault(require("./io-manager"));
 const Wrapper = styled_1.default.div `
+	margin-bottom: 10vh;
+
 	${(props) => {
     if (!props.disableDefaultStyle) {
         return `

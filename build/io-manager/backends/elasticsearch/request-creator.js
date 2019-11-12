@@ -69,16 +69,16 @@ class ElasticSearchRequest {
         }
     }
     addFilter(key, values) {
-        const tmp = {
+        const agg = {
             [key]: {
                 aggs: { [key]: values },
                 filter: { match_all: {} }
             }
         };
         if (this.post_filter != null) {
-            tmp[key].filter = this.post_filter;
+            agg[key].filter = this.post_filter;
         }
-        return tmp;
+        return agg;
     }
     createBooleanAggregation(facet) {
         const values = {
@@ -91,20 +91,15 @@ class ElasticSearchRequest {
     createListAggregation(facet) {
         const terms = {
             field: facet.field,
-            min_doc_count: 0,
             size: facet.viewSize,
-            order: {
-                [facet.order[0]]: facet.order[1]
-            },
         };
         if (facet.query.length)
             terms.include = `.*${facet.query}.*`;
-        const agg = Object.assign({}, this.addFilter(facet.field, { terms }), { [`${facet.field}-count`]: {
-                cardinality: {
-                    field: facet.field
-                }
-            } });
-        console.log(agg);
+        const agg = Object.assign({}, this.addFilter(facet.field, { terms }), this.addFilter(`${facet.field}-count`, {
+            cardinality: {
+                field: facet.field
+            }
+        }));
         return agg;
     }
     createHistogramAggregation(facet) {

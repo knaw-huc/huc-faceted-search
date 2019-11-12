@@ -24,6 +24,8 @@ export {
 }
 
 const Wrapper = styled.div`
+	margin-bottom: 10vh;
+
 	${(props: { disableDefaultStyle: boolean}) => {
 		if (!props.disableDefaultStyle) {
 			return `

@@ -33,7 +33,17 @@ class FacetValuesView extends React.PureComponent {
         if (this.props.facet == null)
             return null;
         return (React.createElement(Wrapper, { ref: this.wrapperRef },
-            React.createElement(List, null, this.props.facet.values.values.map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value }))),
+            React.createElement(List, null, this.props.facet.values.values
+                .sort((value1, value2) => {
+                const active1 = this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value1.key);
+                const active2 = this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value2.key);
+                if (active1 && !active2)
+                    return -1;
+                if (!active1 && active2)
+                    return 1;
+                return 0;
+            })
+                .map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value }))),
             !this.props.facet.query.length &&
                 React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
     }

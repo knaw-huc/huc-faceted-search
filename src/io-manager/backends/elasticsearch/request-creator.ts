@@ -94,29 +94,19 @@ export default class ElasticSearchRequest {
 	}
 
 	private addFilter(key: any, values: any): any {
-		// const req: AggregationRequest = { aggs }
-		// if (this.post_filter != null) {
-			// req.filter = this.post_filter
-			const tmp = {
-				[key]: {
-					aggs: { [key]: values },
-					filter: { match_all: {} }
-				}
+		const agg = {
+			[key]: {
+				aggs: { [key]: values },
+				filter: { match_all: {} }
 			}
+		}
 
-			if (this.post_filter != null) {
-				// @ts-ignore
-				tmp[key].filter = this.post_filter
-			}
+		if (this.post_filter != null) {
+			// @ts-ignore
+			agg[key].filter = this.post_filter
+		}
 
-			return tmp
-		// } else {
-		// 	return {
-		// 		[key]: values
-		// 	}
-		// }
-		// console.log(req.aggs)
-		// return req
+		return agg
 	}
 
 	private createBooleanAggregation(facet: BooleanFacet) {
@@ -132,91 +122,30 @@ export default class ElasticSearchRequest {
 	private createListAggregation(facet: ListFacet) {
 		const terms = {
 			field: facet.field,
-			min_doc_count: 0,
 			size: facet.viewSize,
-			order: {
-				[facet.order[0]]: facet.order[1]
-			},
 		}
 
 		if (facet.query.length) (terms as any).include = `.*${facet.query}.*`
 		
 		const agg = {
 			...this.addFilter(facet.field, { terms }),
-			[`${facet.field}-count`]: {
+			...this.addFilter(`${facet.field}-count`, {
 				cardinality: {
 					field: facet.field
 				}
-			}
+			})
 		}
 
-		// const listAggs = this.addFilter(agg)
-		// return listAggs
-		console.log(agg)
 		return agg
 	}
 
-	// private createRangeAggregation(facet: RangeFacet) {
-	// 	const agg = {
-	// 		[facet.field]: {
-	// 			stats: {
-	// 				field: facet.field,
-	// 			}
-	// 		},
-	// 	}
-
-	// 	return this.addFilter(agg)
-	// }
-
 	private createHistogramAggregation(facet: RangeFacet): Record<string, any> {
-		// const [min, max] = facet.values
 		const values = {
 			auto_date_histogram: {
-				// extended_bounds: { min, max },
 				field: facet.field,
-				// interval: "year",
-				// min_doc_count: 0,
 			}
 		}
-
-		// if (this.post_filter != null) {
-		// 	histAgg = {
-		// 		aggs: {
-		// 			[`${facet.field}_histogram`]: histAgg,
-		// 		},
-		// 		filter: this.post_filter
-		// 	}
-		// }
 
 		return this.addFilter(facet.field, values)
 	}
 }
-
-	// private createHistogramAggregation(facet: RangeFacet) {
-	// 	let histAgg = {
-	// 		date_histogram: {
-	// 			extended_bounds: { min: facet.values.values[0], max: facet.values.values[1]},
-	// 			field: facet.field,
-	// 			min_doc_count: 0,
-	// 			interval: "month",
-	// 		}
-	// 	} as any
-
-	// 	if (Object.keys(this.post_filter).length) {
-	// 		histAgg = {
-	// 			aggs: {
-	// 				[`${facet.field}_histogram`]: {
-	// 					date_histogram: {
-	// 						extended_bounds: { min: facet.values.values[0], max: facet.values.values[1]},
-	// 						field: facet.field,
-	// 						interval: "month",
-	// 						min_doc_count: 0,
-	// 					}
-	// 				}
-	// 			},
-	// 			filter: this.post_filter
-	// 		}
-	// 	}
-
-	// 	return histAgg
-	// }
