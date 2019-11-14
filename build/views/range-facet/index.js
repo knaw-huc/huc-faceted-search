@@ -64,13 +64,13 @@ class RangeFacetView extends React.PureComponent {
     }
     render() {
         const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
-        if (facet == null)
+        if (facet == null || facet.values == null || facet.values.length < 2)
             return null;
         const [fMin, fMax] = this.formatRange();
         const minValue = facet.values[0].key;
         const maxValue = facet.values[facet.values.length - 1].key;
-        const lowerLimit = timestampToRatio(this.state.rangeMin || minValue, facet);
-        const upperLimit = timestampToRatio(this.state.rangeMax || maxValue, facet);
+        const lowerLimit = timestampToRatio((this.state.rangeMin || minValue), facet);
+        const upperLimit = timestampToRatio((this.state.rangeMax || maxValue), facet);
         return (React.createElement(facet_1.default, { style: { position: 'relative' } },
             React.createElement(facet_header_1.default, Object.assign({}, this.props)),
             React.createElement(histogram_1.default, { lowerLimit: lowerLimit, upperLimit: upperLimit, values: facet.values }),
