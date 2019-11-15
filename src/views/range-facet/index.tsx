@@ -53,11 +53,10 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 	}
 
 	// Reset the range facet when the filter is removed
-	componentDidUpdate(prevProps: RangeProps & FacetsProps) {
-		const prevFacet = prevProps.state.facetsManager.getRangeFacet(prevProps.field)
+	componentDidUpdate(_prevProps: RangeProps & FacetsProps) {
 		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
 
-		if (prevFacet.filter != null && facet.filter == null) {
+		if (facet.filter == null && this.state.rangeMin != null) {
 			this.setState({
 				rangeMin: null,
 				rangeMax: null,

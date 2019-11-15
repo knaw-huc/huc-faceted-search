@@ -46,10 +46,9 @@ class RangeFacetView extends React.PureComponent {
             interval: this.props.interval
         });
     }
-    componentDidUpdate(prevProps) {
-        const prevFacet = prevProps.state.facetsManager.getRangeFacet(prevProps.field);
+    componentDidUpdate(_prevProps) {
         const facet = this.props.state.facetsManager.getRangeFacet(this.props.field);
-        if (prevFacet.filter != null && facet.filter == null) {
+        if (facet.filter == null && this.state.rangeMin != null) {
             this.setState({
                 rangeMin: null,
                 rangeMax: null,
