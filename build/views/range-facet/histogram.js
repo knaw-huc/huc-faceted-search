@@ -32,10 +32,10 @@ class Histogram extends React.PureComponent {
                 position: 'relative',
             } },
             React.createElement("div", { style: {
-                    background: 'rgba(255, 255, 255, .2)',
+                    background: 'rgba(0, 0, 0, .2)',
                     height: '100%',
                     left: `${this.props.lowerLimit * 100}%`,
-                    mixBlendMode: 'luminosity',
+                    mixBlendMode: 'color-burn',
                     position: 'absolute',
                     width: `${(this.props.upperLimit - this.props.lowerLimit) * 100}%`,
                 } }),

@@ -4,15 +4,16 @@ import styled from '@emotion/styled'
 import debounce from 'lodash.debounce'
 
 const Suggestions = styled('ul')`
+	border-bottom: 0;
+	border-left: 1px solid #CCC;
+	border-right: 1px solid #CCC;
 	box-sizing: border-box;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	position: absolute;
+	top: 45px;
 	width: calc(100% - 100px);
-	border-left: 1px solid #CCC;
-	border-right: 1px solid #CCC;
-	border-bottom: 0;
 	z-index: 1;
 `
 

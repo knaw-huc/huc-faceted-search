@@ -6,15 +6,16 @@ const suggestion_1 = tslib_1.__importDefault(require("./suggestion"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const lodash_debounce_1 = tslib_1.__importDefault(require("lodash.debounce"));
 const Suggestions = styled_1.default('ul') `
+	border-bottom: 0;
+	border-left: 1px solid #CCC;
+	border-right: 1px solid #CCC;
 	box-sizing: border-box;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	position: absolute;
+	top: 45px;
 	width: calc(100% - 100px);
-	border-left: 1px solid #CCC;
-	border-right: 1px solid #CCC;
-	border-bottom: 0;
 	z-index: 1;
 `;
 class AutoSuggest extends React.PureComponent {

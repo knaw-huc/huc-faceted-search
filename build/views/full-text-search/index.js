@@ -9,14 +9,19 @@ const lodash_debounce_1 = tslib_1.__importDefault(require("lodash.debounce"));
 exports.Wrapper = styled_1.default.div `
 	background-color: white;
 	border: 1px solid #AAA;
+	box-sizing: border-box;
 	display: grid;
 	grid-template-columns: auto 40px;
+	height: 45px;
 	position: relative;
 
 	& > .search-icon {
 		align-self: center;
+		align-self: center;
 		fill: #BBB;
-		padding-right: 16px;
+		height: 24px;
+		justify-self: center;
+		width: 24px;
 	}
 
 	#loader {

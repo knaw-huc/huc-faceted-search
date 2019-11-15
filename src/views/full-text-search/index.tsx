@@ -8,14 +8,19 @@ import debounce from 'lodash.debounce'
 export const Wrapper = styled.div`
 	background-color: white;
 	border: 1px solid #AAA;
+	box-sizing: border-box;
 	display: grid;
 	grid-template-columns: auto 40px;
+	height: 45px;
 	position: relative;
 
 	& > .search-icon {
 		align-self: center;
+		align-self: center;
 		fill: #BBB;
-		padding-right: 16px;
+		height: 24px;
+		justify-self: center;
+		width: 24px;
 	}
 
 	#loader {

@@ -48,6 +48,7 @@ const Wrapper = styled.div`
 `
 
 interface Props {
+	autoSuggest: (query: string) => Promise<string[]>
 	backend?: BackendType
 	className?: string
 	disableDefaultStyle?: boolean
@@ -99,7 +100,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 					id="huc-fs"
 				>
 					<aside>
-						<FullTextSearch autoSuggest={async () => []} />
+						<FullTextSearch autoSuggest={this.props.autoSuggest} />
 						<Reset />
 						<FacetsView>
 							{this.props.children}

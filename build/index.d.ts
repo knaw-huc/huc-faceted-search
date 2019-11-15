@@ -10,6 +10,7 @@ import Reset from './views/reset';
 import SearchResults from './search-results';
 export { BooleanFacet, FacetsView as Facets, FullTextSearch, ListFacet, RangeFacet, Reset, SearchResults };
 interface Props {
+    autoSuggest: (query: string) => Promise<string[]>;
     backend?: BackendType;
     className?: string;
     disableDefaultStyle?: boolean;

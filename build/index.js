@@ -64,7 +64,7 @@ class FacetedSearch extends React.PureComponent {
         return (React.createElement(context_1.default.Provider, { value: this.state },
             React.createElement(Wrapper, { className: this.props.className, disableDefaultStyle: this.props.disableDefaultStyle, id: "huc-fs" },
                 React.createElement("aside", null,
-                    React.createElement(full_text_search_1.default, { autoSuggest: () => tslib_1.__awaiter(this, void 0, void 0, function* () { return []; }) }),
+                    React.createElement(full_text_search_1.default, { autoSuggest: this.props.autoSuggest }),
                     React.createElement(reset_1.default, null),
                     React.createElement(facets_1.default, null, this.props.children)),
                 React.createElement(search_results_1.default, { pageNumber: this.ioManager.currentPage, goToPage: pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets()), onClickResult: this.props.onClickResult, resultBodyComponent: this.props.resultBodyComponent, resultBodyProps: this.props.resultBodyProps, resultsPerPage: this.props.resultsPerPage, state: this.state }))));
