@@ -26,15 +26,15 @@ const elasticSearchResponseParser = function elasticSearchResponseParser(respons
         }
         else if (facet.type === "range") {
             const rangeFacet = facet;
-            const values = rangeFacet.values;
+            const { field, values } = rangeFacet;
             if (!values.length) {
-                facetValues[rangeFacet.field] = buckets.map((hv) => ({
+                facetValues[field] = buckets.map((hv) => ({
                     key: hv.key,
                     count: hv.doc_count,
                 }));
             }
             else {
-                facetValues[rangeFacet.field] = values;
+                facetValues[field] = values;
                 if (buckets.length) {
                     const minValue = values[0].key;
                     const maxValue = values[values.length - 1].key;
@@ -42,6 +42,7 @@ const elasticSearchResponseParser = function elasticSearchResponseParser(respons
                     const upperLimitTimestamp = buckets[buckets.length - 1].key;
                     if (minValue !== lowerLimitTimestamp ||
                         maxValue !== upperLimitTimestamp) {
+                        facetValues[field] = values;
                         rangeFacet.filter = buckets.length ?
                             [lowerLimitTimestamp, upperLimitTimestamp] :
                             null;

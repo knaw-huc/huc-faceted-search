@@ -15,8 +15,10 @@ class BooleanFacetValuesView extends React.PureComponent {
         const { true: trueCount, false: falseCount } = this.props.facet.values;
         return (React.createElement("div", null,
             React.createElement(List, null,
-                React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, 'true'), active: this.props.facet.filters.has('true'), key: 'true', keyFormatter: () => this.props.labels.true, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, 'true'), value: { key: 'true', count: trueCount } }),
-                React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, 'false'), active: this.props.facet.filters.has('false'), key: 'false', keyFormatter: () => this.props.labels.false, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, 'false'), value: { key: 'false', count: falseCount } }))));
+                trueCount > 0 &&
+                    React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, 'true'), active: this.props.facet.filters.has('true'), key: 'true', keyFormatter: () => this.props.labels.true, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, 'true'), value: { key: 'true', count: trueCount } }),
+                falseCount > 0 &&
+                    React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, 'false'), active: this.props.facet.filters.has('false'), key: 'false', keyFormatter: () => this.props.labels.false, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, 'false'), value: { key: 'false', count: falseCount } }))));
     }
 }
 exports.default = BooleanFacetValuesView;

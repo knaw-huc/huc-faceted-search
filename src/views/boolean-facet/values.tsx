@@ -24,22 +24,28 @@ export default class BooleanFacetValuesView extends React.PureComponent<Props> {
 		return (
 			<div>
 				<List>
-					<FacetValueView
-						addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'true')}
-						active={this.props.facet.filters.has('true')}
-						key={'true'}
-						keyFormatter={() => this.props.labels.true}
-						removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'true')}
-						value={{ key: 'true', count: trueCount }}
-					/>
-					<FacetValueView
-						addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'false')}
-						active={this.props.facet.filters.has('false')}
-						key={'false'}
-						keyFormatter={() => this.props.labels.false}
-						removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'false')}
-						value={{ key: 'false', count: falseCount }}
-					/>
+					{
+						trueCount > 0 &&
+						<FacetValueView
+							addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'true')}
+							active={this.props.facet.filters.has('true')}
+							key={'true'}
+							keyFormatter={() => this.props.labels.true}
+							removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'true')}
+							value={{ key: 'true', count: trueCount }}
+						/>
+					}
+					{
+						falseCount > 0 &&
+						<FacetValueView
+							addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'false')}
+							active={this.props.facet.filters.has('false')}
+							key={'false'}
+							keyFormatter={() => this.props.labels.false}
+							removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'false')}
+							value={{ key: 'false', count: falseCount }}
+						/>
+					}
 				</List>
 			</div>
 		)
