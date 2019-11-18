@@ -56,7 +56,7 @@ class RangeFacet extends BaseFacet {
         this.reset();
     }
     reset() {
-        this.filter = null;
+        this.filters = null;
     }
 }
 exports.RangeFacet = RangeFacet;

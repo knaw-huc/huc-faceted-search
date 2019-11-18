@@ -56,15 +56,15 @@ export default class RangeFacetView extends React.PureComponent<RangeProps & Fac
 	componentDidUpdate(_prevProps: RangeProps & FacetsProps) {
 		const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
 
-		if (facet.filter == null && this.state.rangeMin != null) {
+		if (facet.filters == null && this.state.rangeMin != null) {
 			this.setState({
 				rangeMin: null,
 				rangeMax: null,
 			})
-		} else if (Array.isArray(facet.filter) && facet.filter.length === 2) {
+		} else if (Array.isArray(facet.filters) && facet.filters.length === 2) {
 			this.setState({
-				rangeMin: facet.filter[0],
-				rangeMax: facet.filter[1],
+				rangeMin: facet.filters[0],
+				rangeMax: facet.filters[1],
 			})
 		}
 	}

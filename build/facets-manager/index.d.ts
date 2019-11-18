@@ -1,5 +1,5 @@
 import FacetGetters from './getters';
-export default class FacetManager extends FacetGetters {
+export default class FacetsManager extends FacetGetters {
     addFilter(field: string, key: string): void;
     addFilter(field: string, key: number, max: number): void;
     removeFilter(field: string, key: string): void;

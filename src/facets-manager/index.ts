@@ -1,6 +1,6 @@
 import FacetGetters from './getters'
 
-export default class FacetManager extends FacetGetters {
+export default class FacetsManager extends FacetGetters {
 	addFilter(field: string, key: string): void // ListFacet || BooleanFacet
 	addFilter(field: string, key: number, max: number): void // RangeFacet
 	addFilter(field: string, key: string | number, max?: number): void {
@@ -9,13 +9,11 @@ export default class FacetManager extends FacetGetters {
 		if (facetType === FacetType.Range && typeof key === 'number') {
 			const facet = this.getRangeFacet(field)
 
-			// if (facet.values.filter == null) facet.values = [0, 1]
-			// const [prevMin, prevMax] = facet.values
 			const prevMin = facet.values[0].key
 			const prevMax = facet.values[facet.values.length - 1].key
 
 			if (prevMin !== key || prevMax !== max) {
-				facet.filter = [key, max] 
+				facet.filters = [key, max] 
 				this.handleChange()
 			}
 		}

@@ -70,12 +70,12 @@ export default class ElasticSearchRequest {
 
 		const rangeFilters = facets
 			.filter(f => f.type === FacetType.Range)
-			.filter((facet: RangeFacet) => Array.isArray(facet.filter) && facet.filter.length === 2)
+			.filter((facet: RangeFacet) => Array.isArray(facet.filters) && facet.filters.length === 2)
 			.map((facet: RangeFacet) => ({
 				range: {
 					[facet.field]: {
-						gte: new Date(facet.filter[0]).toISOString(),
-						lte: new Date(facet.filter[1]).toISOString()
+						gte: new Date(facet.filters[0]).toISOString(),
+						lte: new Date(facet.filters[1]).toISOString()
 					}
 				}
 			}))

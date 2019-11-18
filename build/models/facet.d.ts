@@ -29,7 +29,7 @@ export declare class BooleanFacet extends BaseFacet {
 }
 export declare class RangeFacet extends BaseFacet {
     settings: RangeSettings;
-    filter: [number, number];
+    filters: [number, number];
     interval: string;
     type: FacetType;
     values: RangeFacetValues;

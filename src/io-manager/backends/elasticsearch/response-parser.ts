@@ -50,7 +50,7 @@ const elasticSearchResponseParser: Backend['responseParser'] = function elasticS
 						maxValue !== upperLimitTimestamp
 					) {
 						facetValues[field] = values
-						rangeFacet.filter = buckets.length ?
+						rangeFacet.filters = buckets.length ?
 							[lowerLimitTimestamp, upperLimitTimestamp] :
 							null
 					}

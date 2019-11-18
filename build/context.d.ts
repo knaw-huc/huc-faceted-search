@@ -1,7 +1,7 @@
 import * as React from 'react';
-import FacetManager from './facets-manager';
+import FacetsManager from './facets-manager';
 export interface ContextState {
-    facetsManager: FacetManager;
+    facetsManager: FacetsManager;
     searchResult: FSResponse;
 }
 export declare const defaultState: ContextState;

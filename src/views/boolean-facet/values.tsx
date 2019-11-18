@@ -17,7 +17,7 @@ export interface Props {
 }
 export default class BooleanFacetValuesView extends React.PureComponent<Props> {
 	render() {
-		if (this.props.facet == null) return null
+		if (this.props.facet == null || this.props.facet.values == null) return null
 
 		const { true: trueCount, false: falseCount } = this.props.facet.values
 

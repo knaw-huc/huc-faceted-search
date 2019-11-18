@@ -8,7 +8,7 @@ import ListFacet from './views/list-facet'
 import RangeFacet from './views/range-facet'
 import BooleanFacet from './views/boolean-facet'
 import FullTextSearch from './views/full-text-search'
-import FacetManager from './facets-manager'
+import FacetsManager from './facets-manager'
 import Reset from './views/reset'
 import SearchResults from './search-results'
 import IOManager from './io-manager'
@@ -62,7 +62,7 @@ interface Props {
 export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
 	state: ContextState = {
 		...defaultState,
-		facetsManager: new FacetManager({
+		facetsManager: new FacetsManager({
 			onChange: () => this.ioManager.sendRequest(this.state.facetsManager.getFacets(), this.state.facetsManager.query)
 		})
 	}
@@ -121,10 +121,20 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 	}
 
 	addFilter(field: string, key: string) {
+		this.state.facetsManager.reset()
 		this.state.facetsManager.addFilter(field, key)
 	}
 
 	getPrevNext(id: string): [Hit, Hit] {
 		return this.ioManager.getPrevNext(id)
+	}
+
+	getFilters() {
+		return this.state.facetsManager.getFacets()
+			.reduce((prev, curr) => {
+				if (curr.filters == null) return prev
+				prev[curr.field] = [...curr.filters]
+				return prev
+			}, {} as Record<string, any[]>)
 	}
 }

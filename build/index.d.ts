@@ -29,4 +29,5 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
     render(): JSX.Element;
     addFilter(field: string, key: string): void;
     getPrevNext(id: string): [Hit, Hit];
+    getFilters(): Record<string, any[]>;
 }

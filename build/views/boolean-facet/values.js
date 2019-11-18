@@ -10,7 +10,7 @@ const List = styled_1.default('ul') `
 `;
 class BooleanFacetValuesView extends React.PureComponent {
     render() {
-        if (this.props.facet == null)
+        if (this.props.facet == null || this.props.facet.values == null)
             return null;
         const { true: trueCount, false: falseCount } = this.props.facet.values;
         return (React.createElement("div", null,

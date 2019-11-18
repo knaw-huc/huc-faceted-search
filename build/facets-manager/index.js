@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const getters_1 = tslib_1.__importDefault(require("./getters"));
-class FacetManager extends getters_1.default {
+class FacetsManager extends getters_1.default {
     addFilter(field, key, max) {
         const facetType = this.facets.get(field).type;
         if (facetType === "range" && typeof key === 'number') {
@@ -10,7 +10,7 @@ class FacetManager extends getters_1.default {
             const prevMin = facet.values[0].key;
             const prevMax = facet.values[facet.values.length - 1].key;
             if (prevMin !== key || prevMax !== max) {
-                facet.filter = [key, max];
+                facet.filters = [key, max];
                 this.handleChange();
             }
         }
@@ -62,4 +62,4 @@ class FacetManager extends getters_1.default {
         });
     }
 }
-exports.default = FacetManager;
+exports.default = FacetsManager;

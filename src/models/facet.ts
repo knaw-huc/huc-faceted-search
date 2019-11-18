@@ -57,9 +57,7 @@ export class BooleanFacet extends BaseFacet {
 }
 
 export class RangeFacet extends BaseFacet {
-	filter: [number, number]
-	// histogramValues: KeyCount[]
-	// filteredHistogramValues: KeyCount[]
+	filters: [number, number]
 	interval: string
 	type = FacetType.Range
 	values: RangeFacetValues = []
@@ -70,7 +68,6 @@ export class RangeFacet extends BaseFacet {
 	}
 
 	reset() {
-		this.filter = null
-		// this.filteredHistogramValues = null
+		this.filters = null
 	}
 }
