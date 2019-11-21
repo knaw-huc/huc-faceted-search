@@ -54,6 +54,7 @@ interface Props {
 	disableDefaultStyle?: boolean
 	onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
+	resultFields: IOOptions['resultFields']
 	resultBodyComponent: React.SFC<ResultBodyProps>
 	resultBodyProps?: Record<string, any>
 	resultsPerPage?: number
@@ -72,6 +73,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 		backend: 'none',
 		disableDefaultStyle: false,
 		onChange: () => {},
+		resultFields: [],
 		resultsPerPage: 10,
 		resultBodyProps: {}
 	}
@@ -81,6 +83,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 
 		this.ioManager = new IOManager({
 			backend: props.backend,
+			resultFields: props.resultFields,
 			resultsPerPage: props.resultsPerPage,
 			url: props.url,
 			onChange: (changeResponse: Pick<OnChangeResponse, 'request' | 'response'>) => {

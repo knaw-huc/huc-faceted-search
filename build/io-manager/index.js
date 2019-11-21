@@ -21,7 +21,7 @@ class IOManager {
     }
     sendRequest(facets, query) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const requestBody = new this.backend.RequestCreator(facets, query, this.options.resultsPerPage);
+            const requestBody = new this.backend.RequestCreator(facets, query, this.options.resultsPerPage, this.options.resultFields);
             const response = yield this.handleFetch(requestBody, facets);
             this.options.onChange(Object.assign({}, response));
         });

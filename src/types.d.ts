@@ -31,17 +31,18 @@ interface FSResponse {
 	total: number
 }
 
-interface Options {
+interface IOOptions {
 	backend: BackendType
 	onChange: OnIOManagerChange
+	resultFields: string[]
 	resultsPerPage: number
 	url: string
 }
 
-interface IOHistory {
-	request: any,
-	response: ParsedResponse,
-}
+// interface IOHistory {
+// 	request: any,
+// 	response: ParsedResponse,
+// }
 
 interface ParsedResponse {
 	aggregations: { [id: string]: any}

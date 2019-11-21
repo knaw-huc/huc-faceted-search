@@ -16,7 +16,9 @@ export default class ElasticSearchRequest {
     };
     post_filter: Record<string, any>;
     query: Record<string, any>;
-    constructor(facets: Facet[], facetsManagerQuery: string, size: number);
+    _source: IOOptions['resultFields'];
+    constructor(facets: Facet[], facetsManagerQuery: string, size: number, resultFields: IOOptions['resultFields']);
+    private setSource;
     private setQuery;
     private setAggregations;
     private setPostFilter;

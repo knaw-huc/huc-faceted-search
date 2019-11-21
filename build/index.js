@@ -51,6 +51,7 @@ class FacetedSearch extends React.PureComponent {
             }) });
         this.ioManager = new io_manager_1.default({
             backend: props.backend,
+            resultFields: props.resultFields,
             resultsPerPage: props.resultsPerPage,
             url: props.url,
             onChange: (changeResponse) => {
@@ -90,6 +91,7 @@ FacetedSearch.defaultProps = {
     backend: 'none',
     disableDefaultStyle: false,
     onChange: () => { },
+    resultFields: [],
     resultsPerPage: 10,
     resultBodyProps: {}
 };

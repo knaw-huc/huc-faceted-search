@@ -5,7 +5,7 @@ export default class IOManager {
     private hitsCache;
     private lastRequest;
     currentPage: number;
-    constructor(options: Options);
+    constructor(options: IOOptions);
     sendRequest(facets: Facet[], query: string): Promise<void>;
     private handleFetch;
     private updateHitsCache;

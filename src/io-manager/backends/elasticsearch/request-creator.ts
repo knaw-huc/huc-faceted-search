@@ -11,11 +11,18 @@ export default class ElasticSearchRequest {
 	highlight: { fields: { text: {} }, require_field_match: boolean }
 	post_filter: Record<string, any>
 	query: Record<string, any>
+	_source: IOOptions['resultFields']
 
-	constructor(facets: Facet[], facetsManagerQuery: string, public size: number) {
+	constructor(facets: Facet[], facetsManagerQuery: string, public size: number, resultFields: IOOptions['resultFields']) {
 		this.setPostFilter(facets)
 		this.setAggregations(facets)
 		this.setQuery(facetsManagerQuery)
+		this.setSource(resultFields)
+	}
+
+	private setSource(resultFields: IOOptions['resultFields']) {
+		if (resultFields == null || !resultFields.length) return
+		this._source = resultFields
 	}
 
 	private setQuery(query: string) {

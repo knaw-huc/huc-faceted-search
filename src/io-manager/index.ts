@@ -26,12 +26,12 @@ export default class IOManager {
 	// this.goToPage and this.hitsCache, this is a more logical place
 	currentPage: number = 1
 
-	constructor(private options: Options) {//, private facetsManager: FacetManager) {
+	constructor(private options: IOOptions) {//, private facetsManager: FacetManager) {
 		this.backend = backends[options.backend]
 	}
 
 	async sendRequest(facets: Facet[], query: string) {
-		const requestBody = new this.backend.RequestCreator(facets, query, this.options.resultsPerPage)
+		const requestBody = new this.backend.RequestCreator(facets, query, this.options.resultsPerPage, this.options.resultFields)
 		const response = await this.handleFetch(requestBody, facets)
 		this.options.onChange({ ...response })
 	}
