@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 exports.defaultState = {
     facetsManager: null,
+    ResultBodyComponent: null,
     searchResult: {
         facetValues: {},
         results: [],

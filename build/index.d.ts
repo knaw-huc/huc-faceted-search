@@ -17,7 +17,7 @@ interface Props {
     onChange?: (response: OnChangeResponse) => void;
     onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void;
     resultFields: IOOptions['resultFields'];
-    resultBodyComponent: React.SFC<ResultBodyProps>;
+    getResultBodyComponent: () => Promise<React.SFC<ResultBodyProps>>;
     resultBodyProps?: Record<string, any>;
     resultsPerPage?: number;
     url: string;

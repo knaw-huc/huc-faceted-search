@@ -40,6 +40,7 @@ export default class FacetValuesView extends React.PureComponent<Props> {
 
 	render() {
 		if (this.props.facet == null) return null
+		if (this.props.facet.values == null) return null
 
 		return (
 			<Wrapper

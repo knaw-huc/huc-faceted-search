@@ -2,11 +2,13 @@ import * as React from 'react'
 import FacetsManager from './facets-manager'
 
 export interface ContextState {
-	facetsManager: FacetsManager,
+	facetsManager: FacetsManager
+	ResultBodyComponent: React.SFC<ResultBodyProps>
 	searchResult: FSResponse
 }
 export const defaultState: ContextState = {
 	facetsManager: null,
+	ResultBodyComponent: null,
 	searchResult: {
 		facetValues: {},
 		results: [],

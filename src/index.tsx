@@ -55,7 +55,7 @@ interface Props {
 	onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultFields: IOOptions['resultFields']
-	resultBodyComponent: React.SFC<ResultBodyProps>
+	getResultBodyComponent: () => Promise<React.SFC<ResultBodyProps>>
 	resultBodyProps?: Record<string, any>
 	resultsPerPage?: number
 	url: string
@@ -92,9 +92,13 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 				this.setState({ searchResult: changeResponse.response })
 			}
 		})
+
+		this.props.getResultBodyComponent().then(ResultBodyComponent => this.setState({ ResultBodyComponent }))
 	}
 
 	render() {
+		if (this.state.ResultBodyComponent == null) return null
+
 		return (
 			<Context.Provider value={this.state}>
 				<Wrapper
@@ -113,7 +117,7 @@ export default class FacetedSearch extends React.PureComponent<Props, ContextSta
 						pageNumber={this.ioManager.currentPage}
 						goToPage={pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets())}
 						onClickResult={this.props.onClickResult}
-						resultBodyComponent={this.props.resultBodyComponent}
+						resultBodyComponent={this.state.ResultBodyComponent}
 						resultBodyProps={this.props.resultBodyProps}
 						resultsPerPage={this.props.resultsPerPage}
 						state={this.state}

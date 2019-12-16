@@ -32,6 +32,8 @@ class FacetValuesView extends React.PureComponent {
     render() {
         if (this.props.facet == null)
             return null;
+        if (this.props.facet.values == null)
+            return null;
         return (React.createElement(Wrapper, { ref: this.wrapperRef },
             React.createElement(List, null, this.props.facet.values.values
                 .sort((value1, value2) => {
