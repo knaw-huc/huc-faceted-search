@@ -1,8 +1,6 @@
 import * as React from 'react'
 import FacetValueView from '../list-facet/value'
 import styled from '@emotion/styled'
-import { BooleanFacet } from '../../models/facet'
-import { ContextState } from '../../context'
 
 const List = styled('ul')`
 	margin: 0;
@@ -10,16 +8,17 @@ const List = styled('ul')`
 `
 
 export interface Props {
-	facet: BooleanFacet
+	// facet: BooleanFacet
 	field: string
+	filters: Filters
 	labels: { true: string, false: string }
-	state: ContextState
+	values: BooleanFacetValues
 }
 export default class BooleanFacetValuesView extends React.PureComponent<Props> {
 	render() {
-		if (this.props.facet == null || this.props.facet.values == null) return null
+		if (this.props.field == null || this.props.values == null) return null
 
-		const { true: trueCount, false: falseCount } = this.props.facet.values
+		const { true: trueCount, false: falseCount } = this.props.values
 
 		return (
 			<div>
@@ -27,22 +26,22 @@ export default class BooleanFacetValuesView extends React.PureComponent<Props> {
 					{
 						trueCount > 0 &&
 						<FacetValueView
-							addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'true')}
-							active={this.props.facet.filters.has('true')}
+							addFilter={() => this.props.addFilter(this.props.field, 'true')}
+							active={this.props.filters.has('true')}
 							key={'true'}
 							keyFormatter={() => this.props.labels.true}
-							removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'true')}
+							removeFilter={() => this.props.removeFilter(this.props.field, 'true')}
 							value={{ key: 'true', count: trueCount }}
 						/>
 					}
 					{
 						falseCount > 0 &&
 						<FacetValueView
-							addFilter={() => this.props.state.facetsManager.addFilter(this.props.field, 'false')}
-							active={this.props.facet.filters.has('false')}
+							addFilter={() => this.props.addFilter(this.props.field, 'false')}
+							active={this.props.filters.has('false')}
 							key={'false'}
 							keyFormatter={() => this.props.labels.false}
-							removeFilter={() => this.props.state.facetsManager.removeFilter(this.props.field, 'false')}
+							removeFilter={() => this.props.removeFilter(this.props.field, 'false')}
 							value={{ key: 'false', count: falseCount }}
 						/>
 					}

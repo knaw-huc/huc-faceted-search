@@ -33,50 +33,26 @@ interface Props {
 	removeFilter: () => void
 	value: KeyCount
 }
-interface State {
-	active: boolean
+
+function FacetValueView(props: Props) {
+	const { keyFormatter, value } = props
+	const key = (keyFormatter != null) ? keyFormatter(value.key) : value.key
+
+	return (
+		<Wrapper
+			onClick={props.active ? props.removeFilter : props.addFilter}
+			title={props.value.key}
+		>
+			<input
+				checked={props.active}
+				onChange={props.active ? props.removeFilter : props.addFilter}
+				type="checkbox"
+			/>
+			<Key active={props.active} dangerouslySetInnerHTML={{ __html: key }}></Key>
+			<Count active={props.active}>{props.value.count}</Count>
+		</Wrapper>
+
+	)
 }
-export default class FacetValueView extends React.PureComponent<Props, State> {
-	state: State = {
-		active: this.props.active
-	}
 
-	static defaultProps: Partial<Props> = {
-		active: false
-	}
-
-	static getDerivedStateFromProps(props: Props) {
-		return { active: props.active }
-	}
-
-	render() {
-		let key = this.props.value.key
-		if (this.props.keyFormatter != null) key = this.props.keyFormatter(key)
-
-		return (
-			<Wrapper
-				onClick={this.toggleActive}
-				title={this.props.value.key}
-			>
-				<input
-					checked={this.state.active}
-					onChange={this.toggleActive}
-					type="checkbox"
-				/>
-				<Key {...this.state} dangerouslySetInnerHTML={{ __html: key }}></Key>
-				<Count {...this.state}>{this.props.value.count}</Count>
-			</Wrapper>
-
-		)
-	}
-
-	private toggleActive = () => {
-		const nextActive = !this.state.active
-
-		if (nextActive) this.props.addFilter()
-		else this.props.removeFilter()
-
-		this.setState({ active: nextActive })
-	}
-
-}
+export default React.memo(FacetValueView)

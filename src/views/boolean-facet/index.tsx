@@ -1,28 +1,57 @@
 import * as React from 'react'
 import Facet from '../facet'
-import BooleanFacetValuesView from './values'
+import FacetValueView from '../list-facet/value'
+// import BooleanFacetValuesView from './values'
 import FacetHeader from '../facet-header'
-import { FacetsProps } from '../facets'
+import styled from '@emotion/styled'
+// import { FacetsProps } from '../facets'
 
-export default class BooleanFacet extends React.PureComponent<FacetsProps & BooleanFacetProps> {
+const List = styled('ul')`
+	margin: 0;
+	padding: 0;
+`
+
+export default class BooleanFacet extends React.PureComponent<BooleanFacetProps> {
 	static defaultProps: Partial<BooleanFacetProps> = {
 		labels: { false: "No", true: "Yes" }
 	}
 
 	componentDidMount() {
-		this.props.state.facetsManager.setBooleanFacet(this.props.field, this.props.index, {})
+		// this.props.state.facetsManager.setBooleanFacet(this.props.field, this.props.index, {})
 	}
 
 	render() {
+		const { true: trueCount, false: falseCount } = this.props.values
+
 		return (
 			<Facet>
 				<FacetHeader {...this.props}/>
-				<BooleanFacetValuesView
-					facet={this.props.state.facetsManager.getBooleanFacet(this.props.field)}
-					field={this.props.field}
-					labels={this.props.labels}
-					state={this.props.state}
-				/>
+				<div>
+					<List>
+						{
+							trueCount > 0 &&
+							<FacetValueView
+								addFilter={() => this.props.addFilter(this.props.field, 'true')}
+								active={this.props.filters.has('true')}
+								key={'true'}
+								keyFormatter={() => this.props.labels.true}
+								removeFilter={() => this.props.removeFilter(this.props.field, 'true')}
+								value={{ key: 'true', count: trueCount }}
+							/>
+						}
+						{
+							falseCount > 0 &&
+							<FacetValueView
+								addFilter={() => this.props.addFilter(this.props.field, 'false')}
+								active={this.props.filters.has('false')}
+								key={'false'}
+								keyFormatter={() => this.props.labels.false}
+								removeFilter={() => this.props.removeFilter(this.props.field, 'false')}
+								value={{ key: 'false', count: falseCount }}
+							/>
+						}
+					</List>
+				</div>
 			</Facet>
 		)
 	}

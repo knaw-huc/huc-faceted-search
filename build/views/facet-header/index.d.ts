@@ -1,12 +1,8 @@
 import * as React from 'react';
 interface Props {
+    children: React.ReactNode;
     title: string;
 }
-interface State {
-    focus: boolean;
-}
-export default class FacetHeader extends React.PureComponent<Props, State> {
-    state: State;
-    render(): JSX.Element;
-}
-export {};
+declare function FacetHeader(props: Props): JSX.Element;
+declare const _default: React.MemoExoticComponent<typeof FacetHeader>;
+export default _default;

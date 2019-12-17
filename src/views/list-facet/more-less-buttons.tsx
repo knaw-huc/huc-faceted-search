@@ -3,27 +3,27 @@ import { MoreLessButton } from '../button'
 import { Props } from './values'
 
 export default function(props: Props) {
-	const facet = props.state.facetsManager.getListFacet(props.field)
+	// const facet = props.state.facetsManager.getListFacet(props.field)
 
 	return (
 		<>
 			{
-				facet.values.total > 0 &&
-				facet.values.total > facet.viewSize &&
+				props.values.total > 0 &&
+				props.values.total > props.size &&
 				<MoreLessButton
-					onClick={() => props.state.facetsManager.viewMore(props.field)}
+					// onClick={() => props.state.facetsManager.viewMore(props.field)}
 				>
-					{`View more (${facet.values.total - facet.viewSize})`}
+					{`View more (${values.total - props.size})`}
 				</MoreLessButton>
 			}
-			{
-				facet.settings.size < facet.viewSize &&
+			{/* {
+				props.settings.size < props.size &&
 				<MoreLessButton
-					onClick={() => props.state.facetsManager.viewLess(props.field)}
+					// onClick={() => props.state.facetsManager.viewLess(props.field)}
 				>
 					View less
 				</MoreLessButton>
-			}
+			} */}
 		</>
 	)
 }

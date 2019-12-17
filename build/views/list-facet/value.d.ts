@@ -6,16 +6,6 @@ interface Props {
     removeFilter: () => void;
     value: KeyCount;
 }
-interface State {
-    active: boolean;
-}
-export default class FacetValueView extends React.PureComponent<Props, State> {
-    state: State;
-    static defaultProps: Partial<Props>;
-    static getDerivedStateFromProps(props: Props): {
-        active: boolean;
-    };
-    render(): JSX.Element;
-    private toggleActive;
-}
-export {};
+declare function FacetValueView(props: Props): JSX.Element;
+declare const _default: React.MemoExoticComponent<typeof FacetValueView>;
+export default _default;

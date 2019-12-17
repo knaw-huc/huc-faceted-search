@@ -13,25 +13,20 @@ const H3 = styled('h3')`
 `
 
 interface Props {
+	children: React.ReactNode
 	title: string	
 }
-interface State {
-	focus: boolean
+function FacetHeader(props: Props) {
+	const [focus, setFocus] = React.useState(false)
+	return (
+		<Header
+			onMouseEnter={() => setFocus(true)}
+			onMouseLeave={() => setFocus(false)}
+		>
+			<H3>{props.title}</H3>
+			{ focus && props.children }
+		</Header>
+	)
 }
-export default class FacetHeader extends React.PureComponent<Props, State> {
-	state: State = {
-		focus: false
-	}
 
-	render() {
-		return (
-			<Header
-				onMouseEnter={() => this.setState({ focus: true })}
-				onMouseLeave={() => this.setState({ focus: false })}
-			>
-				<H3>{this.props.title}</H3>
-				{ this.state.focus && this.props.children }
-			</Header>
-		)
-	}
-}
+export default React.memo(FacetHeader)

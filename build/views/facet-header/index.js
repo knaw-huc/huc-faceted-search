@@ -12,17 +12,10 @@ const H3 = styled_1.default('h3') `
 	font-size: 1rem;
 	margin: 0 0 .5em 0;
 `;
-class FacetHeader extends React.PureComponent {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            focus: false
-        };
-    }
-    render() {
-        return (React.createElement(Header, { onMouseEnter: () => this.setState({ focus: true }), onMouseLeave: () => this.setState({ focus: false }) },
-            React.createElement(H3, null, this.props.title),
-            this.state.focus && this.props.children));
-    }
+function FacetHeader(props) {
+    const [focus, setFocus] = React.useState(false);
+    return (React.createElement(Header, { onMouseEnter: () => setFocus(true), onMouseLeave: () => setFocus(false) },
+        React.createElement(H3, null, props.title),
+        focus && props.children));
 }
-exports.default = FacetHeader;
+exports.default = React.memo(FacetHeader);

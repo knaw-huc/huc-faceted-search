@@ -22,7 +22,7 @@ class Facet extends React.PureComponent {
         return (React.createElement(Wrapper, { style: this.props.style }, this.props.children));
     }
 }
+exports.default = Facet;
 Facet.defaultProps = {
     style: {}
 };
-exports.default = Facet;

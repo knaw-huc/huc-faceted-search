@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "declaration": true,
     "esModuleInterop": true,
     "importHelpers": true,
@@ -10,12 +9,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
+    "preserveConstEnums": true,
     "removeComments": true,
-    "target": "es6",
-    "paths": {
-      "react": ["node_modules/@types/react"],
-      "@types/react": ["node_modules/@types/react"]
-    },
+    "target": "es6"
   },
   "exclude": ["node_modules", "build"],
   "files": ["src/index.tsx"]

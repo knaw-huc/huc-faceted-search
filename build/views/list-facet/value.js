@@ -25,35 +25,12 @@ const Count = styled_1.default('span') `
 	${common}
 	text-align: right;
 `;
-class FacetValueView extends React.PureComponent {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            active: this.props.active
-        };
-        this.toggleActive = () => {
-            const nextActive = !this.state.active;
-            if (nextActive)
-                this.props.addFilter();
-            else
-                this.props.removeFilter();
-            this.setState({ active: nextActive });
-        };
-    }
-    static getDerivedStateFromProps(props) {
-        return { active: props.active };
-    }
-    render() {
-        let key = this.props.value.key;
-        if (this.props.keyFormatter != null)
-            key = this.props.keyFormatter(key);
-        return (React.createElement(Wrapper, { onClick: this.toggleActive, title: this.props.value.key },
-            React.createElement("input", { checked: this.state.active, onChange: this.toggleActive, type: "checkbox" }),
-            React.createElement(Key, Object.assign({}, this.state, { dangerouslySetInnerHTML: { __html: key } })),
-            React.createElement(Count, Object.assign({}, this.state), this.props.value.count)));
-    }
+function FacetValueView(props) {
+    const { keyFormatter, value } = props;
+    const key = (keyFormatter != null) ? keyFormatter(value.key) : value.key;
+    return (React.createElement(Wrapper, { onClick: props.active ? props.removeFilter : props.addFilter, title: props.value.key },
+        React.createElement("input", { checked: props.active, onChange: props.active ? props.removeFilter : props.addFilter, type: "checkbox" }),
+        React.createElement(Key, { active: props.active, dangerouslySetInnerHTML: { __html: key } }),
+        React.createElement(Count, { active: props.active }, props.value.count)));
 }
-FacetValueView.defaultProps = {
-    active: false
-};
-exports.default = FacetValueView;
+exports.default = React.memo(FacetValueView);

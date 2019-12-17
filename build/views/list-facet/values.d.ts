@@ -1,17 +1,12 @@
 import * as React from 'react';
-import { ListFacet } from '../../models/facet';
-import { ContextState } from '../../context';
 export declare type Props = {
-    collapsed: boolean;
-    facet: ListFacet;
+    addFilter: (field: string, value: string) => void;
+    collapse: boolean;
     field: string;
-    state: ContextState;
+    filters: Set<string>;
+    removeFilter: (field: string, value: string) => void;
+    values: ListFacetValues;
 };
-export default class FacetValuesView extends React.PureComponent<Props> {
-    private wrapperRef;
-    private listHeight;
-    componentDidUpdate(prevProps: Props): void;
-    render(): JSX.Element;
-    private animate;
-    private setHeight;
-}
+declare function FacetValuesView(props: Props): JSX.Element;
+declare const _default: React.MemoExoticComponent<typeof FacetValuesView>;
+export default _default;

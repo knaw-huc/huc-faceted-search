@@ -1,3 +1,29 @@
+interface AppProps {
+	autoSuggest?: (query: string) => Promise<string[]>
+	backend?: BackendType
+	className?: string
+	disableDefaultStyle?: boolean
+	fields: FacetConfig[]
+	onChange?: (response: OnChangeResponse) => void
+	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
+	resultFields?: string[]
+	getResultBodyComponent: () => Promise<React.SFC<ResultBodyProps>>
+	resultBodyProps?: Record<string, any>
+	resultsPerPage?: number
+	url: string
+}
+
+interface FacetConfig {
+	datatype?: EsDataType
+	id: string
+	order?: number
+	size?: number
+	title?: string
+}
+
+type Filters = Map<string, Set<string>>
+type Sorts = Map<string, { by: SortBy, direction: SortDirection }>
+
 type Facet = import('./models/facet').BooleanFacet | import('./models/facet').ListFacet | import('./models/facet').RangeFacet
 type Facets = Map<string, Facet>
 type BackendType = 'none' | 'elasticsearch'
@@ -31,12 +57,8 @@ interface FSResponse {
 	total: number
 }
 
-interface IOOptions {
-	backend: BackendType
+interface IOOptions extends Pick<AppProps, 'backend' | 'resultFields' | 'resultsPerPage' | 'url'> {
 	onChange: OnIOManagerChange
-	resultFields: string[]
-	resultsPerPage: number
-	url: string
 }
 
 // interface IOHistory {
@@ -59,6 +81,16 @@ interface ParsedResponse {
 // }
 
 // ENUMS
+declare const enum EsDataType {
+	Boolean = "boolean",
+	Date = "date",
+	Geo_point = "geo_point",
+	Integer = "integer",
+	Keyword = "keyword",
+	Null = "null",
+	Text = "text",
+}
+
 declare const enum FacetType {
 	Boolean = 'boolean',
 	List = 'list',
@@ -77,7 +109,7 @@ declare const enum SortDirection {
 
 // FACET 
 interface FacetProps {
-	field: string
+	id: string
 	title: string
 }
 
@@ -88,13 +120,24 @@ interface BooleanSettings {
 		false: string
 	}
 }
-type BooleanFacetProps = FacetProps & BooleanSettings
+type BooleanFacetProps = FacetProps & BooleanSettings & {
+	addFilter: (field: string, value: string) => void
+	filters: Set<string>
+	removeFilter: (field: string, value: string) => void
+	values: BooleanFacetValues
+}
 
 // LIST
 interface ListSettings {
 	size?: number
 }
-type ListFacetProps = FacetProps & ListSettings
+type ListFacetProps = FacetProps & ListSettings & {
+	addFilter: (field: string, value: string) => void
+	filters: Set<string>
+	removeFilter: (field: string, value: string) => void
+	sortListFacet: (field: string, by: SortBy, direction: SortDirection) => void
+	values: ListFacetValues
+}
 
 interface ListFacetState {
 	collapsed: boolean
@@ -122,7 +165,8 @@ interface RangeState {
 
 interface Backend {
 	RequestCreator: any
-	responseParser: (response: any, facets: Facet[]) => FSResponse
+	// responseParser: (response: any, facets: Facet[]) => FSResponse
+	responseParser: any
 }
 
 interface Hit {

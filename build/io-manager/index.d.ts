@@ -1,3 +1,4 @@
+export declare function fetchSearchResults(url: string, request: any): Promise<any>;
 export default class IOManager {
     private options;
     private backend;

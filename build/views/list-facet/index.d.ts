@@ -1,8 +1,14 @@
 import * as React from 'react';
-import { FacetsProps } from '../facets';
-export default class ListFacet extends React.PureComponent<FacetsProps & ListFacetProps, ListFacetState> {
-    state: ListFacetState;
-    static defaultProps: Partial<ListFacetProps>;
-    componentDidMount(): void;
-    render(): JSX.Element;
+declare function ListFacet(props: ListFacetProps): JSX.Element;
+declare namespace ListFacet {
+    var defaultProps: {
+        filters: Set<unknown>;
+        size: number;
+        values: {
+            values: any[];
+            total: number;
+        };
+    };
 }
+declare const _default: React.MemoExoticComponent<typeof ListFacet>;
+export default _default;

@@ -1,12 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ElasticSearchRequest {
-    constructor(facets, facetsManagerQuery, size, resultFields) {
-        this.size = size;
+    constructor(fields, resultFields, filters, sorts) {
         this.aggs = {};
-        this.setPostFilter(facets);
-        this.setAggregations(facets);
-        this.setQuery(facetsManagerQuery);
+        this.setPostFilter(fields, filters);
+        this.setAggregations(fields);
         this.setSource(resultFields);
     }
     setSource(resultFields) {
@@ -14,62 +12,39 @@ class ElasticSearchRequest {
             return;
         this._source = resultFields;
     }
-    setQuery(query) {
-        if (!query.length)
-            return;
-        this.query = { query_string: { query } };
-        this.highlight = { fields: { text: {} }, require_field_match: false };
-    }
     setAggregations(facets) {
-        facets.filter(f => f.type === "boolean")
-            .forEach((facet) => {
-            this.aggs = Object.assign({}, this.aggs, this.createBooleanAggregation(facet));
+        facets.filter(f => f.datatype === "boolean")
+            .forEach(facet => {
+            this.aggs = Object.assign(Object.assign({}, this.aggs), this.createBooleanAggregation(facet));
         });
-        facets.filter(f => f.type === "list")
+        facets.filter(f => f.datatype === "keyword")
             .forEach((facet) => {
-            this.aggs = Object.assign({}, this.aggs, this.createListAggregation(facet));
+            this.aggs = Object.assign(Object.assign({}, this.aggs), this.createListAggregation(facet));
         });
-        facets.filter(f => f.type === "range")
-            .forEach((facet) => {
-            this.aggs = Object.assign({}, this.aggs, this.createHistogramAggregation(facet));
+        facets.filter(f => f.datatype === "date")
+            .forEach(facet => {
+            this.aggs = Object.assign(Object.assign({}, this.aggs), this.createHistogramAggregation(facet));
         });
     }
-    setPostFilter(facets) {
-        function toFilter(facet) {
-            const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.field]: key } }));
+    setPostFilter(facets, filters) {
+        function toPostFilter(field, values) {
+            const allFacetFilters = [...values].map(key => ({ term: { [field]: key } }));
             if (allFacetFilters.length === 1)
                 return allFacetFilters[0];
             else if (allFacetFilters.length > 1)
                 return { bool: { should: allFacetFilters } };
             return {};
         }
-        const booleanFilters = facets
-            .filter(f => f.type === "boolean")
-            .filter((facet) => facet.filters.size)
-            .map(toFilter);
-        const listFilters = facets
-            .filter(f => f.type === "list")
-            .filter((facet) => facet.filters.size)
-            .map(toFilter);
-        const rangeFilters = facets
-            .filter(f => f.type === "range")
-            .filter((facet) => Array.isArray(facet.filters) && facet.filters.length === 2)
-            .map((facet) => ({
-            range: {
-                [facet.field]: {
-                    gte: new Date(facet.filters[0]).toISOString(),
-                    lte: new Date(facet.filters[1]).toISOString()
-                }
-            }
-        }));
-        const filters = booleanFilters.concat(listFilters, rangeFilters);
-        if (filters.length === 1) {
-            this.post_filter = filters[0];
+        const post_filters = facets
+            .filter(facet => filters.has(facet.id))
+            .map(facet => toPostFilter(facet.id, filters.get(facet.id)));
+        if (post_filters.length === 1) {
+            this.post_filter = post_filters[0];
         }
-        else if (filters.length > 1) {
+        else if (post_filters.length > 1) {
             this.post_filter = {
                 bool: {
-                    must: filters
+                    must: post_filters
                 }
             };
         }
@@ -89,21 +64,19 @@ class ElasticSearchRequest {
     createBooleanAggregation(facet) {
         const values = {
             terms: {
-                field: facet.field
+                field: facet.id
             }
         };
-        return this.addFilter(facet.field, values);
+        return this.addFilter(facet.id, values);
     }
     createListAggregation(facet) {
         const terms = {
-            field: facet.field,
-            size: facet.viewSize,
+            field: facet.id,
+            size: facet.size,
         };
-        if (facet.query.length)
-            terms.include = `.*${facet.query}.*`;
-        const agg = Object.assign({}, this.addFilter(facet.field, { terms }), this.addFilter(`${facet.field}-count`, {
+        const agg = Object.assign(Object.assign({}, this.addFilter(facet.id, { terms })), this.addFilter(`${facet.id}-count`, {
             cardinality: {
-                field: facet.field
+                field: facet.id
             }
         }));
         return agg;
@@ -111,10 +84,10 @@ class ElasticSearchRequest {
     createHistogramAggregation(facet) {
         const values = {
             auto_date_histogram: {
-                field: facet.field,
+                field: facet.id,
             }
         };
-        return this.addFilter(facet.field, values);
+        return this.addFilter(facet.id, values);
     }
 }
 exports.default = ElasticSearchRequest;

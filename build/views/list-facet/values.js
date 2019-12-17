@@ -4,7 +4,6 @@ const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const value_1 = tslib_1.__importDefault(require("./value"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
-const more_less_buttons_1 = tslib_1.__importDefault(require("./more-less-buttons"));
 const DURATION = 500;
 const FRAME_DURATION = 16;
 function easeOutQuint(t) { return 1 + (--t) * t * t * t * t; }
@@ -15,59 +14,29 @@ const List = styled_1.default('ul') `
 	margin: 0;
 	padding: 0;
 `;
-class FacetValuesView extends React.PureComponent {
-    constructor() {
-        super(...arguments);
-        this.wrapperRef = React.createRef();
-    }
-    componentDidUpdate(prevProps) {
-        if (prevProps.facet != null &&
-            this.listHeight == null)
-            this.setHeight();
-        if (!prevProps.collapsed && this.props.collapsed)
-            this.animate();
-        else if (prevProps.collapsed && !this.props.collapsed)
-            this.animate(true);
-    }
-    render() {
-        if (this.props.facet == null)
-            return null;
-        if (this.props.facet.values == null)
-            return null;
-        return (React.createElement(Wrapper, { ref: this.wrapperRef },
-            React.createElement(List, null, this.props.facet.values.values
-                .sort((value1, value2) => {
-                const active1 = this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value1.key);
-                const active2 = this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value2.key);
-                if (active1 && !active2)
-                    return -1;
-                if (!active1 && active2)
-                    return 1;
-                return 0;
-            })
-                .map(value => React.createElement(value_1.default, { addFilter: () => this.props.state.facetsManager.addFilter(this.props.field, value.key), active: this.props.state.facetsManager.getListFacet(this.props.field).filters.has(value.key), key: value.key, removeFilter: () => this.props.state.facetsManager.removeFilter(this.props.field, value.key), value: value }))),
-            !this.props.facet.query.length &&
-                React.createElement(more_less_buttons_1.default, Object.assign({}, this.props))));
-    }
-    animate(reverse = false) {
+function useAnimate(collapse, ref) {
+    React.useEffect(() => {
         let elapsed = 0;
+        const listHeight = ref.current.getBoundingClientRect().height;
         const interval = setInterval(() => {
             elapsed += FRAME_DURATION;
             let ratio = easeOutQuint(elapsed / DURATION);
-            if (!reverse)
+            if (collapse)
                 ratio = 1 - ratio;
-            let currentHeight = `${this.listHeight * ratio}px`;
+            let currentHeight = `${listHeight * ratio}px`;
             if (elapsed > DURATION) {
-                currentHeight = reverse ? 'auto' : '0';
+                currentHeight = !collapse ? 'auto' : '0';
                 clearInterval(interval);
             }
-            this.wrapperRef.current.style.height = currentHeight;
+            ref.current.style.height = currentHeight;
         }, FRAME_DURATION);
-    }
-    setHeight() {
-        if (this.listHeight == null || this.listHeight > 0) {
-            this.listHeight = this.wrapperRef.current.getBoundingClientRect().height;
-        }
-    }
+    }, [collapse]);
 }
-exports.default = FacetValuesView;
+function FacetValuesView(props) {
+    const ref = React.useRef();
+    useAnimate(props.collapse, ref);
+    return (React.createElement(Wrapper, { ref: ref },
+        React.createElement(List, null, props.values.values
+            .map(value => React.createElement(value_1.default, { addFilter: () => props.addFilter(props.field, value.key), active: props.filters.has(value.key), key: value.key, removeFilter: () => props.removeFilter(props.field, value.key), value: value })))));
+}
+exports.default = React.memo(FacetValuesView);

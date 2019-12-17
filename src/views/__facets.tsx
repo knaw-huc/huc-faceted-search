@@ -1,10 +1,10 @@
 import * as React from 'react'
 import Context, { ContextState } from '../context'
 
-export interface FacetsProps {
-	index?: number
-	state?: ContextState
-}
+// export interface FacetsProps {
+// 	index?: number
+// 	state?: ContextState
+// }
 class Facets extends React.PureComponent<FacetsProps> {
 	componentDidMount() {
 		if (Array.isArray(this.props.children)) {

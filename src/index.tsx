@@ -1,27 +1,12 @@
 /// <reference path="./types.d.ts" />
 
 import * as React from 'react'
-import Context, { defaultState, ContextState } from './context'
 import styled from '@emotion/styled'
-import FacetsView from './views/facets'
 import ListFacet from './views/list-facet'
-import RangeFacet from './views/range-facet'
-import BooleanFacet from './views/boolean-facet'
-import FullTextSearch from './views/full-text-search'
-import FacetsManager from './facets-manager'
 import Reset from './views/reset'
-import SearchResults from './search-results'
-import IOManager from './io-manager'
-
-export {
-	BooleanFacet,
-	FacetsView as Facets,
-	FullTextSearch,
-	ListFacet,
-	RangeFacet,
-	Reset,
-	SearchResults
-}
+import ElasticSearchRequest from './io-manager/backends/elasticsearch/request-creator'
+import { fetchSearchResults } from './io-manager'
+import elasticSearchResponseParser from './io-manager/backends/elasticsearch/response-parser'
 
 const Wrapper = styled.div`
 	margin-bottom: 10vh;
@@ -47,101 +32,156 @@ const Wrapper = styled.div`
 	}}
 `
 
-interface Props {
-	autoSuggest: (query: string) => Promise<string[]>
-	backend?: BackendType
-	className?: string
-	disableDefaultStyle?: boolean
-	onChange?: (response: OnChangeResponse) => void
-	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
-	resultFields: IOOptions['resultFields']
-	getResultBodyComponent: () => Promise<React.SFC<ResultBodyProps>>
-	resultBodyProps?: Record<string, any>
-	resultsPerPage?: number
-	url: string
+
+interface SortsReducerAction {
+	type: 'set' | 'clear'
+	field?: string
+	by?: SortBy
+	direction?: SortDirection
 }
-export default class FacetedSearch extends React.PureComponent<Props, ContextState> {
-	state: ContextState = {
-		...defaultState,
-		facetsManager: new FacetsManager({
-			onChange: () => this.ioManager.sendRequest(this.state.facetsManager.getFacets(), this.state.facetsManager.query)
-		})
-	}
-	private ioManager: IOManager
+function facetSortsReducer(facetSorts: Sorts, action: SortsReducerAction) {
+	switch(action.type) {
+		case 'set': {
+			const { by, direction } = action
+			facetSorts.set(action.field, { by, direction })
+			return new Map(facetSorts)
+		}
 
-	static defaultProps: Partial<Props> = {
-		backend: 'none',
-		disableDefaultStyle: false,
-		onChange: () => {},
-		resultFields: [],
-		resultsPerPage: 10,
-		resultBodyProps: {}
+		case 'clear': {
+			return new Map()
+		}
 	}
 
-	constructor(props: Props) {
-		super(props)
+	return facetSorts
+}
 
-		this.ioManager = new IOManager({
-			backend: props.backend,
-			resultFields: props.resultFields,
-			resultsPerPage: props.resultsPerPage,
-			url: props.url,
-			onChange: (changeResponse: Pick<OnChangeResponse, 'request' | 'response'>) => {
-				this.state.facetsManager.update(changeResponse.response)
-				props.onChange({ ...changeResponse, query: this.state.facetsManager.query})
-				this.setState({ searchResult: changeResponse.response })
+interface FiltersReducerAction {
+	type: 'add' | 'remove' | 'clear'
+	field?: string
+	value?: any
+}
+function filtersReducer(filters: Filters, action: FiltersReducerAction) {
+	switch(action.type) {
+		case 'add': {
+			if (filters.has(action.field)) {
+				filters.get(action.field).add(action.value)
+				return new Map(filters)
 			}
-		})
 
-		this.props.getResultBodyComponent().then(ResultBodyComponent => this.setState({ ResultBodyComponent }))
+			filters.set(action.field, new Set([action.value]))
+			return new Map(filters)
+		}
+
+		case 'remove': {
+			if (filters.has(action.field)) {
+				const values = filters.get(action.field) 
+				values.delete(action.value)
+				if (!values.size) filters.delete(action.field)
+				return new Map(filters)
+			}
+			break
+		}
+
+		case 'clear': {
+			return new Map()
+		}
 	}
 
-	render() {
-		if (this.state.ResultBodyComponent == null) return null
-
-		return (
-			<Context.Provider value={this.state}>
-				<Wrapper
-					className={this.props.className}
-					disableDefaultStyle={this.props.disableDefaultStyle}
-					id="huc-fs"
-				>
-					<aside>
-						<FullTextSearch autoSuggest={this.props.autoSuggest} />
-						<Reset />
-						<FacetsView>
-							{this.props.children}
-						</FacetsView>
-					</aside>
-					<SearchResults
-						pageNumber={this.ioManager.currentPage}
-						goToPage={pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets())}
-						onClickResult={this.props.onClickResult}
-						resultBodyComponent={this.state.ResultBodyComponent}
-						resultBodyProps={this.props.resultBodyProps}
-						resultsPerPage={this.props.resultsPerPage}
-						state={this.state}
-					/>
-				</Wrapper>
-			</Context.Provider>
-		)
-	}
-
-	addFilter(field: string, key: string) {
-		this.state.facetsManager.reset()
-		this.state.facetsManager.addFilter(field, key)
-	}
-
-	getPrevNext(id: string): [Hit, Hit] {
-		return this.ioManager.getPrevNext(id)
-	}
-
-	getFilters() {
-		return this.state.facetsManager.getFacets()
-			.reduce((prev, curr) => {
-				if (curr.filters == null) return prev
-				prev[curr.field] = [...curr.filters]
-				return prev
-			}, {} as Record<string, any[]>)
-	}
+	return filters
 }
+
+function useSearchResult(props: AppProps, filters: Filters, sorts: Sorts) {
+	const [searchResult, setSearchResult] = React.useState(null)
+
+	React.useEffect(() => {
+		// const facets = React.Children.toArray(props.children) as React.ReactElement[]
+		const searchRequest = new ElasticSearchRequest(props.fields, props.resultFields, filters, sorts)
+		fetchSearchResults(props.url, searchRequest)
+			.then(result => {
+				const searchResponse = elasticSearchResponseParser(result, props.fields)
+				setSearchResult(searchResponse)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}, [props.resultFields, props.url, filters])
+
+	return searchResult
+}
+
+export default React.memo(function FacetedSearch(props: AppProps) {
+	const [filters, filtersDispatch] = React.useReducer(filtersReducer, new Map())
+	const [facetSorts, facetSortsDispatch] = React.useReducer(facetSortsReducer, new Map())
+	const searchResult = useSearchResult(props, filters, facetSorts)
+
+	return (
+		<Wrapper
+			className={props.className}
+			disableDefaultStyle={props.disableDefaultStyle}
+			id="huc-fs"
+		>
+			<aside>
+				{/* <FullTextSearch autoSuggest={props.autoSuggest} /> */}
+				<Reset onClick={() => filtersDispatch({ type: 'clear' })} />
+				<div>
+					{
+						props.fields.map(facetConfig => {
+							if (facetConfig.datatype === EsDataType.Keyword) {
+								return (
+									<ListFacet
+										{...facetConfig}
+										addFilter={(field: string, value: string) => filtersDispatch({ type: 'add', field, value })}
+										key={facetConfig.id}
+										filters={filters.get(facetConfig.id)}
+										removeFilter={(field, value) => filtersDispatch({ type: 'remove', field, value })}
+										sortListFacet={(field, by, direction) => facetSortsDispatch(({ type: 'set', field, by, direction }))}
+										title={facetConfig.title || facetConfig.id.charAt(0).toUpperCase() + facetConfig.id.slice(1)}
+										values={searchResult?.facetValues[facetConfig.id]}
+									/>
+								)
+							} else {
+								return null
+							}
+
+						})
+						// 	})
+						// })
+					}
+				</div>
+			</aside>
+			{/* <SearchResults
+				pageNumber={this.ioManager.currentPage}
+				goToPage={pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets())}
+				onClickResult={this.props.onClickResult}
+				resultBodyComponent={this.state.ResultBodyComponent}
+				resultBodyProps={this.props.resultBodyProps}
+				resultsPerPage={this.props.resultsPerPage}
+				state={this.state}
+			/> */}
+		</Wrapper>
+	)
+})
+
+// export default class FacetedSearch extends React.PureComponent<AppProps> {
+// 	render() {
+// 		return <App {...this.props} />
+// 	}
+
+// 	addFilter(field: string, key: string) {
+// 		this.state.facetsManager.reset()
+// 		this.state.facetsManager.addFilter(field, key)
+// 	}
+
+// 	getPrevNext(id: string): [Hit, Hit] {
+// 		return this.ioManager.getPrevNext(id)
+// 	}
+
+// 	getFilters() {
+// 		return this.state.facetsManager.getFacets()
+// 			.reduce((prev, curr) => {
+// 				if (curr.filters == null) return prev
+// 				prev[curr.field] = [...curr.filters]
+// 				return prev
+// 			}, {} as Record<string, any[]>)
+// 	}
+// }

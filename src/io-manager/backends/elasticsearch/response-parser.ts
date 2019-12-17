@@ -1,64 +1,63 @@
-import { RangeFacet } from '../../../models/facet'
-
 function getBuckets(response: any, field: string) {
 	const buckets = response.aggregations[field][field].buckets
 	return buckets == null ? [] : buckets
 }
 
-const elasticSearchResponseParser: Backend['responseParser'] = function elasticSearchResponseParser(response, facets): FSResponse {
+export default function elasticSearchResponseParser(response: any, facets: FacetConfig[]): FSResponse {
 	const facetValues: FSResponse['facetValues'] = {}
 
 	facets.forEach(facet => {
-		const buckets = getBuckets(response, facet.field)
+		const buckets = getBuckets(response, facet.id)
 
-		if (facet.type === FacetType.List) {
-			facetValues[facet.field] = {
-				total: response.aggregations[`${facet.field}-count`].value,
+		if (facet.datatype === EsDataType.Keyword) {
+			facetValues[facet.id] = {
+				total: response.aggregations[`${facet.id}-count`].value,
 				values: buckets.map((b: any) => ({ key: b.key, count: b.doc_count }))
 			}
 		}
-		else if (facet.type === FacetType.Boolean) {
+		else if (facet.datatype === EsDataType.Boolean) {
 			const trueBucket = buckets.find((b: any) => b.key === 1)
 			const trueCount = trueBucket != null ? trueBucket.doc_count : 0
 			const falseBucket = buckets.find((b: any) => b.key === 0)
 			const falseCount = falseBucket != null ? falseBucket.doc_count : 0
-			facetValues[facet.field] = {
+			facetValues[facet.id] = {
 				true: trueCount,
 				false: falseCount
 			}
 		}
-		else if (facet.type === FacetType.Range) {
-			const rangeFacet = facet as RangeFacet
-			const { field, values } = rangeFacet
+		// else if (facet.type === RangeFacet) {
+		// 	// const rangeFacet = facet as RangeFacet
+		// 	const rangeFacet = facet
+		// 	const { field, values } = rangeFacet
 
-			if (!values.length) {
-				facetValues[field] = buckets.map((hv: any) => ({
-					key: hv.key,
-					count: hv.doc_count,
-				}))
-			} else {
-				facetValues[field] = values
+		// 	if (!values.length) {
+		// 		facetValues[field] = buckets.map((hv: any) => ({
+		// 			key: hv.key,
+		// 			count: hv.doc_count,
+		// 		}))
+		// 	} else {
+		// 		facetValues[field] = values
 
-				if (buckets.length) {
-					const minValue = values[0].key
-					const maxValue = values[values.length - 1].key
-					const lowerLimitTimestamp = buckets[0].key as number
-					const upperLimitTimestamp = buckets[buckets.length - 1].key as number
+		// 		if (buckets.length) {
+		// 			const minValue = values[0].key
+		// 			const maxValue = values[values.length - 1].key
+		// 			const lowerLimitTimestamp = buckets[0].key as number
+		// 			const upperLimitTimestamp = buckets[buckets.length - 1].key as number
 
-					if (
-						minValue !== lowerLimitTimestamp ||
-						maxValue !== upperLimitTimestamp
-					) {
-						facetValues[field] = values
-						rangeFacet.filters = buckets.length ?
-							[lowerLimitTimestamp, upperLimitTimestamp] :
-							null
-					}
-				}
-			}
+		// 			if (
+		// 				minValue !== lowerLimitTimestamp ||
+		// 				maxValue !== upperLimitTimestamp
+		// 			) {
+		// 				facetValues[field] = values
+		// 				rangeFacet.filters = buckets.length ?
+		// 					[lowerLimitTimestamp, upperLimitTimestamp] :
+		// 					null
+		// 			}
+		// 		}
+		// 	}
 
-			rangeFacet.interval = response.aggregations[facet.field][facet.field].interval
-		}
+		// 	rangeFacet.interval = response.aggregations[facet.props.field][facet.props.field].interval
+		// }
 	})
 
 	return {
@@ -72,5 +71,3 @@ const elasticSearchResponseParser: Backend['responseParser'] = function elasticS
 		total: response.hits.total.value,
 	}
 }
-
-export default elasticSearchResponseParser

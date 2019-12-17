@@ -6,7 +6,6 @@ declare type Aggregations = {
     [id: string]: AggregationRequest;
 };
 export default class ElasticSearchRequest {
-    size: number;
     aggs: Aggregations;
     highlight: {
         fields: {
@@ -16,10 +15,9 @@ export default class ElasticSearchRequest {
     };
     post_filter: Record<string, any>;
     query: Record<string, any>;
-    _source: IOOptions['resultFields'];
-    constructor(facets: Facet[], facetsManagerQuery: string, size: number, resultFields: IOOptions['resultFields']);
+    _source: AppProps['resultFields'];
+    constructor(fields: FacetConfig[], resultFields: AppProps['resultFields'], filters: Filters, sorts: Sorts);
     private setSource;
-    private setQuery;
     private setAggregations;
     private setPostFilter;
     private addFilter;
