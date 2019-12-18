@@ -69,17 +69,13 @@
         "version": "2ce7854943534208b1bcc3ec3ef7874dc5c0c9f0607c48cd13875f7ed05a1355",
         "signature": "2ce7854943534208b1bcc3ec3ef7874dc5c0c9f0607c48cd13875f7ed05a1355"
       },
+      "../src/types.d.ts": {
+        "version": "2a064d5dc46e0fb21b9986ac0ba2805dd6d998557e65d4c786a7c8fe19d5b2d8",
+        "signature": "2a064d5dc46e0fb21b9986ac0ba2805dd6d998557e65d4c786a7c8fe19d5b2d8"
+      },
       "../node_modules/tslib/tslib.d.ts": {
         "version": "4984b48a97160eac5282ffeae690315420a626de83ccf6045c36d934c5c957c0",
         "signature": "4984b48a97160eac5282ffeae690315420a626de83ccf6045c36d934c5c957c0"
-      },
-      "../src/models/facet.ts": {
-        "version": "db85610bbd22733e10ec615b0898708397fdfcf6fbba50b5041faee26a2a33e7",
-        "signature": "537762b0f919fa70465395ffb468093f932a1a70f2ff8eb0efee828ad4381a2f"
-      },
-      "../src/types.d.ts": {
-        "version": "9a8351d97d6479b98cba402672f90c1106ed8156fbc933a1be50d4bb3dc3fdc1",
-        "signature": "9a8351d97d6479b98cba402672f90c1106ed8156fbc933a1be50d4bb3dc3fdc1"
       },
       "../../docere/node_modules/@types/react/global.d.ts": {
         "version": "d90b8dc8412ca005c4992e2b5c94d836a8234d32a6ec05d78ec725bbb634c5fb",
@@ -154,12 +150,12 @@
         "signature": "2a2b6cac1f9b27ba2c6dc87c8693501b5e62363e3559323eb69feba62159ea61"
       },
       "../src/constants.tsx": {
-        "version": "662ee2a81c5a437485eb0e28a0e1000f91ea35a94a1dbb76454317819f41d437",
-        "signature": "d4ab24b56ff51775c32dd732077f810523ee58a5ed9379fe59e97e66e99eaaaf"
+        "version": "05dc4dfb729838b646396ac24bf6cdac5b1ba385ba71aefb26b955eafc3fd22d",
+        "signature": "942f1834abf77c50b1542ae8465c6b0b00b6d6fc308e02b82eb0a95073552af2"
       },
       "../src/views/button.tsx": {
         "version": "5f345a5debdf079268dd1a5aac94f2a161e32fbe3fb75934c20e2f87331b4122",
-        "signature": "577c5ff5a1a59cde71ced43873d504b7d6e4c2911021e7f2c37fb2ec0a8e1bc7"
+        "signature": "200c9dd90c059dc902cd6fd50b3184eeaa333ea76502162d0c0acea45ccf4ac6"
       },
       "../src/views/list-facet/more-less-buttons.tsx": {
         "version": "23ce7089bfd36d1feda39983a32127fdb9237f7a6c5a1d61ab25a2685949115a",
@@ -253,25 +249,13 @@
         "version": "bd7a57485fc58dfe6c37709b72ead6ac40dc7ede4678e387584e64406ecdfc2e",
         "signature": "60bf71ca45752397aab97d26e036a8d5d5b611a357d9efeb84aecc2981868450"
       },
-      "../src/io-manager/backends/elasticsearch/request-creator.ts": {
+      "../src/io/request-creator.ts": {
         "version": "05c1cf1346e8123432b65726a76b76f4c623fcc710369b10d734670e218f8e7d",
         "signature": "314479a6cb8b742a88c7730fe9a0dbd1d9ac92048c9b992d44f1029cbb0d42bf"
       },
-      "../src/io-manager/backends/elasticsearch/response-parser.ts": {
+      "../src/io/response-parser.ts": {
         "version": "5175c382a27a632cddc815cf65e99ce0252de8123322bd9e5da509e3c4ba692e",
         "signature": "fee4b71df9fcc3ed1eaf1453bdb22804906c3f134636f75e5adabfae7bc59ab1"
-      },
-      "../src/io-manager/backends/none.ts": {
-        "version": "4b2e2c176e42d86b0196007ddf873cde26b86ff5996b9d34ee73e66560e481dc",
-        "signature": "3074c646599915f30b020c47cf21f973a4d8f9c40c46815c07fd1aa3badad11d"
-      },
-      "../src/io-manager/backends/index.ts": {
-        "version": "3677c744090ab9c83e04e882fbb029bee650bbdbf619060b00bfb42542ab5517",
-        "signature": "b39a49d88a1b39ab8bf57933556734798ed39061ffb762d271b8833d0813b2bd"
-      },
-      "../src/io-manager/index.ts": {
-        "version": "7cfe27ab55efa1f44142335c3216989d41b70a48db70242a207ff802b8a91a71",
-        "signature": "bdbd729e050160a408338888c79b8a85af0122cfd5542f6ed2c7c301374210fc"
       },
       "../src/reducers/facets-data.ts": {
         "version": "24311d25f6be8114ce1a20f7e37a95add680740cbf2cf66bc9be9c15877b33d5",
@@ -294,7 +278,7 @@
         "signature": "65b115f46b20ba9f3c98741587a41e081f98efe80cb3a0c34fdc72b3169bd48e"
       },
       "../src/index.tsx": {
-        "version": "88314f0a02823574ed66e92cf1b93683cc1a813512107b1df436eceb0979a304",
+        "version": "05076ba21aaa13e5c2847144fd04d1372bbeb78a6f4e50fa224a602ff60bbf0f",
         "signature": "364e8b3fecf484f07411099e27d1a77a5d43753d0647fc8ee55b0d622a7ad177"
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
@@ -389,7 +373,6 @@
     },
     "referencedMap": {
       "../src/types.d.ts": [
-        "../src/models/facet.ts",
         "../src/reducers/facets-data.d.ts"
       ],
       "../../docere/node_modules/@types/react/index.d.ts": [
@@ -672,14 +655,6 @@
         "../../docere/node_modules/@types/react/index.d.ts",
         "../src/views/button.tsx"
       ],
-      "../src/io-manager/backends/index.ts": [
-        "../src/io-manager/backends/elasticsearch/request-creator.ts",
-        "../src/io-manager/backends/elasticsearch/response-parser.ts",
-        "../src/io-manager/backends/none.ts"
-      ],
-      "../src/io-manager/index.ts": [
-        "../src/io-manager/backends/index.ts"
-      ],
       "../src/views/search-result/components.tsx": [
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
@@ -704,9 +679,9 @@
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/list-facet/index.tsx",
         "../src/views/reset.tsx",
-        "../src/io-manager/backends/elasticsearch/request-creator.ts",
-        "../src/io-manager/index.ts",
-        "../src/io-manager/backends/elasticsearch/response-parser.ts",
+        "../src/io/request-creator.ts",
+        "../src/constants.tsx",
+        "../src/io/response-parser.ts",
         "../src/reducers/facets-data.ts",
         "../src/views/full-text-search/index.tsx",
         "../src/views/search-result/index.tsx",
@@ -752,7 +727,6 @@
     },
     "exportedModulesMap": {
       "../src/types.d.ts": [
-        "../src/models/facet.ts",
         "../src/reducers/facets-data.d.ts"
       ],
       "../../docere/node_modules/@types/react/index.d.ts": [
@@ -1080,9 +1054,8 @@
       "../node_modules/typescript/lib/lib.es2015.symbol.d.ts",
       "../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
       "../src/reducers/facets-data.d.ts",
-      "../node_modules/tslib/tslib.d.ts",
-      "../src/models/facet.ts",
       "../src/types.d.ts",
+      "../node_modules/tslib/tslib.d.ts",
       "../../docere/node_modules/@types/react/global.d.ts",
       "../../docere/node_modules/csstype/index.d.ts",
       "../../docere/node_modules/@types/prop-types/index.d.ts",
@@ -1126,16 +1099,11 @@
       "../src/views/list-facet/options.tsx",
       "../src/views/list-facet/index.tsx",
       "../src/views/reset.tsx",
-      "../src/io-manager/backends/elasticsearch/request-creator.ts",
-      "../src/io-manager/backends/elasticsearch/response-parser.ts",
-      "../src/io-manager/backends/none.ts",
-      "../src/io-manager/backends/index.ts",
-      "../src/io-manager/index.ts",
       "../src/reducers/facets-data.ts",
       "../src/views/search-result/components.tsx",
       "../src/views/search-result/page-number.tsx",
+      "../src/views/search-result/pagination.tsx",
       "../src/views/search-result/index.tsx",
-      "../src/index.tsx",
       "../node_modules/@babel/types/lib/index.d.ts",
       "../node_modules/@types/babel__generator/index.d.ts",
       "../node_modules/@types/babel__traverse/index.d.ts",
@@ -1154,7 +1122,9 @@
       "../node_modules/@types/prop-types/index.d.ts",
       "../node_modules/@types/stack-utils/index.d.ts",
       "../node_modules/@types/yargs/index.d.ts",
-      "../src/views/search-result/pagination.tsx"
+      "../src/io/request-creator.ts",
+      "../src/index.tsx",
+      "../src/io/response-parser.ts"
     ]
   },
   "version": "3.7.3"

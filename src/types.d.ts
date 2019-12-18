@@ -2,7 +2,6 @@
 
 interface AppProps {
 	autoSuggest?: (query: string) => Promise<string[]>
-	backend?: BackendType
 	className?: string
 	disableDefaultStyle?: boolean
 	fields: FacetConfig[]
@@ -37,9 +36,9 @@ type FacetsData = Map<string, FacetData>
 type Filters = Map<string, Set<string>>
 type Sorts = Map<string, { by: SortBy, direction: SortDirection }>
 
-type Facet = import('./models/facet').BooleanFacet | import('./models/facet').ListFacet | import('./models/facet').RangeFacet
-type Facets = Map<string, Facet>
-type BackendType = 'none' | 'elasticsearch'
+// type Facet = import('./models/facet').BooleanFacet | import('./models/facet').ListFacet | import('./models/facet').RangeFacet
+// type Facets = Map<string, Facet>
+// type BackendType = 'none' | 'elasticsearch'
 type OnFacetManagerChange = () => void
 type OnIOManagerChange = (response: IOManagerOnChangeResponse) =>  void
 interface IOManagerOnChangeResponse {
@@ -78,9 +77,9 @@ interface FSResponse {
 	total: number
 }
 
-interface IOOptions extends Pick<AppProps, 'backend' | 'resultFields' | 'resultsPerPage' | 'url'> {
-	onChange: OnIOManagerChange
-}
+// interface IOOptions extends Pick<AppProps, 'backend' | 'resultFields' | 'resultsPerPage' | 'url'> {
+// 	onChange: OnIOManagerChange
+// }
 
 // interface IOHistory {
 // 	request: any,

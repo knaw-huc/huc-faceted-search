@@ -5,9 +5,9 @@ const React = tslib_1.__importStar(require("react"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const list_facet_1 = tslib_1.__importDefault(require("./views/list-facet"));
 const reset_1 = tslib_1.__importDefault(require("./views/reset"));
-const request_creator_1 = tslib_1.__importDefault(require("./io-manager/backends/elasticsearch/request-creator"));
-const io_manager_1 = require("./io-manager");
-const response_parser_1 = tslib_1.__importDefault(require("./io-manager/backends/elasticsearch/response-parser"));
+const request_creator_1 = tslib_1.__importDefault(require("./io/request-creator"));
+const constants_1 = require("./constants");
+const response_parser_1 = tslib_1.__importDefault(require("./io/response-parser"));
 const facets_data_1 = tslib_1.__importStar(require("./reducers/facets-data"));
 const full_text_search_1 = tslib_1.__importDefault(require("./views/full-text-search"));
 const search_result_1 = tslib_1.__importDefault(require("./views/search-result"));
@@ -43,7 +43,7 @@ function useSearchResult(url, options) {
     const [searchResult, setSearchResult] = React.useState(initialSearchResult);
     React.useEffect(() => {
         const searchRequest = new request_creator_1.default(options);
-        io_manager_1.fetchSearchResults(url, searchRequest)
+        constants_1.fetchSearchResults(url, searchRequest)
             .then(result => {
             const searchResponse = response_parser_1.default(result, options.facetsData);
             setSearchResult(searchResponse);
