@@ -1,11 +1,6 @@
 import * as React from 'react';
-export declare type Props = {
-    addFilter: (field: string, value: string) => void;
+declare type Props = Pick<ListFacetProps, 'addFilter' | 'facetData' | 'removeFilter' | 'values' | 'viewLess' | 'viewMore'> & {
     collapse: boolean;
-    field: string;
-    filters: Set<string>;
-    removeFilter: (field: string, value: string) => void;
-    values: ListFacetValues;
 };
 declare function FacetValuesView(props: Props): JSX.Element;
 declare const _default: React.MemoExoticComponent<typeof FacetValuesView>;

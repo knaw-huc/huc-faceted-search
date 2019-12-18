@@ -1,43 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ElasticSearchRequest {
-    constructor(fields, resultFields, filters, sorts) {
+    constructor(options) {
         this.aggs = {};
-        this.setPostFilter(fields, filters);
-        this.setAggregations(fields);
-        this.setSource(resultFields);
+        this.setPostFilter(options);
+        this.setAggregations(options);
+        this.setQuery(options);
+        this.setSource(options);
     }
-    setSource(resultFields) {
-        if (resultFields == null || !resultFields.length)
-            return;
-        this._source = resultFields;
-    }
-    setAggregations(facets) {
-        facets.filter(f => f.datatype === "boolean")
-            .forEach(facet => {
-            this.aggs = Object.assign(Object.assign({}, this.aggs), this.createBooleanAggregation(facet));
-        });
-        facets.filter(f => f.datatype === "keyword")
-            .forEach((facet) => {
-            this.aggs = Object.assign(Object.assign({}, this.aggs), this.createListAggregation(facet));
-        });
-        facets.filter(f => f.datatype === "date")
-            .forEach(facet => {
-            this.aggs = Object.assign(Object.assign({}, this.aggs), this.createHistogramAggregation(facet));
-        });
-    }
-    setPostFilter(facets, filters) {
-        function toPostFilter(field, values) {
-            const allFacetFilters = [...values].map(key => ({ term: { [field]: key } }));
+    setPostFilter(options) {
+        function toPostFilter(facet) {
+            const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.id]: key } }));
             if (allFacetFilters.length === 1)
                 return allFacetFilters[0];
             else if (allFacetFilters.length > 1)
                 return { bool: { should: allFacetFilters } };
             return {};
         }
-        const post_filters = facets
-            .filter(facet => filters.has(facet.id))
-            .map(facet => toPostFilter(facet.id, filters.get(facet.id)));
+        const post_filters = Array.from(options.facetsData.values())
+            .filter(facet => facet.filters.size)
+            .map(facet => toPostFilter(facet));
         if (post_filters.length === 1) {
             this.post_filter = post_filters[0];
         }
@@ -47,6 +29,20 @@ class ElasticSearchRequest {
                     must: post_filters
                 }
             };
+        }
+    }
+    setAggregations(options) {
+        for (const facetData of options.facetsData.values()) {
+            let facetAggs;
+            if (facetData.datatype === "boolean")
+                facetAggs = this.createBooleanAggregation(facetData);
+            if (facetData.datatype === "keyword")
+                facetAggs = this.createListAggregation(facetData);
+            if (facetData.datatype === "date")
+                facetAggs = this.createHistogramAggregation(facetData);
+            if (facetAggs != null) {
+                this.aggs = Object.assign(Object.assign({}, this.aggs), facetAggs);
+            }
         }
     }
     addFilter(key, values) {
@@ -69,14 +65,18 @@ class ElasticSearchRequest {
         };
         return this.addFilter(facet.id, values);
     }
-    createListAggregation(facet) {
+    createListAggregation(facetData) {
         const terms = {
-            field: facet.id,
-            size: facet.size,
+            field: facetData.id,
+            size: facetData.viewSize,
         };
-        const agg = Object.assign(Object.assign({}, this.addFilter(facet.id, { terms })), this.addFilter(`${facet.id}-count`, {
+        if (facetData.sort != null)
+            terms.order = { [facetData.sort.by]: facetData.sort.direction };
+        if (facetData.query.length)
+            terms.include = `.*${facetData.query}.*`;
+        const agg = Object.assign(Object.assign({}, this.addFilter(facetData.id, { terms })), this.addFilter(`${facetData.id}-count`, {
             cardinality: {
-                field: facet.id
+                field: facetData.id
             }
         }));
         return agg;
@@ -88,6 +88,17 @@ class ElasticSearchRequest {
             }
         };
         return this.addFilter(facet.id, values);
+    }
+    setQuery(options) {
+        if (!options.query.length)
+            return;
+        this.query = { query_string: { query: options.query } };
+        this.highlight = { fields: { text: {} }, require_field_match: false };
+    }
+    setSource(options) {
+        if (!options.resultFields.length)
+            return;
+        this._source = options.resultFields;
     }
 }
 exports.default = ElasticSearchRequest;

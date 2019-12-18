@@ -14,8 +14,9 @@ const H3 = styled_1.default('h3') `
 `;
 function FacetHeader(props) {
     const [focus, setFocus] = React.useState(false);
+    const title = props.facetData.title || props.facetData.id.charAt(0).toUpperCase() + props.facetData.id.slice(1);
     return (React.createElement(Header, { onMouseEnter: () => setFocus(true), onMouseLeave: () => setFocus(false) },
-        React.createElement(H3, null, props.title),
+        React.createElement(H3, null, title),
         focus && props.children));
 }
 exports.default = React.memo(FacetHeader);

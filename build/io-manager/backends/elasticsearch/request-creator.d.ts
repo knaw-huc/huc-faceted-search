@@ -5,24 +5,26 @@ interface AggregationRequest {
 declare type Aggregations = {
     [id: string]: AggregationRequest;
 };
+declare type Highlight = {
+    fields: {
+        text: {};
+    };
+    require_field_match: boolean;
+};
 export default class ElasticSearchRequest {
     aggs: Aggregations;
-    highlight: {
-        fields: {
-            text: {};
-        };
-        require_field_match: boolean;
-    };
+    highlight: Highlight;
     post_filter: Record<string, any>;
     query: Record<string, any>;
     _source: AppProps['resultFields'];
-    constructor(fields: FacetConfig[], resultFields: AppProps['resultFields'], filters: Filters, sorts: Sorts);
-    private setSource;
-    private setAggregations;
+    constructor(options: ElasticSearchRequestOptions);
     private setPostFilter;
+    private setAggregations;
     private addFilter;
     private createBooleanAggregation;
     private createListAggregation;
     private createHistogramAggregation;
+    private setQuery;
+    private setSource;
 }
 export {};

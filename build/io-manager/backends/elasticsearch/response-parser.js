@@ -10,7 +10,7 @@ function elasticSearchResponseParser(response, facets) {
         const buckets = getBuckets(response, facet.id);
         if (facet.datatype === "keyword") {
             facetValues[facet.id] = {
-                total: response.aggregations[`${facet.id}-count`].value,
+                total: response.aggregations[`${facet.id}-count`][`${facet.id}-count`].value,
                 values: buckets.map((b) => ({ key: b.key, count: b.doc_count }))
             };
         }

@@ -1,3 +1,5 @@
+/// <reference path="./reducers/facets-data.d.ts" />
+
 interface AppProps {
 	autoSuggest?: (query: string) => Promise<string[]>
 	backend?: BackendType
@@ -14,12 +16,23 @@ interface AppProps {
 }
 
 interface FacetConfig {
-	datatype?: EsDataType
-	id: string
-	order?: number
-	size?: number
-	title?: string
+	readonly datatype?: EsDataType
+	readonly id: string
+	readonly order?: number
+	readonly size?: number
+	readonly title?: string
 }
+
+type FacetData = FacetConfig & {
+	filters: Set<string>
+	query: string
+	sort: {
+		by: SortBy,
+		direction: SortDirection
+	}
+	viewSize: number
+} 
+type FacetsData = Map<string, FacetData>
 
 type Filters = Map<string, Set<string>>
 type Sorts = Map<string, { by: SortBy, direction: SortDirection }>
@@ -33,6 +46,13 @@ interface IOManagerOnChangeResponse {
 	request: any,
 	response: FSResponse
 }
+
+interface ElasticSearchRequestOptions {
+	facetsData: FacetsData
+	resultFields: AppProps['resultFields']
+	query: string
+}
+
 interface OnChangeResponse extends IOManagerOnChangeResponse {
 	query: string
 }
@@ -131,12 +151,15 @@ type BooleanFacetProps = FacetProps & BooleanSettings & {
 interface ListSettings {
 	size?: number
 }
-type ListFacetProps = FacetProps & ListSettings & {
-	addFilter: (field: string, value: string) => void
-	filters: Set<string>
-	removeFilter: (field: string, value: string) => void
-	sortListFacet: (field: string, by: SortBy, direction: SortDirection) => void
+type ListFacetProps = {
+	addFacetQuery: (value: string) => void
+	addFilter: (value: string) => void
+	facetData: FacetData
+	removeFilter: (value: string) => void
+	sortListFacet: (by: SortBy, direction: SortDirection) => void
 	values: ListFacetValues
+	viewLess: () => void
+	viewMore: () => void
 }
 
 interface ListFacetState {

@@ -3,7 +3,7 @@ function getBuckets(response: any, field: string) {
 	return buckets == null ? [] : buckets
 }
 
-export default function elasticSearchResponseParser(response: any, facets: FacetConfig[]): FSResponse {
+export default function elasticSearchResponseParser(response: any, facets: FacetsData): FSResponse {
 	const facetValues: FSResponse['facetValues'] = {}
 
 	facets.forEach(facet => {
@@ -11,7 +11,7 @@ export default function elasticSearchResponseParser(response: any, facets: Facet
 
 		if (facet.datatype === EsDataType.Keyword) {
 			facetValues[facet.id] = {
-				total: response.aggregations[`${facet.id}-count`].value,
+				total: response.aggregations[`${facet.id}-count`][`${facet.id}-count`].value,
 				values: buckets.map((b: any) => ({ key: b.key, count: b.doc_count }))
 			}
 		}

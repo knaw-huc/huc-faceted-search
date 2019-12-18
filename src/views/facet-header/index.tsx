@@ -14,16 +14,18 @@ const H3 = styled('h3')`
 
 interface Props {
 	children: React.ReactNode
-	title: string	
+	facetData: FacetData
 }
 function FacetHeader(props: Props) {
 	const [focus, setFocus] = React.useState(false)
+	const title = props.facetData.title || props.facetData.id.charAt(0).toUpperCase() + props.facetData.id.slice(1)
+
 	return (
 		<Header
 			onMouseEnter={() => setFocus(true)}
 			onMouseLeave={() => setFocus(false)}
 		>
-			<H3>{props.title}</H3>
+			<H3>{title}</H3>
 			{ focus && props.children }
 		</Header>
 	)

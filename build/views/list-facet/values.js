@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const value_1 = tslib_1.__importDefault(require("./value"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
+const more_less_buttons_1 = tslib_1.__importDefault(require("./more-less-buttons"));
 const DURATION = 500;
 const FRAME_DURATION = 16;
 function easeOutQuint(t) { return 1 + (--t) * t * t * t * t; }
@@ -37,6 +38,8 @@ function FacetValuesView(props) {
     useAnimate(props.collapse, ref);
     return (React.createElement(Wrapper, { ref: ref },
         React.createElement(List, null, props.values.values
-            .map(value => React.createElement(value_1.default, { addFilter: () => props.addFilter(props.field, value.key), active: props.filters.has(value.key), key: value.key, removeFilter: () => props.removeFilter(props.field, value.key), value: value })))));
+            .map(value => React.createElement(value_1.default, { addFilter: () => props.addFilter(value.key), active: props.facetData.filters.has(value.key), key: value.key, removeFilter: () => props.removeFilter(value.key), value: value }))),
+        !props.facetData.query.length &&
+            React.createElement(more_less_buttons_1.default, { facetData: props.facetData, values: props.values, viewLess: props.viewLess, viewMore: props.viewMore })));
 }
 exports.default = React.memo(FacetValuesView);

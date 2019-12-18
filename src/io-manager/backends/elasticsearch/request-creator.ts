@@ -4,69 +4,40 @@ interface AggregationRequest {
 }
 
 type Aggregations = { [id: string]: AggregationRequest }
+type Highlight = { fields: { text: {} }, require_field_match: boolean }
+
+interface ListAggregationTerms {
+	field: string
+	include?: string
+	order?: { [sb in SortBy]?: SortDirection }
+	size: number
+}
+
 export default class ElasticSearchRequest {
 	aggs: Aggregations = {}
-	highlight: { fields: { text: {} }, require_field_match: boolean }
+	highlight: Highlight
 	post_filter: Record<string, any>
 	query: Record<string, any>
 	_source: AppProps['resultFields']
 
-	// constructor(facets: Facet[], facetsManagerQuery: string, public size: number, resultFields: IOOptions['resultFields']) {
-	constructor(fields: FacetConfig[], resultFields: AppProps['resultFields'], filters: Filters, sorts: Sorts) {
-		this.setPostFilter(fields, filters)
-		this.setAggregations(fields)
-		// this.setQuery(facetsManagerQuery)
-		this.setSource(resultFields)
+	constructor(options: ElasticSearchRequestOptions) {
+		this.setPostFilter(options)
+		this.setAggregations(options)
+		this.setQuery(options)
+		this.setSource(options)
 	}
 
-	private setSource(resultFields: AppProps['resultFields']) {
-		if (resultFields == null || !resultFields.length) return
-		this._source = resultFields
-	}
-
-	// private setQuery(query: string) {
-	// 	if (!query.length) return
-	// 	this.query = { query_string: { query } }
-	// 	this.highlight = { fields: { text: {} }, require_field_match: false }
-	// }
-
-	private setAggregations(facets: FacetConfig[]) {
-		facets.filter(f => f.datatype === EsDataType.Boolean)
-			.forEach(facet => {
-				this.aggs = {
-					...this.aggs,
-					...this.createBooleanAggregation(facet),
-				}
-			})
-
-		facets.filter(f => f.datatype === EsDataType.Keyword)
-			.forEach((facet) => {
-				this.aggs = {
-					...this.aggs,
-					...this.createListAggregation(facet)
-				}
-			})
-
-		facets.filter(f => f.datatype === EsDataType.Date)
-			.forEach(facet => {
-				this.aggs = {
-					...this.aggs,
-					...this.createHistogramAggregation(facet)
-				}
-			})
-	}
-
-	private setPostFilter(facets: FacetConfig[], filters: Filters) {
-		function toPostFilter(field: string, values: Set<string>) {
-			const allFacetFilters = [...values].map(key => ({ term: { [field]: key } }))
+	private setPostFilter(options: ElasticSearchRequestOptions) {
+		function toPostFilter(facet: FacetData) {
+			const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.id]: key } }))
 			if (allFacetFilters.length === 1) return allFacetFilters[0]
 			else if (allFacetFilters.length > 1) return { bool: { should: allFacetFilters } }
 			return {}
 		}
 
-		const post_filters = facets
-			.filter(facet => filters.has(facet.id))
-			.map(facet => toPostFilter(facet.id, filters.get(facet.id)))
+		const post_filters = Array.from(options.facetsData.values())
+			.filter(facet => facet.filters.size) // Only set post_filter where facet has filters (check if Set is empty)
+			.map(facet => toPostFilter(facet))
 
 		// const booleanFilters = facets
 		// 	.filter(f => f.type === FacetType.Boolean)
@@ -103,7 +74,23 @@ export default class ElasticSearchRequest {
 		}
 	}
 
-	private addFilter(key: any, values: any): any {
+	private setAggregations(options: ElasticSearchRequestOptions) {
+		for (const facetData of options.facetsData.values()) {
+			let facetAggs	
+			if (facetData.datatype === EsDataType.Boolean) facetAggs = this.createBooleanAggregation(facetData)
+			if (facetData.datatype === EsDataType.Keyword) facetAggs = this.createListAggregation(facetData)
+			if (facetData.datatype === EsDataType.Date) facetAggs = this.createHistogramAggregation(facetData)
+
+			if (facetAggs != null) {
+				this.aggs = {
+					...this.aggs,
+					...facetAggs
+				}
+			}
+		}
+	}
+
+	private addFilter(key: string, values: any): any {
 		const agg = {
 			[key]: {
 				aggs: { [key]: values },
@@ -129,19 +116,20 @@ export default class ElasticSearchRequest {
 		return this.addFilter(facet.id, values)
 	}
 
-	private createListAggregation(facet: FacetConfig) {
-		const terms = {
-			field: facet.id,
-			size: facet.size,
+	private createListAggregation(facetData: FacetData) {
+		const terms: ListAggregationTerms = {
+			field: facetData.id,
+			size: facetData.viewSize,
 		}
 
-		// if (facet.query.length) (terms as any).include = `.*${facet.query}.*`
+		if (facetData.sort != null) terms.order = { [facetData.sort.by]: facetData.sort.direction }
+		if (facetData.query.length) terms.include = `.*${facetData.query}.*`
 		
 		const agg = {
-			...this.addFilter(facet.id, { terms }),
-			...this.addFilter(`${facet.id}-count`, {
+			...this.addFilter(facetData.id, { terms }),
+			...this.addFilter(`${facetData.id}-count`, {
 				cardinality: {
-					field: facet.id
+					field: facetData.id
 				}
 			})
 		}
@@ -157,5 +145,16 @@ export default class ElasticSearchRequest {
 		}
 
 		return this.addFilter(facet.id, values)
+	}
+
+	private setQuery(options: ElasticSearchRequestOptions) {
+		if (!options.query.length) return
+		this.query = { query_string: { query: options.query } }
+		this.highlight = { fields: { text: {} }, require_field_match: false }
+	}
+
+	private setSource(options: ElasticSearchRequestOptions) {
+		if (!options.resultFields.length) return
+		this._source = options.resultFields
 	}
 }

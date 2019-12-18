@@ -51,7 +51,7 @@ function Options(props: Props) {
 						defaultChecked
 						id="highest-first-radio"
 						name="sort"
-						onChange={() => props.sortListFacet(props.id, SortBy.Count, SortDirection.Desc)}
+						onChange={() => props.sortListFacet(SortBy.Count, SortDirection.Desc)}
 						type="radio"
 					/>
 					<label htmlFor="highest-first-radio">Highest first</label>
@@ -59,7 +59,7 @@ function Options(props: Props) {
 						id="lowest-first-radio"
 						type="radio"
 						name="sort"
-						onChange={() => props.sortListFacet(props.id, SortBy.Count, SortDirection.Asc)}
+						onChange={() => props.sortListFacet(SortBy.Count, SortDirection.Asc)}
 					/>
 					<label htmlFor="lowest-first-radio">Lowest first</label>
 				</Div>
@@ -68,13 +68,13 @@ function Options(props: Props) {
 						id="az-radio"
 						type="radio"
 						name="sort"
-						onChange={() => props.sortListFacet(props.id, SortBy.Key, SortDirection.Asc)}
+						onChange={() => props.sortListFacet(SortBy.Key, SortDirection.Asc)}
 					/>
 					<label htmlFor="az-radio">A - Z</label>
 					<input
 						id="za-radio"
 						name="sort"
-						onChange={() => props.sortListFacet(props.id, SortBy.Key, SortDirection.Desc)}
+						onChange={() => props.sortListFacet(SortBy.Key, SortDirection.Desc)}
 						type="radio"
 					/>
 					<label htmlFor="za-radio">Z - A</label>
@@ -88,6 +88,7 @@ function Options(props: Props) {
 					setValue(value)
 					// this.setState({ value })
 
+					props.addFacetQuery(value)
 					// this.props.state.facetsManager.addListFilterQuery(this.props.field, value)
 				}}
 				style={{

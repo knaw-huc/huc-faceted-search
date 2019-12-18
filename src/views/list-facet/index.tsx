@@ -15,7 +15,7 @@ function ListFacet(props: ListFacetProps) {
 
 	return (
 		<Wrapper>
-			<FacetHeader {...props}>
+			<FacetHeader facetData={props.facetData}>
 				<div style={{ textAlign: 'right' }}>
 					<FacetMenuButton
 						onClick={() => {
@@ -59,11 +59,12 @@ function ListFacet(props: ListFacetProps) {
 			}
 			<FacetValuesView
 				addFilter={props.addFilter}
+				facetData={props.facetData}
 				removeFilter={props.removeFilter}
 				collapse={collapse}
-				field={props.id}
-				filters={props.filters}
 				values={props.values}
+				viewLess={props.viewLess}
+				viewMore={props.viewMore}
 			/>
 		</Wrapper>
 	)

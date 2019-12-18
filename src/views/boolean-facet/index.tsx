@@ -31,22 +31,22 @@ export default class BooleanFacet extends React.PureComponent<BooleanFacetProps>
 						{
 							trueCount > 0 &&
 							<FacetValueView
-								addFilter={() => this.props.addFilter(this.props.field, 'true')}
+								addFilter={() => this.props.addFilter('true')}
 								active={this.props.filters.has('true')}
 								key={'true'}
 								keyFormatter={() => this.props.labels.true}
-								removeFilter={() => this.props.removeFilter(this.props.field, 'true')}
+								removeFilter={() => this.props.removeFilter('true')}
 								value={{ key: 'true', count: trueCount }}
 							/>
 						}
 						{
 							falseCount > 0 &&
 							<FacetValueView
-								addFilter={() => this.props.addFilter(this.props.field, 'false')}
+								addFilter={() => this.props.addFilter('false')}
 								active={this.props.filters.has('false')}
 								key={'false'}
 								keyFormatter={() => this.props.labels.false}
-								removeFilter={() => this.props.removeFilter(this.props.field, 'false')}
+								removeFilter={() => this.props.removeFilter('false')}
 								value={{ key: 'false', count: falseCount }}
 							/>
 						}

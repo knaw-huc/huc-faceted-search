@@ -33,19 +33,20 @@ function Options(props) {
         React.createElement(H4, null, "Order"),
         React.createElement(RadioGroup, null,
             React.createElement(Div, null,
-                React.createElement("input", { defaultChecked: true, id: "highest-first-radio", name: "sort", onChange: () => props.sortListFacet(props.id, "_count", "desc"), type: "radio" }),
+                React.createElement("input", { defaultChecked: true, id: "highest-first-radio", name: "sort", onChange: () => props.sortListFacet("_count", "desc"), type: "radio" }),
                 React.createElement("label", { htmlFor: "highest-first-radio" }, "Highest first"),
-                React.createElement("input", { id: "lowest-first-radio", type: "radio", name: "sort", onChange: () => props.sortListFacet(props.id, "_count", "asc") }),
+                React.createElement("input", { id: "lowest-first-radio", type: "radio", name: "sort", onChange: () => props.sortListFacet("_count", "asc") }),
                 React.createElement("label", { htmlFor: "lowest-first-radio" }, "Lowest first")),
             React.createElement(Div, null,
-                React.createElement("input", { id: "az-radio", type: "radio", name: "sort", onChange: () => props.sortListFacet(props.id, "_term", "asc") }),
+                React.createElement("input", { id: "az-radio", type: "radio", name: "sort", onChange: () => props.sortListFacet("_term", "asc") }),
                 React.createElement("label", { htmlFor: "az-radio" }, "A - Z"),
-                React.createElement("input", { id: "za-radio", name: "sort", onChange: () => props.sortListFacet(props.id, "_term", "desc"), type: "radio" }),
+                React.createElement("input", { id: "za-radio", name: "sort", onChange: () => props.sortListFacet("_term", "desc"), type: "radio" }),
                 React.createElement("label", { htmlFor: "za-radio" }, "Z - A"))),
         React.createElement(H4, null, "Filter"),
         React.createElement(full_text_search_1.Input, { onChange: (ev) => {
                 const { value } = ev.target;
                 setValue(value);
+                props.addFacetQuery(value);
             }, style: {
                 border: '1px solid #AAA',
                 height: '2em',

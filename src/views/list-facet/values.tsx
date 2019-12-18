@@ -1,6 +1,7 @@
 import * as React from 'react'
 import FacetValueView from './value'
 import styled from '@emotion/styled'
+import MoreLessButton from './more-less-buttons'
 
 const DURATION = 500
 const FRAME_DURATION = 16
@@ -14,15 +15,6 @@ const List = styled('ul')`
 	margin: 0;
 	padding: 0;
 `
-
-export type Props = {
-	addFilter: (field: string, value: string) => void
-	collapse: boolean
-	field: string
-	filters: Set<string>
-	removeFilter: (field: string, value: string) => void
-	values: ListFacetValues
-}
 
 function useAnimate(collapse: boolean, ref: React.MutableRefObject<HTMLDivElement>) {
 	React.useEffect(() => {
@@ -43,6 +35,7 @@ function useAnimate(collapse: boolean, ref: React.MutableRefObject<HTMLDivElemen
 	}, [collapse])
 }
 
+type Props = Pick<ListFacetProps, 'addFilter' | 'facetData' | 'removeFilter' | 'values' | 'viewLess' | 'viewMore'> & { collapse: boolean }
 function FacetValuesView(props: Props) {
 	const ref = React.useRef()
 	useAnimate(props.collapse, ref)
@@ -61,10 +54,10 @@ function FacetValuesView(props: Props) {
 						// })
 						.map(value =>
 							<FacetValueView
-								addFilter={() => props.addFilter(props.field, value.key)}
-								active={props.filters.has(value.key)}
+								addFilter={() => props.addFilter(value.key)}
+								active={props.facetData.filters.has(value.key)}
 								key={value.key}
-								removeFilter={() => props.removeFilter(props.field, value.key)}
+								removeFilter={() => props.removeFilter(value.key)}
 								value={value}
 							/>
 						)
@@ -73,21 +66,16 @@ function FacetValuesView(props: Props) {
 			{
 				// Don't show MoreLessButton, when the results are filtered by a query,
 				// because the MoreLess-count does not take the filter into account
-				// !this.props.query?.length && 
-				// <MoreLessButton {...this.props} />
+				!props.facetData.query.length && 
+				<MoreLessButton
+					facetData={props.facetData}
+					values={props.values}
+					viewLess={props.viewLess}
+					viewMore={props.viewMore}
+				/>
 			}
 		</Wrapper>
 	)
 }
 
 export default React.memo(FacetValuesView)
-
-// private animate(reverse: boolean = false) {
-// }
-
-// private setHeight() {
-// 	if (this.listHeight == null || this.listHeight > 0) {
-// 		this.listHeight = this.wrapperRef.current.getBoundingClientRect().height
-// 	}
-// }
-// }

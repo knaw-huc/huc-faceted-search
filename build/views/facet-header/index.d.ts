@@ -1,7 +1,7 @@
 import * as React from 'react';
 interface Props {
     children: React.ReactNode;
-    title: string;
+    facetData: FacetData;
 }
 declare function FacetHeader(props: Props): JSX.Element;
 declare const _default: React.MemoExoticComponent<typeof FacetHeader>;

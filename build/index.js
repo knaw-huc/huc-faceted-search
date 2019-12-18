@@ -8,6 +8,8 @@ const reset_1 = tslib_1.__importDefault(require("./views/reset"));
 const request_creator_1 = tslib_1.__importDefault(require("./io-manager/backends/elasticsearch/request-creator"));
 const io_manager_1 = require("./io-manager");
 const response_parser_1 = tslib_1.__importDefault(require("./io-manager/backends/elasticsearch/response-parser"));
+const facets_data_1 = tslib_1.__importStar(require("./reducers/facets-data"));
+const full_text_search_1 = tslib_1.__importDefault(require("./views/full-text-search"));
 const Wrapper = styled_1.default.div `
 	margin-bottom: 10vh;
 
@@ -31,74 +33,50 @@ const Wrapper = styled_1.default.div `
     }
 }}
 `;
-function facetSortsReducer(facetSorts, action) {
-    switch (action.type) {
-        case 'set': {
-            const { by, direction } = action;
-            facetSorts.set(action.field, { by, direction });
-            return new Map(facetSorts);
-        }
-        case 'clear': {
-            return new Map();
-        }
-    }
-    return facetSorts;
-}
-function filtersReducer(filters, action) {
-    switch (action.type) {
-        case 'add': {
-            if (filters.has(action.field)) {
-                filters.get(action.field).add(action.value);
-                return new Map(filters);
-            }
-            filters.set(action.field, new Set([action.value]));
-            return new Map(filters);
-        }
-        case 'remove': {
-            if (filters.has(action.field)) {
-                const values = filters.get(action.field);
-                values.delete(action.value);
-                if (!values.size)
-                    filters.delete(action.field);
-                return new Map(filters);
-            }
-            break;
-        }
-        case 'clear': {
-            return new Map();
-        }
-    }
-    return filters;
-}
-function useSearchResult(props, filters, sorts) {
+function useSearchResult(url, options) {
     const [searchResult, setSearchResult] = React.useState(null);
     React.useEffect(() => {
-        const searchRequest = new request_creator_1.default(props.fields, props.resultFields, filters, sorts);
-        io_manager_1.fetchSearchResults(props.url, searchRequest)
+        const searchRequest = new request_creator_1.default(options);
+        io_manager_1.fetchSearchResults(url, searchRequest)
             .then(result => {
-            const searchResponse = response_parser_1.default(result, props.fields);
+            const searchResponse = response_parser_1.default(result, options.facetsData);
             setSearchResult(searchResponse);
         })
             .catch(err => {
             console.log(err);
         });
-    }, [props.resultFields, props.url, filters]);
+    }, [url, options.resultFields, options.facetsData, options.query]);
     return searchResult;
 }
-exports.default = React.memo(function FacetedSearch(props) {
-    const [filters, filtersDispatch] = React.useReducer(filtersReducer, new Map());
-    const [facetSorts, facetSortsDispatch] = React.useReducer(facetSortsReducer, new Map());
-    const searchResult = useSearchResult(props, filters, facetSorts);
+function FacetedSearch(props) {
+    const [query, setQuery] = React.useState('');
+    const [facetsData, facetsDataDispatch] = React.useReducer(facets_data_1.default, props.fields, facets_data_1.facetsDataReducerInit);
+    const searchResult = useSearchResult(props.url, {
+        facetsData,
+        resultFields: props.resultFields,
+        query,
+    });
     return (React.createElement(Wrapper, { className: props.className, disableDefaultStyle: props.disableDefaultStyle, id: "huc-fs" },
         React.createElement("aside", null,
-            React.createElement(reset_1.default, { onClick: () => filtersDispatch({ type: 'clear' }) }),
-            React.createElement("div", null, props.fields.map(facetConfig => {
-                var _a;
-                if (facetConfig.datatype === "keyword") {
-                    return (React.createElement(list_facet_1.default, Object.assign({}, facetConfig, { addFilter: (field, value) => filtersDispatch({ type: 'add', field, value }), key: facetConfig.id, filters: filters.get(facetConfig.id), removeFilter: (field, value) => filtersDispatch({ type: 'remove', field, value }), sortListFacet: (field, by, direction) => facetSortsDispatch(({ type: 'set', field, by, direction })), title: facetConfig.title || facetConfig.id.charAt(0).toUpperCase() + facetConfig.id.slice(1), values: (_a = searchResult) === null || _a === void 0 ? void 0 : _a.facetValues[facetConfig.id] })));
-                }
-                else {
-                    return null;
-                }
-            })))));
-});
+            React.createElement(full_text_search_1.default, { autoSuggest: props.autoSuggest, setQuery: setQuery }),
+            React.createElement(reset_1.default, { onClick: () => {
+                    setQuery('');
+                    facetsDataDispatch({ type: 'clear' });
+                } }),
+            React.createElement("div", null, facetsData != null &&
+                props.fields.map(facetConfig => {
+                    var _a;
+                    if (facetConfig.datatype === "keyword") {
+                        const values = (_a = searchResult) === null || _a === void 0 ? void 0 : _a.facetValues[facetConfig.id];
+                        return (React.createElement(list_facet_1.default, { addFacetQuery: value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value }), addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), sortListFacet: (by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction })), values: values, viewLess: () => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id }), viewMore: () => { var _a; return facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: (_a = values) === null || _a === void 0 ? void 0 : _a.total }); } }));
+                    }
+                    else {
+                        return null;
+                    }
+                })))));
+}
+FacetedSearch.defaultProps = {
+    resultFields: [],
+    resultsPerPage: 10,
+};
+exports.default = React.memo(FacetedSearch);
