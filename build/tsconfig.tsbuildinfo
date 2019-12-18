@@ -78,8 +78,8 @@
         "signature": "537762b0f919fa70465395ffb468093f932a1a70f2ff8eb0efee828ad4381a2f"
       },
       "../src/types.d.ts": {
-        "version": "3c2d7b4da7dda514500c7e4ef36e680857a0931c8c6fa8cc8bed5f708053eab3",
-        "signature": "3c2d7b4da7dda514500c7e4ef36e680857a0931c8c6fa8cc8bed5f708053eab3"
+        "version": "9a8351d97d6479b98cba402672f90c1106ed8156fbc933a1be50d4bb3dc3fdc1",
+        "signature": "9a8351d97d6479b98cba402672f90c1106ed8156fbc933a1be50d4bb3dc3fdc1"
       },
       "../../docere/node_modules/@types/react/global.d.ts": {
         "version": "d90b8dc8412ca005c4992e2b5c94d836a8234d32a6ec05d78ec725bbb634c5fb",
@@ -173,18 +173,6 @@
         "version": "c6d20faad85d5a87054c07256bcbe4afecbce525ea93c020c8871e7ed6a24d6b",
         "signature": "ef89946c9f4f8846eb53a9138e76a72627e62e02db129efaa7dfae7df6852952"
       },
-      "../src/facets-manager/getters.ts": {
-        "version": "6fe5a6717341d7dde674ca1df89c080fb04e669392c88ce3985660b770d91d59",
-        "signature": "502a87edf07449ed34c4423dff574a10c3e2b09a1fe42955974e3124b1d0008c"
-      },
-      "../src/facets-manager/index.ts": {
-        "version": "c430ae201238fe3505f8e7f115b891f8568d088f034e19c50e7518f21722ad97",
-        "signature": "5fc8182b799af439604890fc4c0b9cb8b3d9cec05f827b0593e7cb95d00a8d4f"
-      },
-      "../src/context.tsx": {
-        "version": "0d5960681e31b27acc2bf10f08cb778a11786dd55312ec3b73efe7c7428ab7f4",
-        "signature": "ee09ff24622df3e82549f70b7f090c3e703b11bc31576c9016d4f24cd1808511"
-      },
       "../src/views/full-text-search/suggestion.tsx": {
         "version": "a925d6c6ce83a0c55a14465d97b8465931ef9c5c99c1090482d7d9d3c8b1e9a1",
         "signature": "95fffaf5e90f66e07d2696f4ecf0e5c1c73a4532a60b55478af4074409852e99"
@@ -250,8 +238,8 @@
         "signature": "0699127d5650bb8bf20e32de9eb22467a6a92a57234b16b4fc500d6e19c20128"
       },
       "../src/views/full-text-search/index.tsx": {
-        "version": "83791a3069c96d2b7e7858529773894b06c8801fbc86e5edc289e29977855d67",
-        "signature": "df1f0acec8d701cdb464363cc89a94dadb48aef15fed18bbf06d5a68ee2c7ddb"
+        "version": "b773a63f3f1f814313e94d60922798d7906f919d8b5642fcb6e022259304a7c5",
+        "signature": "a485dbdc3d898da07dacee2c18af7af8cc87c0c7b5b3e74f79dc7d520d7de280"
       },
       "../src/views/list-facet/options.tsx": {
         "version": "234164334201f1d3627d97e2f1b4615e92e4293a7f63f0ff96a2986b504e1c43",
@@ -266,8 +254,8 @@
         "signature": "60bf71ca45752397aab97d26e036a8d5d5b611a357d9efeb84aecc2981868450"
       },
       "../src/io-manager/backends/elasticsearch/request-creator.ts": {
-        "version": "d457cfd2f522a85d97dcb57e3273dff8415ddc062644fe03fcc54622101dd81a",
-        "signature": "eb65102b8ff6a986acec14a1826803dd925193790971d070c2946403c32586cd"
+        "version": "05c1cf1346e8123432b65726a76b76f4c623fcc710369b10d734670e218f8e7d",
+        "signature": "314479a6cb8b742a88c7730fe9a0dbd1d9ac92048c9b992d44f1029cbb0d42bf"
       },
       "../src/io-manager/backends/elasticsearch/response-parser.ts": {
         "version": "5175c382a27a632cddc815cf65e99ce0252de8123322bd9e5da509e3c4ba692e",
@@ -289,8 +277,24 @@
         "version": "24311d25f6be8114ce1a20f7e37a95add680740cbf2cf66bc9be9c15877b33d5",
         "signature": "6530ee4f5285b007ee1c45663e4a1d71e548b7f27e08aac7ac38fc3e7e0cb1c5"
       },
+      "../src/views/search-result/components.tsx": {
+        "version": "baba2ba9de0b8fc754de7ad434fea5d399e166dbf99d78301a16f9d48e6f0b52",
+        "signature": "bc6a778a11aeda07cac56d5e2b24f82e27ec678e0e841bc91ac12d0d70208444"
+      },
+      "../src/views/search-result/page-number.tsx": {
+        "version": "4813ce594609996e2e2e9d502aed59d38da5c464e251adc413dbd069a4a6b668",
+        "signature": "deddee0bd0d305f8580f0b7b37ad02535eda31a4d16c0c28a12571a1cd2f49ab"
+      },
+      "../src/views/search-result/pagination.tsx": {
+        "version": "ff7a01910f505a44147c32be5e529d1143b645476226bd2e416d97d8cc6f52a5",
+        "signature": "2c56b1d43060ad67d1a96525afab9ef57f6d3c5ff51c202c3c96e0e66f2238e0"
+      },
+      "../src/views/search-result/index.tsx": {
+        "version": "40f15082476e6822e3aaa50fd3ebdbcffd34932ea486fb8c54cd87cc5efa4d5e",
+        "signature": "65b115f46b20ba9f3c98741587a41e081f98efe80cb3a0c34fdc72b3169bd48e"
+      },
       "../src/index.tsx": {
-        "version": "256e148a21149e95ddc670ab310d54a37b312bfaa9aa88fc2a95023174274b32",
+        "version": "88314f0a02823574ed66e92cf1b93683cc1a813512107b1df436eceb0979a304",
         "signature": "364e8b3fecf484f07411099e27d1a77a5d43753d0647fc8ee55b0d622a7ad177"
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
@@ -449,16 +453,6 @@
       "../src/views/facet-header/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts"
-      ],
-      "../src/facets-manager/getters.ts": [
-        "../src/models/facet.ts"
-      ],
-      "../src/facets-manager/index.ts": [
-        "../src/facets-manager/getters.ts"
-      ],
-      "../src/context.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
-        "../src/facets-manager/index.ts"
       ],
       "../src/views/full-text-search/suggestion.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
@@ -658,7 +652,6 @@
       "../src/views/full-text-search/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
-        "../src/context.tsx",
         "../src/views/full-text-search/auto-suggest.tsx",
         "../node_modules/@types/lodash.debounce/index.d.ts"
       ],
@@ -687,6 +680,25 @@
       "../src/io-manager/index.ts": [
         "../src/io-manager/backends/index.ts"
       ],
+      "../src/views/search-result/components.tsx": [
+        "../node_modules/@emotion/styled/types/index.d.ts"
+      ],
+      "../src/views/search-result/page-number.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled/types/index.d.ts",
+        "../src/views/search-result/components.tsx"
+      ],
+      "../src/views/search-result/pagination.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled/types/index.d.ts",
+        "../src/views/search-result/page-number.tsx",
+        "../src/views/search-result/components.tsx"
+      ],
+      "../src/views/search-result/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../src/views/search-result/components.tsx",
+        "../src/views/search-result/pagination.tsx"
+      ],
       "../src/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
@@ -697,6 +709,7 @@
         "../src/io-manager/backends/elasticsearch/response-parser.ts",
         "../src/reducers/facets-data.ts",
         "../src/views/full-text-search/index.tsx",
+        "../src/views/search-result/index.tsx",
         "../src/types.d.ts"
       ],
       "../node_modules/@types/babel__generator/index.d.ts": [
@@ -792,16 +805,6 @@
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facet-header/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
-      ],
-      "../src/facets-manager/getters.ts": [
-        "../src/models/facet.ts"
-      ],
-      "../src/facets-manager/index.ts": [
-        "../src/facets-manager/getters.ts"
-      ],
-      "../src/context.tsx": [
-        "../src/facets-manager/index.ts",
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/full-text-search/suggestion.tsx": [
@@ -997,13 +1000,25 @@
       ],
       "../src/views/full-text-search/index.tsx": [
         "../node_modules/@emotion/styled-base/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts",
-        "../src/context.tsx"
+        "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/list-facet/options.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/list-facet/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/search-result/components.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled-base/types/index.d.ts"
+      ],
+      "../src/views/search-result/page-number.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/search-result/pagination.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/search-result/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/index.tsx": [
@@ -1091,9 +1106,6 @@
       "../src/views/list-facet/more-less-buttons.tsx",
       "../src/views/list-facet/values.tsx",
       "../src/views/facet-header/index.tsx",
-      "../src/facets-manager/getters.ts",
-      "../src/facets-manager/index.ts",
-      "../src/context.tsx",
       "../src/views/full-text-search/suggestion.tsx",
       "../node_modules/@types/lodash/ts3.1/common/common.d.ts",
       "../node_modules/@types/lodash/ts3.1/common/array.d.ts",
@@ -1120,6 +1132,10 @@
       "../src/io-manager/backends/index.ts",
       "../src/io-manager/index.ts",
       "../src/reducers/facets-data.ts",
+      "../src/views/search-result/components.tsx",
+      "../src/views/search-result/page-number.tsx",
+      "../src/views/search-result/index.tsx",
+      "../src/index.tsx",
       "../node_modules/@babel/types/lib/index.d.ts",
       "../node_modules/@types/babel__generator/index.d.ts",
       "../node_modules/@types/babel__traverse/index.d.ts",
@@ -1138,30 +1154,7 @@
       "../node_modules/@types/prop-types/index.d.ts",
       "../node_modules/@types/stack-utils/index.d.ts",
       "../node_modules/@types/yargs/index.d.ts",
-      [
-        "../src/index.tsx",
-        [
-          {
-            "file": "../src/index.tsx",
-            "start": 2067,
-            "length": 8,
-            "code": 2322,
-            "category": 1,
-            "messageText": {
-              "messageText": "Type '{ autoSuggest: (query: string) => Promise<string[]>; setQuery: Dispatch<SetStateAction<string>>; }' is not assignable to type 'IntrinsicAttributes & Props & RefAttributes<FullTextSearch>'.",
-              "category": 1,
-              "code": 2322,
-              "next": [
-                {
-                  "messageText": "Property 'setQuery' does not exist on type 'IntrinsicAttributes & Props & RefAttributes<FullTextSearch>'.",
-                  "category": 1,
-                  "code": 2339
-                }
-              ]
-            }
-          }
-        ]
-      ]
+      "../src/views/search-result/pagination.tsx"
     ]
   },
   "version": "3.7.3"

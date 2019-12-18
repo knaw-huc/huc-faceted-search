@@ -10,6 +10,7 @@ const io_manager_1 = require("./io-manager");
 const response_parser_1 = tslib_1.__importDefault(require("./io-manager/backends/elasticsearch/response-parser"));
 const facets_data_1 = tslib_1.__importStar(require("./reducers/facets-data"));
 const full_text_search_1 = tslib_1.__importDefault(require("./views/full-text-search"));
+const search_result_1 = tslib_1.__importDefault(require("./views/search-result"));
 const Wrapper = styled_1.default.div `
 	margin-bottom: 10vh;
 
@@ -33,8 +34,13 @@ const Wrapper = styled_1.default.div `
     }
 }}
 `;
+const initialSearchResult = {
+    facetValues: {},
+    results: [],
+    total: 0
+};
 function useSearchResult(url, options) {
-    const [searchResult, setSearchResult] = React.useState(null);
+    const [searchResult, setSearchResult] = React.useState(initialSearchResult);
     React.useEffect(() => {
         const searchRequest = new request_creator_1.default(options);
         io_manager_1.fetchSearchResults(url, searchRequest)
@@ -45,15 +51,18 @@ function useSearchResult(url, options) {
             .catch(err => {
             console.log(err);
         });
-    }, [url, options.resultFields, options.facetsData, options.query]);
+    }, [url, ...Object.keys(options).map((opt) => options[opt])]);
     return searchResult;
 }
 function FacetedSearch(props) {
     const [query, setQuery] = React.useState('');
+    const [currentPage, setCurrentPage] = React.useState(1);
     const [facetsData, facetsDataDispatch] = React.useReducer(facets_data_1.default, props.fields, facets_data_1.facetsDataReducerInit);
     const searchResult = useSearchResult(props.url, {
+        currentPage,
         facetsData,
         resultFields: props.resultFields,
+        resultsPerPage: props.resultsPerPage,
         query,
     });
     return (React.createElement(Wrapper, { className: props.className, disableDefaultStyle: props.disableDefaultStyle, id: "huc-fs" },
@@ -65,15 +74,15 @@ function FacetedSearch(props) {
                 } }),
             React.createElement("div", null, facetsData != null &&
                 props.fields.map(facetConfig => {
-                    var _a;
                     if (facetConfig.datatype === "keyword") {
-                        const values = (_a = searchResult) === null || _a === void 0 ? void 0 : _a.facetValues[facetConfig.id];
+                        const values = searchResult.facetValues[facetConfig.id];
                         return (React.createElement(list_facet_1.default, { addFacetQuery: value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value }), addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), sortListFacet: (by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction })), values: values, viewLess: () => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id }), viewMore: () => { var _a; return facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: (_a = values) === null || _a === void 0 ? void 0 : _a.total }); } }));
                     }
                     else {
                         return null;
                     }
-                })))));
+                }))),
+        React.createElement(search_result_1.default, { currentPage: currentPage, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage })));
 }
 FacetedSearch.defaultProps = {
     resultFields: [],

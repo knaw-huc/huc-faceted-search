@@ -9,7 +9,7 @@ interface AppProps {
 	onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultFields?: string[]
-	getResultBodyComponent: () => Promise<React.SFC<ResultBodyProps>>
+	ResultBodyComponent: React.FC<ResultBodyProps>
 	resultBodyProps?: Record<string, any>
 	resultsPerPage?: number
 	url: string
@@ -47,10 +47,11 @@ interface IOManagerOnChangeResponse {
 	response: FSResponse
 }
 
-interface ElasticSearchRequestOptions {
+type ElasticSearchRequestOptions = Pick<AppProps, 'resultFields' | 'resultsPerPage'> & {
+	currentPage: number
 	facetsData: FacetsData
-	resultFields: AppProps['resultFields']
 	query: string
+	resultsPerPage: number
 }
 
 interface OnChangeResponse extends IOManagerOnChangeResponse {

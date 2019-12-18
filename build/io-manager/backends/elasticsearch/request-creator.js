@@ -7,6 +7,9 @@ class ElasticSearchRequest {
         this.setAggregations(options);
         this.setQuery(options);
         this.setSource(options);
+        this.size = options.resultsPerPage;
+        if (options.currentPage > 1)
+            this.from = this.size * (options.currentPage - 1);
     }
     setPostFilter(options) {
         function toPostFilter(facet) {

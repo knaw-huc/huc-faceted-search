@@ -9,6 +9,7 @@ import { fetchSearchResults } from './io-manager'
 import elasticSearchResponseParser from './io-manager/backends/elasticsearch/response-parser'
 import facetsDataReducer, { facetsDataReducerInit } from './reducers/facets-data'
 import FullTextSearch from './views/full-text-search'
+import SearchResult from './views/search-result'
 
 const Wrapper = styled.div`
 	margin-bottom: 10vh;
@@ -34,8 +35,14 @@ const Wrapper = styled.div`
 	}}
 `
 
+const initialSearchResult: FSResponse = {
+	facetValues: {},
+	results: [],
+	total: 0
+}
+
 function useSearchResult(url: string, options: ElasticSearchRequestOptions) {
-	const [searchResult, setSearchResult] = React.useState(null)
+	const [searchResult, setSearchResult] = React.useState(initialSearchResult)
 
 	React.useEffect(() => {
 		const searchRequest = new ElasticSearchRequest(options)
@@ -48,18 +55,20 @@ function useSearchResult(url: string, options: ElasticSearchRequestOptions) {
 			.catch(err => {
 				console.log(err)
 			})
-	}, [url, options.resultFields, options.facetsData, options.query])
+	}, [url, ...Object.keys(options).map((opt: keyof ElasticSearchRequestOptions) => options[opt])])
 
 	return searchResult
 }
 
 function FacetedSearch(props: AppProps) {
 	const [query, setQuery] = React.useState('')
+	const [currentPage, setCurrentPage] = React.useState(1)
 	const [facetsData, facetsDataDispatch] = React.useReducer(facetsDataReducer, props.fields, facetsDataReducerInit)
-
 	const searchResult = useSearchResult(props.url, {
+		currentPage,
 		facetsData,
 		resultFields: props.resultFields,
+		resultsPerPage: props.resultsPerPage,
 		query,
 	})
 
@@ -85,7 +94,7 @@ function FacetedSearch(props: AppProps) {
 						facetsData != null &&
 						props.fields.map(facetConfig => {
 							if (facetConfig.datatype === EsDataType.Keyword) {
-								const values = searchResult?.facetValues[facetConfig.id]
+								const values = searchResult.facetValues[facetConfig.id] as ListFacetValues
 								return (
 									<ListFacet
 										addFacetQuery={value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value })}
@@ -104,20 +113,18 @@ function FacetedSearch(props: AppProps) {
 							}
 
 						})
-						// 	})
-						// })
 					}
 				</div>
 			</aside>
-			{/* <SearchResults
-				pageNumber={this.ioManager.currentPage}
-				goToPage={pageNumber => this.ioManager.goToPage(pageNumber, this.state.facetsManager.getFacets())}
-				onClickResult={this.props.onClickResult}
-				resultBodyComponent={this.state.ResultBodyComponent}
-				resultBodyProps={this.props.resultBodyProps}
-				resultsPerPage={this.props.resultsPerPage}
-				state={this.state}
-			/> */}
+			<SearchResult
+				currentPage={currentPage}
+				onClickResult={props.onClickResult}
+				ResultBodyComponent={props.ResultBodyComponent}
+				resultBodyProps={props.resultBodyProps}
+				resultsPerPage={props.resultsPerPage}
+				searchResult={searchResult}
+				setCurrentPage={setCurrentPage}
+			/>
 		</Wrapper>
 	)
 }
