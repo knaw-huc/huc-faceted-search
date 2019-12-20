@@ -18,14 +18,3 @@ export const ResultList = styled.ul`
 export const Result = styled.li`
 	cursor: pointer;
 `
-
-export const Prev = styled.div`
-	cursor: pointer;
-	line-height: 1.8em;
-	user-select: none;
-	width: 1.8em;
-`
-
-export const Next = styled(Prev)`
-	text-align: right;
-`

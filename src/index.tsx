@@ -2,12 +2,14 @@
 
 import * as React from 'react'
 import styled from '@emotion/styled'
-import ListFacet from './views/list-facet'
+import ListFacet from './views/facets/list'
+import BooleanFacet from './views/facets/boolean'
+import RangeFacet from './views/facets/range'
 import Reset from './views/reset'
 import ElasticSearchRequest from './io/request-creator'
 import { fetchSearchResults } from './constants'
 import elasticSearchResponseParser from './io/response-parser'
-import facetsDataReducer, { facetsDataReducerInit } from './reducers/facets-data'
+import facetsDataReducer, { facetsDataReducerInit, isListFacet, isBooleanFacet, isRangeFacet } from './reducers/facets-data'
 import FullTextSearch from './views/full-text-search'
 import SearchResult from './views/search-result'
 
@@ -86,26 +88,48 @@ function FacetedSearch(props: AppProps) {
 				<Reset
 					onClick={() => {
 						setQuery('')
-						facetsDataDispatch({ type: 'clear' })
+						facetsDataDispatch({ type: 'clear', fields: props.fields })
 					}}
 				/>
 				<div>
 					{
 						facetsData != null &&
 						props.fields.map(facetConfig => {
-							if (facetConfig.datatype === EsDataType.Keyword) {
+							if (isListFacet(facetConfig)) {
 								const values = searchResult.facetValues[facetConfig.id] as ListFacetValues
 								return (
 									<ListFacet
 										addFacetQuery={value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value })}
 										addFilter={value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value })}
-										facetData={facetsData.get(facetConfig.id)}
+										facetData={facetsData.get(facetConfig.id) as ListFacetData}
 										key={facetConfig.id}
 										removeFilter={value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value })}
 										sortListFacet={(by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction }))}
 										values={values}
 										viewLess={() => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id })}
 										viewMore={() => facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: values?.total })}
+									/>
+								)
+							} else if (isBooleanFacet(facetConfig)) {
+								const values = searchResult.facetValues[facetConfig.id] as BooleanFacetValues
+								return (
+									<BooleanFacet
+										addFilter={value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value })}
+										facetData={facetsData.get(facetConfig.id) as BooleanFacetData}
+										key={facetConfig.id}
+										removeFilter={value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value })}
+										values={values}
+									/>
+								)
+							} else if (isRangeFacet(facetConfig)) {
+								const values = searchResult.facetValues[facetConfig.id] as RangeFacetValues
+								return (
+									<RangeFacet
+										addFilter={value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value })}
+										facetData={facetsData.get(facetConfig.id) as RangeFacetData}
+										key={facetConfig.id}
+										removeFilter={value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value })}
+										values={values}
 									/>
 								)
 							} else {

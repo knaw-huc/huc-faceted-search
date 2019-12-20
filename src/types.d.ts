@@ -2,10 +2,10 @@
 
 interface AppProps {
 	autoSuggest?: (query: string) => Promise<string[]>
-	className?: string
+	className?: string /* className prop is used by StyledComponents */
 	disableDefaultStyle?: boolean
 	fields: FacetConfig[]
-	onChange?: (response: OnChangeResponse) => void
+	// onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultFields?: string[]
 	ResultBodyComponent: React.FC<ResultBodyProps>
@@ -18,11 +18,26 @@ interface FacetConfig {
 	readonly datatype?: EsDataType
 	readonly id: string
 	readonly order?: number
-	readonly size?: number
 	readonly title?: string
 }
 
-type FacetData = FacetConfig & {
+interface ListFacetConfig extends FacetConfig {
+	readonly datatype: EsDataType.Keyword
+	readonly size?: number
+}
+
+interface BooleanFacetConfig extends FacetConfig {
+	readonly datatype: EsDataType.Boolean
+	readonly labels?: { false: string, true: string }
+}
+
+interface RangeFacetConfig extends FacetConfig {
+	readonly datatype: EsDataType.Date
+	readonly interval?: 'year' | 'month' | 'day'
+	readonly type?: 'number' | 'timestamp'
+}
+
+type ListFacetData = ListFacetConfig & {
 	filters: Set<string>
 	query: string
 	sort: {
@@ -31,6 +46,16 @@ type FacetData = FacetConfig & {
 	}
 	viewSize: number
 } 
+
+type BooleanFacetData = BooleanFacetConfig & {
+	filters: Set<string>
+} 
+
+type RangeFacetData = RangeFacetConfig & {
+	filters: Set<string>
+} 
+
+type FacetData = ListFacetData | BooleanFacetData | RangeFacetData
 type FacetsData = Map<string, FacetData>
 
 type Filters = Map<string, Set<string>>
@@ -39,23 +64,22 @@ type Sorts = Map<string, { by: SortBy, direction: SortDirection }>
 // type Facet = import('./models/facet').BooleanFacet | import('./models/facet').ListFacet | import('./models/facet').RangeFacet
 // type Facets = Map<string, Facet>
 // type BackendType = 'none' | 'elasticsearch'
-type OnFacetManagerChange = () => void
-type OnIOManagerChange = (response: IOManagerOnChangeResponse) =>  void
-interface IOManagerOnChangeResponse {
-	request: any,
-	response: FSResponse
-}
+// type OnFacetManagerChange = () => void
+// type OnIOManagerChange = (response: IOManagerOnChangeResponse) =>  void
+// interface IOManagerOnChangeResponse {
+// 	request: any,
+// 	response: FSResponse
+// }
 
 type ElasticSearchRequestOptions = Pick<AppProps, 'resultFields' | 'resultsPerPage'> & {
 	currentPage: number
 	facetsData: FacetsData
 	query: string
-	resultsPerPage: number
 }
 
-interface OnChangeResponse extends IOManagerOnChangeResponse {
-	query: string
-}
+// interface OnChangeResponse extends IOManagerOnChangeResponse {
+// 	query: string
+// }
 
 interface KeyCount {
 	key: string,
@@ -134,27 +158,27 @@ interface FacetProps {
 }
 
 // BOOLEAN
-interface BooleanSettings {
-	labels?: {
-		true: string,
-		false: string
-	}
-}
-type BooleanFacetProps = FacetProps & BooleanSettings & {
-	addFilter: (field: string, value: string) => void
-	filters: Set<string>
-	removeFilter: (field: string, value: string) => void
+// interface BooleanSettings {
+// 	labels?: {
+// 		true: string,
+// 		false: string
+// 	}
+// }
+interface BooleanFacetProps {
+	addFilter: (value: string) => void
+	facetData: BooleanFacetData
+	removeFilter: (value: string) => void
 	values: BooleanFacetValues
 }
 
 // LIST
-interface ListSettings {
-	size?: number
-}
-type ListFacetProps = {
+// interface ListSettings {
+// 	size?: number
+// }
+interface ListFacetProps {
 	addFacetQuery: (value: string) => void
 	addFilter: (value: string) => void
-	facetData: FacetData
+	facetData: ListFacetData
 	removeFilter: (value: string) => void
 	sortListFacet: (by: SortBy, direction: SortDirection) => void
 	values: ListFacetValues
@@ -162,22 +186,28 @@ type ListFacetProps = {
 	viewMore: () => void
 }
 
-interface ListFacetState {
-	collapsed: boolean
-	options: boolean
-}
+// interface ListFacetState {
+// 	collapsed: boolean
+// 	options: boolean
+// }
 
+interface RangeFacetProps {
+	addFilter: (value: string) => void
+	facetData: RangeFacetData
+	removeFilter: (value: string) => void
+	values: RangeFacetValues
+}
 // interface ListFacetValue {
 // 	key: string
 // 	doc_count: number
 // }
 
 // RANGE
-interface RangeSettings {
-	interval?: 'year' | 'month' | 'day'
-	type?: 'number' | 'timestamp'
-}
-type RangeProps = FacetProps & RangeSettings
+// interface RangeSettings {
+// 	interval?: 'year' | 'month' | 'day'
+// 	type?: 'number' | 'timestamp'
+// }
+// type RangeProps = FacetProps & RangeSettings
 
 interface RangeState {
 	// lowerLimit: number

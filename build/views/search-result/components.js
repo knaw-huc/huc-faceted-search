@@ -17,12 +17,3 @@ exports.ResultList = styled_1.default.ul `
 exports.Result = styled_1.default.li `
 	cursor: pointer;
 `;
-exports.Prev = styled_1.default.div `
-	cursor: pointer;
-	line-height: 1.8em;
-	user-select: none;
-	width: 1.8em;
-`;
-exports.Next = styled_1.default(exports.Prev) `
-	text-align: right;
-`;

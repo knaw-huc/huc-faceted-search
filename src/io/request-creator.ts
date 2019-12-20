@@ -1,3 +1,5 @@
+import { isBooleanFacet, isListFacet, isRangeFacet } from '../reducers/facets-data'
+
 interface AggregationRequest {
 	aggs: any
 	filter?: any
@@ -39,33 +41,25 @@ export default class ElasticSearchRequest {
 			return {}
 		}
 
-		const post_filters = Array.from(options.facetsData.values())
-			.filter(facet => facet.filters.size) // Only set post_filter where facet has filters (check if Set is empty)
+		const facetsData = Array.from(options.facetsData.values())
+
+		const BooleanAndListPostFilters = facetsData
+			.filter(facet => (isBooleanFacet(facet) || isListFacet(facet)) && facet.filters.size) // Only set post_filter where facet has filters (check if Set is empty)
 			.map(facet => toPostFilter(facet))
 
-		// const booleanFilters = facets
-		// 	.filter(f => f.type === FacetType.Boolean)
-		// 	.filter((facet: BooleanFacet) => facet.filters.size)
-		// 	.map(toFilter)
+		const RangePostFilters = facetsData
+			.filter(isRangeFacet)
+			.filter(facetData => facetData.filters.size === 2)
+			.map(facet => ({
+				range: {
+					[facet.id]: {
+						gte: new Date([...facet.filters][0]).toISOString(),
+						lte: new Date([...facet.filters][1]).toISOString()
+					}
+				}
+			}))
 
-		// const listFilters = facets
-		// 	.filter(f => f.type === FacetType.List)
-		// 	.filter((facet: ListFacet) => facet.filters.size)
-		// 	.map(toFilter)
-
-		// const rangeFilters = facets
-		// 	.filter(f => f.type === FacetType.Range)
-		// 	.filter((facet: RangeFacet) => Array.isArray(facet.filters) && facet.filters.length === 2)
-		// 	.map((facet: RangeFacet) => ({
-		// 		range: {
-		// 			[facet.field]: {
-		// 				gte: new Date(facet.filters[0]).toISOString(),
-		// 				lte: new Date(facet.filters[1]).toISOString()
-		// 			}
-		// 		}
-		// 	}))
-
-		// const post_filters = booleanFilters.concat(listFilters, rangeFilters as any)
+		const post_filters = BooleanAndListPostFilters.concat(RangePostFilters as any[])
 
 		if (post_filters.length === 1) {
 			this.post_filter = post_filters[0]
@@ -81,9 +75,9 @@ export default class ElasticSearchRequest {
 	private setAggregations(options: ElasticSearchRequestOptions) {
 		for (const facetData of options.facetsData.values()) {
 			let facetAggs	
-			if (facetData.datatype === EsDataType.Boolean) facetAggs = this.createBooleanAggregation(facetData)
-			if (facetData.datatype === EsDataType.Keyword) facetAggs = this.createListAggregation(facetData)
-			if (facetData.datatype === EsDataType.Date) facetAggs = this.createHistogramAggregation(facetData)
+			if (isBooleanFacet(facetData)) facetAggs = this.createBooleanAggregation(facetData)
+			if (isListFacet(facetData)) facetAggs = this.createListAggregation(facetData)
+			if (isRangeFacet(facetData)) facetAggs = this.createHistogramAggregation(facetData)
 
 			if (facetAggs != null) {
 				this.aggs = {
@@ -110,7 +104,7 @@ export default class ElasticSearchRequest {
 		return agg
 	}
 
-	private createBooleanAggregation(facet: FacetConfig) {
+	private createBooleanAggregation(facet: BooleanFacetConfig) {
 		const values = {
 			terms: {
 				field: facet.id
@@ -120,7 +114,7 @@ export default class ElasticSearchRequest {
 		return this.addFilter(facet.id, values)
 	}
 
-	private createListAggregation(facetData: FacetData) {
+	private createListAggregation(facetData: ListFacetData) {
 		const terms: ListAggregationTerms = {
 			field: facetData.id,
 			size: facetData.viewSize,
@@ -141,7 +135,7 @@ export default class ElasticSearchRequest {
 		return agg
 	}
 
-	private createHistogramAggregation(facet: FacetConfig): Record<string, any> {
+	private createHistogramAggregation(facet: RangeFacetData): Record<string, any> {
 		const values = {
 			auto_date_histogram: {
 				field: facet.id,

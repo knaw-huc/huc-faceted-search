@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
-const list_facet_1 = tslib_1.__importDefault(require("./views/list-facet"));
+const list_1 = tslib_1.__importDefault(require("./views/facets/list"));
+const boolean_1 = tslib_1.__importDefault(require("./views/facets/boolean"));
+const range_1 = tslib_1.__importDefault(require("./views/facets/range"));
 const reset_1 = tslib_1.__importDefault(require("./views/reset"));
 const request_creator_1 = tslib_1.__importDefault(require("./io/request-creator"));
 const constants_1 = require("./constants");
@@ -70,13 +72,21 @@ function FacetedSearch(props) {
             React.createElement(full_text_search_1.default, { autoSuggest: props.autoSuggest, setQuery: setQuery }),
             React.createElement(reset_1.default, { onClick: () => {
                     setQuery('');
-                    facetsDataDispatch({ type: 'clear' });
+                    facetsDataDispatch({ type: 'clear', fields: props.fields });
                 } }),
             React.createElement("div", null, facetsData != null &&
                 props.fields.map(facetConfig => {
-                    if (facetConfig.datatype === "keyword") {
+                    if (facets_data_1.isListFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(list_facet_1.default, { addFacetQuery: value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value }), addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), sortListFacet: (by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction })), values: values, viewLess: () => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id }), viewMore: () => { var _a; return facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: (_a = values) === null || _a === void 0 ? void 0 : _a.total }); } }));
+                        return (React.createElement(list_1.default, { addFacetQuery: value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value }), addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), sortListFacet: (by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction })), values: values, viewLess: () => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id }), viewMore: () => { var _a; return facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: (_a = values) === null || _a === void 0 ? void 0 : _a.total }); } }));
+                    }
+                    else if (facets_data_1.isBooleanFacet(facetConfig)) {
+                        const values = searchResult.facetValues[facetConfig.id];
+                        return (React.createElement(boolean_1.default, { addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), values: values }));
+                    }
+                    else if (facets_data_1.isRangeFacet(facetConfig)) {
+                        const values = searchResult.facetValues[facetConfig.id];
+                        return (React.createElement(range_1.default, { addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), values: values }));
                     }
                     else {
                         return null;

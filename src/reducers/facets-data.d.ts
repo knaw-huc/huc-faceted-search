@@ -1,5 +1,6 @@
 interface FacetsDataReducerActionClear {
 	type: 'clear'
+	fields: AppProps['fields']
 }
 
 interface FacetsDataReducerActionAddFilter {

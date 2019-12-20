@@ -66,12 +66,12 @@
         "signature": "3e0a459888f32b42138d5a39f706ff2d55d500ab1031e0988b5568b0f67c2303"
       },
       "../src/reducers/facets-data.d.ts": {
-        "version": "2ce7854943534208b1bcc3ec3ef7874dc5c0c9f0607c48cd13875f7ed05a1355",
-        "signature": "2ce7854943534208b1bcc3ec3ef7874dc5c0c9f0607c48cd13875f7ed05a1355"
+        "version": "71c0232c243ffe381356c36bee131f324adc04e8a12f631e4fe1cf573c0bd61c",
+        "signature": "71c0232c243ffe381356c36bee131f324adc04e8a12f631e4fe1cf573c0bd61c"
       },
       "../src/types.d.ts": {
-        "version": "2a064d5dc46e0fb21b9986ac0ba2805dd6d998557e65d4c786a7c8fe19d5b2d8",
-        "signature": "2a064d5dc46e0fb21b9986ac0ba2805dd6d998557e65d4c786a7c8fe19d5b2d8"
+        "version": "e9789c6ee14cfe828f2e309d3bb730025f082877fe1781df8f14b833858f6e7c",
+        "signature": "e9789c6ee14cfe828f2e309d3bb730025f082877fe1781df8f14b833858f6e7c"
       },
       "../node_modules/tslib/tslib.d.ts": {
         "version": "4984b48a97160eac5282ffeae690315420a626de83ccf6045c36d934c5c957c0",
@@ -145,7 +145,7 @@
         "version": "244dadffc87c5391652a8a6bfa6ddec1f39d7675c486bf3707f4a5ffa940b6f8",
         "signature": "244dadffc87c5391652a8a6bfa6ddec1f39d7675c486bf3707f4a5ffa940b6f8"
       },
-      "../src/views/list-facet/value.tsx": {
+      "../src/views/facets/list/value.tsx": {
         "version": "59ad103efd9727cc7e37e0c6a7a2428fafd1980e96e2672d372748d36ee52efd",
         "signature": "2a2b6cac1f9b27ba2c6dc87c8693501b5e62363e3559323eb69feba62159ea61"
       },
@@ -157,17 +157,17 @@
         "version": "5f345a5debdf079268dd1a5aac94f2a161e32fbe3fb75934c20e2f87331b4122",
         "signature": "200c9dd90c059dc902cd6fd50b3184eeaa333ea76502162d0c0acea45ccf4ac6"
       },
-      "../src/views/list-facet/more-less-buttons.tsx": {
-        "version": "23ce7089bfd36d1feda39983a32127fdb9237f7a6c5a1d61ab25a2685949115a",
+      "../src/views/facets/list/more-less-buttons.tsx": {
+        "version": "a08018c8faf6ff6024ec054e66c6a74db864afe066e961496731e41350fe1410",
         "signature": "7acbb74f5550792c58162733e2718a87e85f94c3a1510e4bd0b938423513b5b2"
       },
-      "../src/views/list-facet/values.tsx": {
+      "../src/views/facets/list/values.tsx": {
         "version": "5cc53fe1b7857a1a286634c00c8e5b496c6f55f2e54ded01fee5ea72d966791c",
         "signature": "1cba039a2c122cbf002276ecab3267987848c733116015f409a95a02802de1b5"
       },
-      "../src/views/facet-header/index.tsx": {
-        "version": "c6d20faad85d5a87054c07256bcbe4afecbce525ea93c020c8871e7ed6a24d6b",
-        "signature": "ef89946c9f4f8846eb53a9138e76a72627e62e02db129efaa7dfae7df6852952"
+      "../src/views/facets/header.tsx": {
+        "version": "1493484733b18e7933bb826d5f7278a19b8f4a7c76ece86f8a24608be0938bb9",
+        "signature": "c6b9f7bb9c1090e091238627fa92869d2aeeec68ea6dd52474fbf579183eab87"
       },
       "../src/views/full-text-search/suggestion.tsx": {
         "version": "a925d6c6ce83a0c55a14465d97b8465931ef9c5c99c1090482d7d9d3c8b1e9a1",
@@ -237,40 +237,64 @@
         "version": "b773a63f3f1f814313e94d60922798d7906f919d8b5642fcb6e022259304a7c5",
         "signature": "a485dbdc3d898da07dacee2c18af7af8cc87c0c7b5b3e74f79dc7d520d7de280"
       },
-      "../src/views/list-facet/options.tsx": {
-        "version": "234164334201f1d3627d97e2f1b4615e92e4293a7f63f0ff96a2986b504e1c43",
+      "../src/views/facets/list/options.tsx": {
+        "version": "2c9728de7c7275614cc839d9d53547c55f857f9d70279b77c524d73224976d54",
         "signature": "cdee2fba238ece5894212554685f40406986b8777edfb531baf8cfb7bfe95ec6"
       },
-      "../src/views/list-facet/index.tsx": {
-        "version": "b71b884faa38dba958cec90d5832f08507517c9f6fb714ae6be2dc6412652b2d",
+      "../src/views/facets/facet.tsx": {
+        "version": "6391996a1b1967dcd14f9d042729cf0f1a5dd00e6ea93566dbcb67be61225c90",
+        "signature": "6391005a378ef25d709e721406954427bda645d54c788942eea02a1c606b7e9f"
+      },
+      "../src/views/facets/list/index.tsx": {
+        "version": "8d9ddaa4e985afe92b42ad92f483a3974ad738a1ac4f50a59d1072f2c9459d56",
         "signature": "3526b97ae3deef312daa66ebdf3c44a30b86b0817daa30dc2cf6b3b0a779e094"
+      },
+      "../src/views/facets/boolean/index.tsx": {
+        "version": "97d887399b5d1a3cdcf4d1138fce36251bf5dd9f08723cca222de3113cc5df35",
+        "signature": "c817ee74182b423ebbb2e1a10ce247bd5709da4f8c986441ebd46b77306f888d"
+      },
+      "../node_modules/hire-range-slider/build/index.d.ts": {
+        "version": "871a73658355c35e055f9631109e4c20e5694b57da4ac0e84bfd726a64f6e046",
+        "signature": "871a73658355c35e055f9631109e4c20e5694b57da4ac0e84bfd726a64f6e046"
+      },
+      "../src/views/facets/range/histogram.tsx": {
+        "version": "ea743e077b2564e2660b3d22311574e035a56cbb35238ff059bec392655ac31c",
+        "signature": "1955a38ba379bb570b4f847e25d282ca4321f9a121af16873af3c119bb8db407"
+      },
+      "../src/views/facets/range/utils.ts": {
+        "version": "fb1d620559fab840aa46c63f834175fdd7f08f1fc179dbab72adda4e438cf002",
+        "signature": "e7ad8cca22e2783874d2e73ff0e6a020c620a9745f2b4821c4b419a952914bad"
+      },
+      "../src/views/facets/range/index.tsx": {
+        "version": "7bfbc7e4614536819303892fe82e3ed3eb14cf19056217b0a6210945ba84daab",
+        "signature": "f6e6260021b975250642dca748eedc45b498b9fa9d60edffc38c024a3578bdc0"
       },
       "../src/views/reset.tsx": {
         "version": "bd7a57485fc58dfe6c37709b72ead6ac40dc7ede4678e387584e64406ecdfc2e",
         "signature": "60bf71ca45752397aab97d26e036a8d5d5b611a357d9efeb84aecc2981868450"
       },
+      "../src/reducers/facets-data.ts": {
+        "version": "3f05b4fb16f8fcf14f200042c51c8bdf0f43cbc7e5d03facb757e3db5d4fc8e0",
+        "signature": "c446423d19be909973d49038a2c4c0ab6427640ec0a2c0a7e9cc61c989efcc1b"
+      },
       "../src/io/request-creator.ts": {
-        "version": "05c1cf1346e8123432b65726a76b76f4c623fcc710369b10d734670e218f8e7d",
+        "version": "2b4cd95784879a7c4a7efa437a2d3a1b6f3893c4a1dcda40c2c318c16f50b5f5",
         "signature": "314479a6cb8b742a88c7730fe9a0dbd1d9ac92048c9b992d44f1029cbb0d42bf"
       },
       "../src/io/response-parser.ts": {
-        "version": "5175c382a27a632cddc815cf65e99ce0252de8123322bd9e5da509e3c4ba692e",
+        "version": "93c3d78235a030c87f17bba12af802e07b676e28c1207a4db2c8dadbbb7c25f2",
         "signature": "fee4b71df9fcc3ed1eaf1453bdb22804906c3f134636f75e5adabfae7bc59ab1"
       },
-      "../src/reducers/facets-data.ts": {
-        "version": "24311d25f6be8114ce1a20f7e37a95add680740cbf2cf66bc9be9c15877b33d5",
-        "signature": "6530ee4f5285b007ee1c45663e4a1d71e548b7f27e08aac7ac38fc3e7e0cb1c5"
-      },
       "../src/views/search-result/components.tsx": {
-        "version": "baba2ba9de0b8fc754de7ad434fea5d399e166dbf99d78301a16f9d48e6f0b52",
-        "signature": "bc6a778a11aeda07cac56d5e2b24f82e27ec678e0e841bc91ac12d0d70208444"
+        "version": "b5ac18c87c3cfd2ea247866693d99e92e5a71f2c1c5e0a2403c62dd63c448460",
+        "signature": "9a35c31e3bd30a4be59e7543782778bf73e26ad8f2577076c56f7a64d23d433f"
       },
       "../src/views/search-result/page-number.tsx": {
-        "version": "4813ce594609996e2e2e9d502aed59d38da5c464e251adc413dbd069a4a6b668",
-        "signature": "deddee0bd0d305f8580f0b7b37ad02535eda31a4d16c0c28a12571a1cd2f49ab"
+        "version": "522072eef408972713da8dc38d44811154981950621a412fbbbe1299c6e36716",
+        "signature": "af39b4d44e45e2bf6ba2248dded82306491488260685f170337fd8e97d1bfe40"
       },
       "../src/views/search-result/pagination.tsx": {
-        "version": "ff7a01910f505a44147c32be5e529d1143b645476226bd2e416d97d8cc6f52a5",
+        "version": "c27a9ccda4b53169a95dac11c2d7a656b5c1417a6740909b73bc87e1a1a0958d",
         "signature": "2c56b1d43060ad67d1a96525afab9ef57f6d3c5ff51c202c3c96e0e66f2238e0"
       },
       "../src/views/search-result/index.tsx": {
@@ -278,7 +302,7 @@
         "signature": "65b115f46b20ba9f3c98741587a41e081f98efe80cb3a0c34fdc72b3169bd48e"
       },
       "../src/index.tsx": {
-        "version": "05076ba21aaa13e5c2847144fd04d1372bbeb78a6f4e50fa224a602ff60bbf0f",
+        "version": "f66495ef888f67b5ea3df7cb99c1bf217e4493a27efb40f45194b06f2ac32eb4",
         "signature": "364e8b3fecf484f07411099e27d1a77a5d43753d0647fc8ee55b0d622a7ad177"
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
@@ -414,7 +438,7 @@
         "../node_modules/@emotion/serialize/types/index.d.ts",
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
-      "../src/views/list-facet/value.tsx": [
+      "../src/views/facets/list/value.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../node_modules/@emotion/core/types/index.d.ts"
@@ -423,17 +447,17 @@
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/constants.tsx"
       ],
-      "../src/views/list-facet/more-less-buttons.tsx": [
+      "../src/views/facets/list/more-less-buttons.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../src/views/button.tsx"
       ],
-      "../src/views/list-facet/values.tsx": [
+      "../src/views/facets/list/values.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
-        "../src/views/list-facet/value.tsx",
+        "../src/views/facets/list/value.tsx",
         "../node_modules/@emotion/styled/types/index.d.ts",
-        "../src/views/list-facet/more-less-buttons.tsx"
+        "../src/views/facets/list/more-less-buttons.tsx"
       ],
-      "../src/views/facet-header/index.tsx": [
+      "../src/views/facets/header.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
@@ -638,36 +662,65 @@
         "../src/views/full-text-search/auto-suggest.tsx",
         "../node_modules/@types/lodash.debounce/index.d.ts"
       ],
-      "../src/views/list-facet/options.tsx": [
+      "../src/views/facets/list/options.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/full-text-search/index.tsx"
       ],
-      "../src/views/list-facet/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
-        "../src/views/list-facet/values.tsx",
-        "../src/views/facet-header/index.tsx",
-        "../src/views/button.tsx",
-        "../src/views/list-facet/options.tsx",
+      "../src/views/facets/facet.tsx": [
         "../node_modules/@emotion/styled/types/index.d.ts"
+      ],
+      "../src/views/facets/list/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../src/views/facets/list/values.tsx",
+        "../src/views/facets/header.tsx",
+        "../src/views/button.tsx",
+        "../src/views/facets/list/options.tsx",
+        "../src/views/facets/facet.tsx"
+      ],
+      "../src/views/facets/boolean/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../src/views/facets/list/value.tsx",
+        "../src/views/facets/header.tsx",
+        "../node_modules/@emotion/styled/types/index.d.ts",
+        "../src/views/facets/facet.tsx"
+      ],
+      "../node_modules/hire-range-slider/build/index.d.ts": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/facets/range/histogram.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/facets/range/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/hire-range-slider/build/index.d.ts",
+        "../src/views/facets/header.tsx",
+        "../node_modules/@emotion/styled/types/index.d.ts",
+        "../src/views/facets/range/histogram.tsx",
+        "../src/views/facets/range/utils.ts",
+        "../src/views/facets/facet.tsx"
       ],
       "../src/views/reset.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../src/views/button.tsx"
+      ],
+      "../src/io/request-creator.ts": [
+        "../src/reducers/facets-data.ts"
+      ],
+      "../src/io/response-parser.ts": [
+        "../src/reducers/facets-data.ts"
       ],
       "../src/views/search-result/components.tsx": [
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
       "../src/views/search-result/page-number.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
-        "../node_modules/@emotion/styled/types/index.d.ts",
-        "../src/views/search-result/components.tsx"
+        "../node_modules/@emotion/styled/types/index.d.ts"
       ],
       "../src/views/search-result/pagination.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
-        "../src/views/search-result/page-number.tsx",
-        "../src/views/search-result/components.tsx"
+        "../src/views/search-result/page-number.tsx"
       ],
       "../src/views/search-result/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
@@ -677,7 +730,9 @@
       "../src/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
-        "../src/views/list-facet/index.tsx",
+        "../src/views/facets/list/index.tsx",
+        "../src/views/facets/boolean/index.tsx",
+        "../src/views/facets/range/index.tsx",
         "../src/views/reset.tsx",
         "../src/io/request-creator.ts",
         "../src/constants.tsx",
@@ -768,17 +823,17 @@
         "../node_modules/@emotion/serialize/types/index.d.ts",
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
-      "../src/views/list-facet/value.tsx": [
+      "../src/views/facets/list/value.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/button.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
-      "../src/views/list-facet/values.tsx": [
+      "../src/views/facets/list/values.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
-      "../src/views/facet-header/index.tsx": [
+      "../src/views/facets/header.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/full-text-search/suggestion.tsx": [
@@ -976,10 +1031,26 @@
         "../node_modules/@emotion/styled-base/types/index.d.ts",
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
-      "../src/views/list-facet/options.tsx": [
+      "../src/views/facets/list/options.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
-      "../src/views/list-facet/index.tsx": [
+      "../src/views/facets/facet.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled-base/types/index.d.ts"
+      ],
+      "../src/views/facets/list/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/facets/boolean/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../node_modules/hire-range-slider/build/index.d.ts": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/facets/range/histogram.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/facets/range/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/components.tsx": [
@@ -987,6 +1058,7 @@
         "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
       "../src/views/search-result/page-number.tsx": [
+        "../node_modules/@emotion/styled-base/types/index.d.ts",
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/pagination.tsx": [
@@ -1073,12 +1145,12 @@
       "../node_modules/@emotion/serialize/types/index.d.ts",
       "../node_modules/@emotion/css/types/index.d.ts",
       "../node_modules/@emotion/core/types/index.d.ts",
-      "../src/views/list-facet/value.tsx",
+      "../src/views/facets/list/value.tsx",
       "../src/constants.tsx",
       "../src/views/button.tsx",
-      "../src/views/list-facet/more-less-buttons.tsx",
-      "../src/views/list-facet/values.tsx",
-      "../src/views/facet-header/index.tsx",
+      "../src/views/facets/list/more-less-buttons.tsx",
+      "../src/views/facets/list/values.tsx",
+      "../src/views/facets/header.tsx",
       "../src/views/full-text-search/suggestion.tsx",
       "../node_modules/@types/lodash/ts3.1/common/common.d.ts",
       "../node_modules/@types/lodash/ts3.1/common/array.d.ts",
@@ -1096,14 +1168,22 @@
       "../node_modules/@types/lodash.debounce/index.d.ts",
       "../src/views/full-text-search/auto-suggest.tsx",
       "../src/views/full-text-search/index.tsx",
-      "../src/views/list-facet/options.tsx",
-      "../src/views/list-facet/index.tsx",
+      "../src/views/facets/list/options.tsx",
+      "../src/views/facets/facet.tsx",
+      "../src/views/facets/list/index.tsx",
+      "../src/views/facets/boolean/index.tsx",
+      "../node_modules/hire-range-slider/build/index.d.ts",
+      "../src/views/facets/range/histogram.tsx",
+      "../src/views/facets/range/utils.ts",
+      "../src/views/facets/range/index.tsx",
       "../src/views/reset.tsx",
       "../src/reducers/facets-data.ts",
+      "../src/io/request-creator.ts",
+      "../src/io/response-parser.ts",
       "../src/views/search-result/components.tsx",
-      "../src/views/search-result/page-number.tsx",
       "../src/views/search-result/pagination.tsx",
       "../src/views/search-result/index.tsx",
+      "../src/index.tsx",
       "../node_modules/@babel/types/lib/index.d.ts",
       "../node_modules/@types/babel__generator/index.d.ts",
       "../node_modules/@types/babel__traverse/index.d.ts",
@@ -1122,9 +1202,7 @@
       "../node_modules/@types/prop-types/index.d.ts",
       "../node_modules/@types/stack-utils/index.d.ts",
       "../node_modules/@types/yargs/index.d.ts",
-      "../src/io/request-creator.ts",
-      "../src/index.tsx",
-      "../src/io/response-parser.ts"
+      "../src/views/search-result/page-number.tsx"
     ]
   },
   "version": "3.7.3"

@@ -1,13 +1,22 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { Prev } from './components'
+
+export const Button = styled.div`
+	cursor: pointer;
+	user-select: none;
+
+	&:hover {
+		color: #444;
+	}
+`
 
 interface PnProps { active: boolean }
-const PageNumberWrapper = styled(Prev)`
-	background-color: ${(props: PnProps) => props.active ? '#888' : 'white'};
-	border-radius: 1em;
-	color: ${(props: PnProps) => props.active ? 'white' : '#444'};
+const PageNumberWrapper = styled(Button)`
+	background-color: ${(props: PnProps) => props.active ? '#f6f6f6' : 'white'};
+	border-radius: .25em;
+	color: ${(props: PnProps) => props.active ? '#888' : 'inherit'};
 	font-weight: ${(props: PnProps) => props.active ? 'bold' : 'normal'};
+	padding: .35em;
 	text-align: center;
 `
 
@@ -20,7 +29,6 @@ function PageNumber(props: Props) {
 	return (
 		<PageNumberWrapper
 			active={props.pageNumber === props.currentPage}
-			className={props.pageNumber === props.currentPage ? 'active' : null}
 			key={props.pageNumber}
 			onClick={props.setCurrentPage}
 		>

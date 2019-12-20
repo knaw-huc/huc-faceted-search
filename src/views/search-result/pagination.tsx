@@ -1,34 +1,40 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import PageNumber from './page-number'
-import { Prev, Next } from './components'
+import PageNumber, { Button } from './page-number'
 
 function getRange(start: number, end: number) {
 	return Array.from({length: end - start + 1}, (_value, key) => key + start)
 }
 
 const Wrapper = styled.div`
+	color: #AAA;
 	display: grid;
 	grid-template-columns: 32px auto 32px;
 	margin: 0 .2em 1em .2em;
+`
 
-	& > div:last-of-type {
-		justify-self: end;
-	}
+const Prev = styled(Button)`
+	font-size: 1.6em;
+	margin-top: -4px;
+`
+
+const Next = styled(Prev)`
+	text-align: right;
 `
 
 const PageNumbers = styled.div`
+	align-items: center;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(32px, 1fr));
 	justify-items: center;
 `
+
 function usePages(currentPage: number, pageCount: number) {
 	const [first, setFirst] = React.useState([])
 	const [current, setCurrent] = React.useState([])
 	const [last, setLast] = React.useState([])
 
 	React.useEffect(() => {
-		console.log(currentPage, pageCount)
 		let first: number[] = []
 		let current: number[] = []
 		let last: number[] = []
@@ -73,6 +79,15 @@ function Pagination(props: Props) {
 
 	const toPrev = React.useCallback(() => props.setCurrentPage(props.currentPage - 1), [props.currentPage])
 	const toNext = React.useCallback(() => props.setCurrentPage(props.currentPage + 1), [props.currentPage])
+	const toBetweenFirstAndCurrent = React.useCallback(() => {
+		const nextPage = Math.round((first[first.length - 1] + current.concat(last)[0]) / 2)
+		props.setCurrentPage(nextPage)
+	}, [first, current, last])
+	const toBetweenCurrentAndLast = React.useCallback(() => {
+		const lowerPageNumbers = first.concat(current) // first can be filled, while current is empty
+		const nextPage = Math.round((lowerPageNumbers[lowerPageNumbers.length - 1] + last[0]) / 2)
+		props.setCurrentPage(nextPage)
+	}, [first, current, last])
 
 	const toPageNumber = React.useCallback(
 		(n: number) => (
@@ -94,9 +109,9 @@ function Pagination(props: Props) {
 			}
 			<PageNumbers className="pagenumbers">
 				{first.length > 0 && first.map(toPageNumber)}
-				{first.length > 0 && current.length > 0 && <div>…</div>}
+				{first.length > 0 && current.length > 0 && <Button onClick={toBetweenFirstAndCurrent}>…</Button>}
 				{current.map(toPageNumber)}
-				{last.length > 0 && <div>…</div>}
+				{last.length > 0 && <Button onClick={toBetweenCurrentAndLast}>…</Button>}
 				{last.length > 0 && last.map(toPageNumber)}
 			</PageNumbers>
 			{props.currentPage !== pageCount ?
