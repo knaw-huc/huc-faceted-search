@@ -12,7 +12,7 @@ export function timestampToRatio(timestamp: number, values: RangeFacetValues) {
 	return (timestamp - minValue) / (maxValue - minValue)
 }
 
-export function formatRange(facetData: RangeFacetData, rangeMin: number, rangeMax: number) {
+export function formatRange(facetData: RangeFacetData, rangeMin: number, rangeMax: number): [number | string, number | string] {
 	if (facetData.type === 'number') return [rangeMin, rangeMax]
 
 	const dateMin = new Date(rangeMin)
