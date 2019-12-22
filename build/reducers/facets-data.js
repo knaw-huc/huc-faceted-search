@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const constants_1 = require("../constants");
 function initBooleanFacet(booleanFacetConfig) {
     return Object.assign(Object.assign({}, booleanFacetConfig), { filters: new Set(), labels: booleanFacetConfig.labels || { true: 'Yes', false: 'No' } });
 }
@@ -7,28 +9,16 @@ function initListFacet(listFacetConfig) {
     return Object.assign(Object.assign({}, listFacetConfig), { datatype: "keyword", filters: new Set(), sort: null, query: '', size: listFacetConfig.size || 10, viewSize: listFacetConfig.size || 10 });
 }
 function initRangeFacet(rangeFacetConfig) {
-    return Object.assign(Object.assign({}, rangeFacetConfig), { filters: new Set(), type: rangeFacetConfig.type || 'timestamp' });
+    return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, type: rangeFacetConfig.type || 'timestamp' });
 }
-function isBooleanFacet(facetConfig) {
-    return facetConfig.datatype === "boolean";
-}
-exports.isBooleanFacet = isBooleanFacet;
-function isListFacet(facetConfig) {
-    return facetConfig.datatype === "keyword";
-}
-exports.isListFacet = isListFacet;
-function isRangeFacet(facetConfig) {
-    return facetConfig.datatype === "date";
-}
-exports.isRangeFacet = isRangeFacet;
 function facetsDataReducerInit(fields) {
     return fields
         .reduce((prev, curr) => {
-        if (isListFacet(curr))
+        if (constants_1.isListFacet(curr))
             prev.set(curr.id, initListFacet(curr));
-        else if (isBooleanFacet(curr))
+        else if (constants_1.isBooleanFacet(curr))
             prev.set(curr.id, initBooleanFacet(curr));
-        else if (isRangeFacet(curr))
+        else if (constants_1.isRangeFacet(curr))
             prev.set(curr.id, initRangeFacet(curr));
         else
             prev.set(curr.id, initListFacet(curr));
@@ -41,7 +31,7 @@ function facetsDataReducer(facetsData, action) {
         return facetsDataReducerInit(action.fields);
     }
     const facet = facetsData.get(action.facetId);
-    if (isListFacet(facet) || isBooleanFacet(facet)) {
+    if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet)) {
         switch (action.type) {
             case 'add_filter': {
                 facet.filters = new Set(facet.filters.add(action.value));
@@ -54,7 +44,16 @@ function facetsDataReducer(facetsData, action) {
             }
         }
     }
-    if (isListFacet(facet)) {
+    if (constants_1.isRangeFacet(facet)) {
+        switch (action.type) {
+            case 'set_range': {
+                const { type } = action, filter = tslib_1.__rest(action, ["type"]);
+                facet.filter = filter;
+                return new Map(facetsData);
+            }
+        }
+    }
+    if (constants_1.isListFacet(facet)) {
         switch (action.type) {
             case 'set_query': {
                 facet.query = action.value;

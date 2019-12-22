@@ -35,14 +35,11 @@ interface Props {
 }
 
 function FacetValueView(props: Props) {
-	const { active, facetId, keyFormatter, value } = props
-	const key = (keyFormatter != null) ? keyFormatter(value.key) : value.key
-
 	const handleChange = React.useCallback(() => {
-		const type = active ? 'remove_filter' : 'add_filter'
-		props.facetsDataDispatch({ type, facetId, value: value.key })
+		const type = props.active ? 'remove_filter' : 'add_filter'
+		props.facetsDataDispatch({ type, facetId: props.facetId, value: props.value.key })
 
-	}, [active, facetId, props.value])
+	}, [props.active, props.facetId, props.value.key])
 
 	return (
 		<Wrapper
@@ -54,11 +51,15 @@ function FacetValueView(props: Props) {
 				onChange={handleChange}
 				type="checkbox"
 			/>
-			<Key active={props.active} dangerouslySetInnerHTML={{ __html: key }}></Key>
+			<Key active={props.active} dangerouslySetInnerHTML={{ __html: props.keyFormatter(props.value.key) }}></Key>
 			<Count active={props.active}>{props.value.count}</Count>
 		</Wrapper>
 
 	)
+}
+
+FacetValueView.defaultProps = {
+	keyFormatter: (value: string) => value
 }
 
 export default React.memo(FacetValueView)

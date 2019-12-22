@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const facets_data_1 = require("../reducers/facets-data");
+const constants_1 = require("../constants");
 class ElasticSearchRequest {
     constructor(options) {
         this.aggs = {};
@@ -30,16 +30,16 @@ class ElasticSearchRequest {
         }
         const facetsData = Array.from(options.facetsData.values());
         const BooleanAndListPostFilters = facetsData
-            .filter(facet => (facets_data_1.isBooleanFacet(facet) || facets_data_1.isListFacet(facet)) && facet.filters.size)
-            .map(facet => toPostFilter(facet));
+            .filter(facet => (constants_1.isBooleanFacet(facet) || constants_1.isListFacet(facet)) && facet.filters.size)
+            .map((facet) => toPostFilter(facet));
         const RangePostFilters = facetsData
-            .filter(facets_data_1.isRangeFacet)
-            .filter(facetData => facetData.filters.size === 2)
-            .map(facet => ({
+            .filter(constants_1.isRangeFacet)
+            .filter((facetData) => facetData.filter != null)
+            .map((facet) => ({
             range: {
                 [facet.id]: {
-                    gte: new Date([...facet.filters][0]).toISOString(),
-                    lte: new Date([...facet.filters][1]).toISOString()
+                    gte: new Date(facet.filter.from).toISOString(),
+                    lte: facet.filter.to != null ? new Date(facet.filter.to).toISOString() : null
                 }
             }
         }));
@@ -58,11 +58,11 @@ class ElasticSearchRequest {
     setAggregations(options) {
         for (const facetData of options.facetsData.values()) {
             let facetAggs;
-            if (facets_data_1.isBooleanFacet(facetData))
+            if (constants_1.isBooleanFacet(facetData))
                 facetAggs = this.createBooleanAggregation(facetData);
-            if (facets_data_1.isListFacet(facetData))
+            if (constants_1.isListFacet(facetData))
                 facetAggs = this.createListAggregation(facetData);
-            if (facets_data_1.isRangeFacet(facetData))
+            if (constants_1.isRangeFacet(facetData))
                 facetAggs = this.createHistogramAggregation(facetData);
             if (facetAggs != null) {
                 this.aggs = Object.assign(Object.assign({}, this.aggs), facetAggs);

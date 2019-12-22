@@ -3,13 +3,19 @@ interface RangeFacetConfig extends FacetConfig {
 	readonly type?: 'number' | 'timestamp'
 }
 
+interface RangeFacetFilter {
+	from: number
+	to?: number
+}
+
 type RangeFacetData = RangeFacetConfig & {
-	filters: Set<string>
+	filter: RangeFacetFilter,
 	interval?: 'year' | 'month' | 'day'
 } 
 
 interface RangeFacetProps {
 	facetData: RangeFacetData
+	facetsDataDispatch: React.Dispatch<FacetsDataReducerAction>
 	values: RangeFacetValues
 }
 

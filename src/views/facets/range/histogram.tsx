@@ -1,120 +1,77 @@
 import * as React from 'react'
+import styled from '@emotion/styled'
+import { getEndDate } from './utils'
 
-enum ChartType {
-	Bar,
-	Horizon
-}
-interface Props {
+interface WrapperProps { barCount: number }
+const Wrapper = styled.div`
+	display: grid;
+	grid-template-columns: repeat(${(props: WrapperProps) => props.barCount}, 1fr);
+	grid-column-gap: 4px;
+`
+
+interface BarProps { count: number }
+const Bar = styled.div`
+	align-items: end;
+	border: 1px solid white;
+	box-sizing: border-box;
+	height: 100%;
+	cursor: ${(props: BarProps) => props.count > 0 ? 'pointer' : 'default'}};
+	display: grid;
+
+	&:hover {
+		border: 1px solid #b6b6b6;
+		& > div {
+			background: #b6b6b6;
+		}
+	}
+`
+
+interface BarFillProps { height: number }
+const BarFill = styled.div`
+	background: #e6e6e6;
+	height: ${(props: BarFillProps) => {
+		let height = props.height
+		if (height > 0 && height < .03) height = .03 /* Set minimum height to 3px */
+		return `${height * 100}px`
+	}};
+`
+
+// TODO remove lower/upperlimit
+type Props = Pick<RangeFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'> & {
 	lowerLimit: number
 	upperLimit: number
-	values: RangeFacetValues
 }
-export default class Histogram extends React.PureComponent<Props> {
-	private canvasRef = React.createRef() as React.RefObject<HTMLCanvasElement>
-	private divRef = React.createRef() as React.RefObject<HTMLDivElement>
-	private ctx: CanvasRenderingContext2D
+function Histogram(props: Props) {
+	const counts = props.values.map(v => v.count)
+	const maxCount = Math.max(...counts)
 
-	static defaultProps: Pick<Props, 'values'> = {
-		values: []
-	}
+	const handleBarClick = React.useCallback((ev: any) => {
+		const { count, value } = ev.currentTarget.dataset
+		if (count === '0') return
+		const from = parseInt(value, 10)
+		const to = getEndDate(from, props.facetData.interval)
+		props.facetsDataDispatch({ type: 'set_range', facetId: props.facetData.id, from, to })
+	}, [props.values])
 
-	componentDidMount() {
-		this.ctx = this.canvasRef.current.getContext('2d')
-		const { width, height } = this.divRef.current.getBoundingClientRect()
-		this.canvasRef.current.width = width - 8 
-		this.canvasRef.current.height = height
-		this.init()
-	}
-
-	componentDidUpdate(prevProps: Props) {
-		if (prevProps.values !== this.props.values) {
-			this.init()
-		}
-	}
-
-	render() {
-		return (
-			<div
-				ref={this.divRef}
-				style={{
-					height: '60px',
-					marginLeft: '8px',
-					position: 'relative',
-				}}
-			>
-				<div
-					style={{
-						background: 'rgba(0, 0, 0, .2)',
-						height: '100%',
-						left: `${this.props.lowerLimit * 100}%`,
-						mixBlendMode: 'color-burn',
-						position: 'absolute',
-						width: `${(this.props.upperLimit - this.props.lowerLimit) * 100}%`,
-					}}
-				/>
-				<canvas ref={this.canvasRef} />
-			</div>
-		)
-	}
-
-	private init() {
-		const values = this.props.values.map(value => value.count)
-
-		const canvas = this.drawChart(ChartType.Bar, values)
-
-		this.ctx.clearRect(0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
-		this.ctx.drawImage(canvas, 0, 0, this.canvasRef.current.width, this.canvasRef.current.height)
-	}
-
-	private drawChart(chartType: ChartType, values: any[]): HTMLCanvasElement {
-		const canvas = document.createElement('canvas')
-		if (!values.length) return canvas
-
-		// Maximize the bars to 64
-		if (values.length > 64) {
-			const valuesPerBar = Math.ceil(values.length/64)
-			values = values.reduce((prev, _curr, index, array) => {
-				if (index > 0 && index % valuesPerBar === 0) {
-					const arr = array.slice(index - valuesPerBar, index)
-					const sum = arr.reduce((prev, curr) => prev + curr)
-					prev.push(sum/valuesPerBar)
-				}
-				return prev	
-			}, [])	
-		}
-
-		const barWidth = Math.ceil(this.canvasRef.current.width / values.length)
-		const maxValue = Math.max(...values)
-
-		canvas.width = barWidth * values.length
-		canvas.height = this.canvasRef.current.height
-		const ctx = canvas.getContext('2d')
-
-		if (chartType === ChartType.Bar) {
-			this.drawBarChart(canvas, ctx, values, maxValue, barWidth)
-		} else if (chartType === ChartType.Horizon) {
-			this.drawHorizonChart(canvas, ctx, values, maxValue, barWidth)
-		}
-
-		return canvas
-	}
-
-	private drawBarChart(canvas: any, ctx: any, values: number[], maxValue: number, barWidth: number) {
-		ctx.fillStyle = "#DDD"
-
-		for (let i = 0; i < values.length; i++) {
-			const value = values[i]
-			const barHeight = Math.round((value/maxValue) * canvas.height)
-			const y = Math.round(canvas.height - barHeight)
-			ctx.fillRect(i * barWidth + 1, y, barWidth - 2, barHeight)
-		}
-	}
-
-	private drawHorizonChart(canvas: any, ctx: any, values: number[], maxValue: number, barWidth: number) {
-		for (let i = 0; i < values.length; i++) {
-			const value = values[i]
-			ctx.fillStyle = `rgba(0, 0, 0, ${value/maxValue})`
-			ctx.fillRect(i * barWidth, 0, barWidth, canvas.height)
-		}
-	}
+	return (
+		<Wrapper barCount={props.values.length}>
+			{
+				props.values.map(value =>
+					<Bar
+						count={value.count}
+						data-count={value.count}
+						data-value={value.key}
+						key={Math.random()}
+						onClick={handleBarClick}
+					>
+						<BarFill
+							height={value.count/maxCount}
+						/>
+					</Bar>
+				)
+			}
+		</Wrapper>
+	)
 }
+
+export default React.memo(Histogram)

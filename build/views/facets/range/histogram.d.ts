@@ -1,20 +1,8 @@
 import * as React from 'react';
-interface Props {
+declare type Props = Pick<RangeFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'> & {
     lowerLimit: number;
     upperLimit: number;
-    values: RangeFacetValues;
-}
-export default class Histogram extends React.PureComponent<Props> {
-    private canvasRef;
-    private divRef;
-    private ctx;
-    static defaultProps: Pick<Props, 'values'>;
-    componentDidMount(): void;
-    componentDidUpdate(prevProps: Props): void;
-    render(): JSX.Element;
-    private init;
-    private drawChart;
-    private drawBarChart;
-    private drawHorizonChart;
-}
-export {};
+};
+declare function Histogram(props: Props): JSX.Element;
+declare const _default: React.MemoExoticComponent<typeof Histogram>;
+export default _default;

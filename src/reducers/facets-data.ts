@@ -1,3 +1,5 @@
+import { isListFacet, isBooleanFacet, isRangeFacet } from '../constants'
+
 function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetData {
 	return {
 		...booleanFacetConfig,
@@ -21,21 +23,9 @@ function initListFacet(listFacetConfig: ListFacetConfig): ListFacetData {
 function initRangeFacet(rangeFacetConfig: RangeFacetConfig): RangeFacetData {
 	return {
 		...rangeFacetConfig,
-		filters: new Set(),
+		filter: null,
 		type: rangeFacetConfig.type || 'timestamp'
 	}
-}
-
-export function isBooleanFacet(facetConfig: FacetConfig): facetConfig is BooleanFacetConfig {
-	return facetConfig.datatype === EsDataType.Boolean
-}
-
-export function isListFacet(facetConfig: FacetConfig): facetConfig is ListFacetConfig {
-	return facetConfig.datatype === EsDataType.Keyword
-}
-
-export function isRangeFacet(facetConfig: FacetConfig): facetConfig is RangeFacetConfig {
-	return facetConfig.datatype === EsDataType.Date
 }
 
 export function facetsDataReducerInit(fields: AppProps['fields']): FacetsData {
@@ -67,6 +57,16 @@ export default function facetsDataReducer(facetsData: FacetsData, action: Facets
 			case 'remove_filter': {
 				facet.filters.delete(action.value)
 				facet.filters = new Set(facet.filters)
+				return new Map(facetsData)
+			}
+		}
+	}
+
+	if (isRangeFacet(facet)) {
+		switch(action.type) {
+			case 'set_range': {
+				const { type, ...filter } = action
+				facet.filter = filter
 				return new Map(facetsData)
 			}
 		}

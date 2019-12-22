@@ -1,4 +1,4 @@
-import { isListFacet, isBooleanFacet, isRangeFacet } from '../reducers/facets-data'
+import { isListFacet, isBooleanFacet, isRangeFacet } from '../constants'
 
 function getBuckets(response: any, field: string) {
 	const buckets = response.aggregations[field][field].buckets
@@ -22,46 +22,20 @@ export default function elasticSearchResponseParser(response: any, facets: Facet
 			const trueCount = trueBucket != null ? trueBucket.doc_count : 0
 			const falseBucket = buckets.find((b: any) => b.key === 0)
 			const falseCount = falseBucket != null ? falseBucket.doc_count : 0
-			facetValues[facet.id] = {
-				true: trueCount,
-				false: falseCount
-			}
+
+			facetValues[facet.id] = [
+				{ key: 'true', count: trueCount },
+				{ key: 'false', count: falseCount },
+			]
 		}
 		else if (isRangeFacet(facet)) {
-			// const { field, values } = facet
-
-			// if (!values.length) {
-
+			// TODO set values to from and to, so we have to calculate less in the views
 			facetValues[facet.id] = buckets.map((hv: any) => ({
 				key: hv.key,
 				count: hv.doc_count,
 			}))
 
-			// TODO set facet.interval based on search result
-
-			// }
-			// } else {
-			// 	facetValues[facet.id] = values
-
-			// 	if (buckets.length) {
-			// 		const minValue = values[0].key
-			// 		const maxValue = values[values.length - 1].key
-			// 		const lowerLimitTimestamp = buckets[0].key as number
-			// 		const upperLimitTimestamp = buckets[buckets.length - 1].key as number
-
-			// 		if (
-			// 			minValue !== lowerLimitTimestamp ||
-			// 			maxValue !== upperLimitTimestamp
-			// 		) {
-			// 			facetValues[field] = values
-			// 			facet.filters = buckets.length ?
-			// 				[lowerLimitTimestamp, upperLimitTimestamp] :
-			// 				null
-			// 		}
-			// 	}
-			// }
-
-			// facet.interval = response.aggregations[facet.props.field][facet.props.field].interval
+			facet.interval = response.aggregations[facet.id][facet.id].interval
 		}
 	})
 

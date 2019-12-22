@@ -7,10 +7,11 @@ type BooleanFacetData = BooleanFacetConfig & {
 	filters: Set<string>
 } 
 
-interface BooleanFacetValues {
-	true: number
-	false: number
-}
+type BooleanFacetValues = [
+	{ key: 'true', count: number},
+	{ key: 'false', count: number}
+]
+
 
 interface BooleanFacetProps {
 	facetData: BooleanFacetData

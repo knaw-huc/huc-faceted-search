@@ -7,9 +7,9 @@ import BooleanFacet from './views/facets/boolean'
 import RangeFacet from './views/facets/range'
 import Reset from './views/reset'
 import ElasticSearchRequest from './io/request-creator'
-import { fetchSearchResults } from './constants'
+import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet } from './constants'
 import elasticSearchResponseParser from './io/response-parser'
-import facetsDataReducer, { facetsDataReducerInit, isListFacet, isBooleanFacet, isRangeFacet } from './reducers/facets-data'
+import facetsDataReducer, { facetsDataReducerInit } from './reducers/facets-data'
 import FullTextSearch from './views/full-text-search'
 import SearchResult from './views/search-result'
 
@@ -128,6 +128,7 @@ function FacetedSearch(props: AppProps) {
 								return (
 									<RangeFacet
 										facetData={facetsData.get(facetConfig.id) as RangeFacetData}
+										facetsDataDispatch={facetsDataDispatch}
 										key={facetConfig.id}
 										values={values}
 									/>

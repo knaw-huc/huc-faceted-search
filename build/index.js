@@ -85,17 +85,17 @@ function FacetedSearch(props) {
                 } }),
             React.createElement("div", null, facetsData != null &&
                 props.fields.map(facetConfig => {
-                    if (facets_data_1.isListFacet(facetConfig)) {
+                    if (constants_1.isListFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
                         return (React.createElement(list_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
                     }
-                    else if (facets_data_1.isBooleanFacet(facetConfig)) {
+                    else if (constants_1.isBooleanFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
                         return (React.createElement(boolean_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
                     }
-                    else if (facets_data_1.isRangeFacet(facetConfig)) {
+                    else if (constants_1.isRangeFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(range_1.default, { facetData: facetsData.get(facetConfig.id), key: facetConfig.id, values: values }));
+                        return (React.createElement(range_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
                     }
                     else {
                         return null;

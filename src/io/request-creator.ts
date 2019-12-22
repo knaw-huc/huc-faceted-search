@@ -1,4 +1,4 @@
-import { isBooleanFacet, isListFacet, isRangeFacet } from '../reducers/facets-data'
+import { isBooleanFacet, isListFacet, isRangeFacet } from '../constants'
 
 interface AggregationRequest {
 	aggs: any
@@ -42,7 +42,7 @@ export default class ElasticSearchRequest {
 	}
 
 	private setPostFilter(options: ElasticSearchRequestOptions) {
-		function toPostFilter(facet: FacetData) {
+		function toPostFilter(facet: ListFacetData | BooleanFacetData) {
 			const allFacetFilters = [...facet.filters].map(key => ({ term: { [facet.id]: key } }))
 			if (allFacetFilters.length === 1) return allFacetFilters[0]
 			else if (allFacetFilters.length > 1) return { bool: { should: allFacetFilters } }
@@ -53,16 +53,16 @@ export default class ElasticSearchRequest {
 
 		const BooleanAndListPostFilters = facetsData
 			.filter(facet => (isBooleanFacet(facet) || isListFacet(facet)) && facet.filters.size) // Only set post_filter where facet has filters (check if Set is empty)
-			.map(facet => toPostFilter(facet))
+			.map((facet: ListFacetData | BooleanFacetData) => toPostFilter(facet))
 
 		const RangePostFilters = facetsData
 			.filter(isRangeFacet)
-			.filter(facetData => facetData.filters.size === 2)
-			.map(facet => ({
+			.filter((facetData: RangeFacetData) => facetData.filter != null)
+			.map((facet: RangeFacetData) => ({
 				range: {
 					[facet.id]: {
-						gte: new Date([...facet.filters][0]).toISOString(),
-						lte: new Date([...facet.filters][1]).toISOString()
+						gte: new Date(facet.filter.from).toISOString(),
+						lte: facet.filter.to != null ? new Date(facet.filter.to).toISOString() : null
 					}
 				}
 			}))

@@ -7,5 +7,10 @@ interface Props {
     value: KeyCount;
 }
 declare function FacetValueView(props: Props): JSX.Element;
+declare namespace FacetValueView {
+    var defaultProps: {
+        keyFormatter: (value: string) => string;
+    };
+}
 declare const _default: React.MemoExoticComponent<typeof FacetValueView>;
 export default _default;

@@ -39,6 +39,11 @@ interface FacetsDataReducerActionViewMore {
 	total: number
 }
 
+type FacetsDataReducerActionSetRange = RangeFacetFilter & {
+	facetId: string
+	type: 'set_range'
+}
+
 type FacetsDataReducerAction =
 	FacetsDataReducerActionClear |
 	FacetsDataReducerActionAddFilter |
@@ -46,4 +51,5 @@ type FacetsDataReducerAction =
 	FacetsDataReducerActionSetSort |
 	FacetsDataReducerActionSetQuery |
 	FacetsDataReducerActionViewLess |
-	FacetsDataReducerActionViewMore
+	FacetsDataReducerActionViewMore |
+	FacetsDataReducerActionSetRange

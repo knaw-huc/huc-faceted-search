@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
+import { BACKGROUND_GRAY } from '../../constants'
 
 export const Button = styled.div`
 	cursor: pointer;
@@ -12,7 +13,7 @@ export const Button = styled.div`
 
 interface PnProps { active: boolean }
 const PageNumberWrapper = styled(Button)`
-	background-color: ${(props: PnProps) => props.active ? '#f6f6f6' : 'white'};
+	background-color: ${(props: PnProps) => props.active ? BACKGROUND_GRAY : 'white'};
 	border-radius: .25em;
 	color: ${(props: PnProps) => props.active ? '#888' : 'inherit'};
 	font-weight: ${(props: PnProps) => props.active ? 'bold' : 'normal'};
