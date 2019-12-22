@@ -19,6 +19,7 @@ export default class ElasticSearchRequest {
     post_filter: Record<string, any>;
     query: Record<string, any>;
     size: number;
+    sort: any;
     constructor(options: ElasticSearchRequestOptions);
     private setPostFilter;
     private setAggregations;

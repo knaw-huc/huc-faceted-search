@@ -31,10 +31,14 @@ export default function elasticSearchResponseParser(response: any, facets: Facet
 			// const { field, values } = facet
 
 			// if (!values.length) {
-				facetValues[facet.id] = buckets.map((hv: any) => ({
-					key: hv.key,
-					count: hv.doc_count,
-				}))
+
+			facetValues[facet.id] = buckets.map((hv: any) => ({
+				key: hv.key,
+				count: hv.doc_count,
+			}))
+
+			// TODO set facet.interval based on search result
+
 			// }
 			// } else {
 			// 	facetValues[facet.id] = values

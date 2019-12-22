@@ -38,8 +38,8 @@ function FacetValuesView(props) {
     useAnimate(props.collapse, ref);
     return (React.createElement(Wrapper, { ref: ref },
         React.createElement(List, null, props.values.values
-            .map(value => React.createElement(value_1.default, { addFilter: () => props.addFilter(value.key), active: props.facetData.filters.has(value.key), key: value.key, removeFilter: () => props.removeFilter(value.key), value: value }))),
+            .map(value => React.createElement(value_1.default, { active: props.facetData.filters.has(value.key), facetId: props.facetData.id, facetsDataDispatch: props.facetsDataDispatch, key: value.key, value: value }))),
         !props.facetData.query.length &&
-            React.createElement(more_less_buttons_1.default, { facetData: props.facetData, values: props.values, viewLess: props.viewLess, viewMore: props.viewMore })));
+            React.createElement(more_less_buttons_1.default, { facetData: props.facetData, facetsDataDispatch: props.facetsDataDispatch, values: props.values })));
 }
 exports.default = React.memo(FacetValuesView);

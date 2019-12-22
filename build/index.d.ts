@@ -1,4 +1,4 @@
-/// <reference path="../src/types.d.ts" />
+/// <reference path="../src/types/index.d.ts" />
 import * as React from 'react';
 declare function FacetedSearch(props: AppProps): JSX.Element;
 declare namespace FacetedSearch {

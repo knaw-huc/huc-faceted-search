@@ -24,7 +24,7 @@ export function formatRange(facetData: RangeFacetData, rangeMin: number, rangeMa
 	return [formatDate(facetData, rangeMin, yearMin === yearMax), formatDate(facetData, rangeMax)]
 }
 
-export function formatDate(facetData: RangeFacetData, num: number, sameYear?: boolean) {
+export function formatDate(facetData: RangeFacetData, num: number, sameYear?: boolean): number | string {
 	if (facetData.type === 'number') return num
 
 	let date: string = ''

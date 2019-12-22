@@ -7,7 +7,7 @@ function initListFacet(listFacetConfig) {
     return Object.assign(Object.assign({}, listFacetConfig), { datatype: "keyword", filters: new Set(), sort: null, query: '', size: listFacetConfig.size || 10, viewSize: listFacetConfig.size || 10 });
 }
 function initRangeFacet(rangeFacetConfig) {
-    return Object.assign(Object.assign({}, rangeFacetConfig), { filters: new Set() });
+    return Object.assign(Object.assign({}, rangeFacetConfig), { filters: new Set(), type: rangeFacetConfig.type || 'timestamp' });
 }
 function isBooleanFacet(facetConfig) {
     return facetConfig.datatype === "boolean";

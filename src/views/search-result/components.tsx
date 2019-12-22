@@ -7,6 +7,7 @@ export const Header = styled.header`
 	display: grid;
 	font-size: .85em;
 	grid-template-rows: 32px auto;
+	grid-template-columns: 1fr 1fr;
 `
 
 export const ResultList = styled.ul`

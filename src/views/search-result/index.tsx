@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { Section, Header, ResultList, Result } from './components'
 import Pagination from './pagination'
+import OrderBy from './order-by'
 
-type Props = Pick<AppProps, 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
+type Props = Pick<AppProps, 'fields' | 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
 	currentPage: number
 	searchResult: FSResponse
 	setCurrentPage: (pageNumber: number) => void
+	setSortOrder: SetSortOrder
+	sortOrder: SortOrder
 }
 
 function HucSearchResults(props: Props) {
@@ -15,13 +18,17 @@ function HucSearchResults(props: Props) {
 				<div>
 					Found {props.searchResult.total} result{props.searchResult.total === 1 ? '' : 's'}
 				</div>
+				<OrderBy
+					fields={props.fields}
+					setSortOrder={props.setSortOrder}
+					sortOrder={props.sortOrder}
+				/>
 				<Pagination
 					currentPage={props.currentPage}
 					resultsPerPage={props.resultsPerPage}
 					searchResults={props.searchResult}
 					setCurrentPage={props.setCurrentPage}
 				/>
-				{/* <OrderBy /> */}
 			</Header>
 			<ResultList>
 				{

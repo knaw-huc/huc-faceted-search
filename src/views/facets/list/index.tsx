@@ -54,13 +54,10 @@ function ListFacet(props: ListFacetProps) {
 				<Options {...props} />
 			}
 			<FacetValuesView
-				addFilter={props.addFilter}
 				facetData={props.facetData}
-				removeFilter={props.removeFilter}
+				facetsDataDispatch={props.facetsDataDispatch}
 				collapse={collapse}
 				values={props.values}
-				viewLess={props.viewLess}
-				viewMore={props.viewMore}
 			/>
 		</FacetWrapper>
 	)

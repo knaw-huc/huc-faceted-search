@@ -1,9 +1,9 @@
 import * as React from 'react';
 interface Props {
     active: boolean;
-    addFilter: () => void;
+    facetId: string;
+    facetsDataDispatch: React.Dispatch<FacetsDataReducerAction>;
     keyFormatter?: (key: string | number) => string;
-    removeFilter: () => void;
     value: KeyCount;
 }
 declare function FacetValueView(props: Props): JSX.Element;

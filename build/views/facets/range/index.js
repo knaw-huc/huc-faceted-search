@@ -22,7 +22,6 @@ const ActiveDates = styled_1.default('div') `
 	grid-template-columns: 1fr 16px 1fr;
 `;
 function RangeFacetView(props) {
-    console.log(props.values);
     const [[rangeMin, rangeMax], setRange] = React.useState([null, null]);
     const [fMin, fMax] = utils_1.formatRange(props.facetData, rangeMin, rangeMax);
     const minValue = props.values[0].key;
@@ -36,8 +35,6 @@ function RangeFacetView(props) {
                 const rangeMin = utils_1.ratioToTimestamp(data.lowerLimit, props.values);
                 const rangeMax = utils_1.ratioToTimestamp(data.upperLimit, props.values);
                 setRange([rangeMin, rangeMax]);
-                if (data.refresh) {
-                }
             }, style: {
                 marginTop: '-6px',
                 position: 'absolute',

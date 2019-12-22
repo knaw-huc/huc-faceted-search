@@ -22,47 +22,7 @@ const ActiveDates = styled('div')`
 	grid-template-columns: 1fr 16px 1fr;
 `
 
-// export default class RangeFacetView extends React.PureComponent<RangeFacetProps, RangeState> {
-// 	state: RangeState = {
-// 		rangeMin: null,
-// 		rangeMax: null,
-// 	}
-
-// 	static defaultProps: Partial<RangeFacetProps> = {
-// 		values: [
-// 			{ key: 0, count: 0 },
-// 			{ key: 1, count: 0 },
-// 		]
-// 	}
-
-	// componentDidMount() {
-	// 	this.props.state.facetsManager.setRangeFacet(this.props.field, this.props.index, {
-	// 		interval: this.props.interval
-	// 	})
-	// }
-
-	// // Reset the range facet when the filter is removed
-	// componentDidUpdate(_prevProps: RangeFacetProps) {
-	// 	if (facet.filters == null && this.state.rangeMin != null) {
-	// 		this.setState({
-	// 			rangeMin: null,
-	// 			rangeMax: null,
-	// 		})
-	// 	} else if (Array.isArray(facet.filters) && facet.filters.length === 2) {
-	// 		this.setState({
-	// 			rangeMin: facet.filters[0],
-	// 			rangeMax: facet.filters[1],
-	// 		})
-	// 	}
-	// }
-
-	// render() {
-		// const facet = this.props.state.facetsManager.getRangeFacet(this.props.field)
-		// const facet: any = null
-		// if (facet == null || facet.values == null || facet.values.length < 2) return null
-
 function RangeFacetView(props: RangeFacetProps) {
-	console.log(props.values)
 	const [[rangeMin, rangeMax], setRange] = React.useState([null, null])
 
 	const [fMin, fMax] = formatRange(props.facetData, rangeMin, rangeMax)
@@ -86,10 +46,6 @@ function RangeFacetView(props: RangeFacetProps) {
 					const rangeMin = ratioToTimestamp(data.lowerLimit, props.values)
 					const rangeMax = ratioToTimestamp(data.upperLimit, props.values)
 					setRange([ rangeMin, rangeMax ])
-
-					if (data.refresh) {
-						// props.state.facetsManager.addFilter(props.field, rangeMin, rangeMax)
-					}
 				}}
 				style={{
 					marginTop: '-6px',

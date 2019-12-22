@@ -1,2 +1,2 @@
 /// <reference types="react" />
-export default function (props: Pick<ListFacetProps, 'facetData' | 'values' | 'viewMore' | 'viewLess'>): JSX.Element;
+export default function (props: Pick<ListFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'>): JSX.Element;

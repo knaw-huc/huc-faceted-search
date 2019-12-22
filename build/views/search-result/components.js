@@ -8,6 +8,7 @@ exports.Header = styled_1.default.header `
 	display: grid;
 	font-size: .85em;
 	grid-template-rows: 32px auto;
+	grid-template-columns: 1fr 1fr;
 `;
 exports.ResultList = styled_1.default.ul `
 	list-style: none;

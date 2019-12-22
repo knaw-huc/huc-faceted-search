@@ -1,5 +1,5 @@
 import * as React from 'react';
-declare type Props = Pick<ListFacetProps, 'addFilter' | 'facetData' | 'removeFilter' | 'values' | 'viewLess' | 'viewMore'> & {
+declare type Props = Pick<ListFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'> & {
     collapse: boolean;
 };
 declare function FacetValuesView(props: Props): JSX.Element;

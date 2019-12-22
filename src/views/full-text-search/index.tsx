@@ -64,11 +64,20 @@ function FullTextSearch(props: Props) {
 	const loaderRef = React.useRef()
 	const [suggestActive, setSuggestActive] = React.useState(false)
 	const [inputValue, setInputValue] = React.useState('')
-	const setQuery = React.useCallback(
-		debounce((value: string) => {
+	const setQuery = debounce(
+		(value: string) => {
 			props.setQuery(value)
 			hideLoader(loaderRef)
-		}, 1000),
+		},
+		1000
+	)
+	const handleInputChange = React.useCallback(
+		(ev: React.ChangeEvent<HTMLInputElement>) => {
+			setSuggestActive(props.autoSuggest != null) // Set suggestActive state only to true if props.autoSuggest exists
+			setInputValue(ev.target.value)
+			setQuery(ev.target.value)
+			showLoader(loaderRef)
+		},
 		[]
 	)
 
@@ -76,12 +85,7 @@ function FullTextSearch(props: Props) {
 		<Wrapper>
 			<Input
 				type="text"
-				onChange={(ev) => {
-					setSuggestActive(props.autoSuggest != null) // Set suggestActive state only to true if props.autoSuggest exists
-					setInputValue(ev.target.value)
-					setQuery(ev.target.value)
-					showLoader(loaderRef)
-				}}
+				onChange={handleInputChange}
 				onClick={() => setSuggestActive(false)}
 				placeholder="Search"
 				value={inputValue}

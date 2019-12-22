@@ -23,6 +23,7 @@ export default class ElasticSearchRequest {
 	post_filter: Record<string, any>
 	query: Record<string, any>
 	size: number
+	sort: any
 
 	constructor(options: ElasticSearchRequestOptions) {
 		this.setPostFilter(options)
@@ -31,6 +32,13 @@ export default class ElasticSearchRequest {
 		this.setSource(options)
 		this.size = options.resultsPerPage
 		if (options.currentPage > 1) this.from = this.size * (options.currentPage - 1) 
+		if (options.sortOrder.size) {
+			this.sort = []
+			options.sortOrder.forEach((sortDirection, facetId) => {
+				this.sort.push({[facetId]: sortDirection})
+			})
+			this.sort.push('_score')
+		}
 	}
 
 	private setPostFilter(options: ElasticSearchRequestOptions) {

@@ -59,6 +59,7 @@ function useSearchResult(url, options) {
 function FacetedSearch(props) {
     const [query, setQuery] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
+    const [sortOrder, setSortOrder] = React.useState(new Map());
     const [facetsData, facetsDataDispatch] = React.useReducer(facets_data_1.default, props.fields, facets_data_1.facetsDataReducerInit);
     const searchResult = useSearchResult(props.url, {
         currentPage,
@@ -66,7 +67,15 @@ function FacetedSearch(props) {
         resultFields: props.resultFields,
         resultsPerPage: props.resultsPerPage,
         query,
+        sortOrder,
     });
+    const handleSetSortOrder = React.useCallback((facetId, direction) => {
+        if (sortOrder.has(facetId))
+            sortOrder.delete(facetId);
+        else
+            sortOrder.set(facetId, direction);
+        setSortOrder(new Map(sortOrder));
+    }, [sortOrder]);
     return (React.createElement(Wrapper, { className: props.className, disableDefaultStyle: props.disableDefaultStyle, id: "huc-fs" },
         React.createElement("aside", null,
             React.createElement(full_text_search_1.default, { autoSuggest: props.autoSuggest, setQuery: setQuery }),
@@ -78,21 +87,21 @@ function FacetedSearch(props) {
                 props.fields.map(facetConfig => {
                     if (facets_data_1.isListFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(list_1.default, { addFacetQuery: value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value }), addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), sortListFacet: (by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction })), values: values, viewLess: () => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id }), viewMore: () => { var _a; return facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: (_a = values) === null || _a === void 0 ? void 0 : _a.total }); } }));
+                        return (React.createElement(list_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
                     }
                     else if (facets_data_1.isBooleanFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(boolean_1.default, { addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), values: values }));
+                        return (React.createElement(boolean_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
                     }
                     else if (facets_data_1.isRangeFacet(facetConfig)) {
                         const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(range_1.default, { addFilter: value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value }), facetData: facetsData.get(facetConfig.id), key: facetConfig.id, removeFilter: value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value }), values: values }));
+                        return (React.createElement(range_1.default, { facetData: facetsData.get(facetConfig.id), key: facetConfig.id, values: values }));
                     }
                     else {
                         return null;
                     }
                 }))),
-        React.createElement(search_result_1.default, { currentPage: currentPage, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage })));
+        React.createElement(search_result_1.default, { currentPage: currentPage, fields: props.fields, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage, setSortOrder: handleSetSortOrder, sortOrder: sortOrder })));
 }
 FacetedSearch.defaultProps = {
     resultFields: [],

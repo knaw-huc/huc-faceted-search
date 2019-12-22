@@ -1,4 +1,4 @@
-/// <reference path="./types.d.ts" />
+/// <reference path="./types/index.d.ts" />
 
 import * as React from 'react'
 import styled from '@emotion/styled'
@@ -65,6 +65,7 @@ function useSearchResult(url: string, options: ElasticSearchRequestOptions) {
 function FacetedSearch(props: AppProps) {
 	const [query, setQuery] = React.useState('')
 	const [currentPage, setCurrentPage] = React.useState(1)
+	const [sortOrder, setSortOrder] = React.useState<SortOrder>(new Map())
 	const [facetsData, facetsDataDispatch] = React.useReducer(facetsDataReducer, props.fields, facetsDataReducerInit)
 	const searchResult = useSearchResult(props.url, {
 		currentPage,
@@ -72,7 +73,14 @@ function FacetedSearch(props: AppProps) {
 		resultFields: props.resultFields,
 		resultsPerPage: props.resultsPerPage,
 		query,
+		sortOrder,
 	})
+
+	const handleSetSortOrder = React.useCallback((facetId: string, direction: SortDirection) => {
+		if (sortOrder.has(facetId)) sortOrder.delete(facetId)
+		else sortOrder.set(facetId, direction)
+		setSortOrder(new Map(sortOrder))	
+	}, [sortOrder])
 
 	return (
 		<Wrapper
@@ -99,25 +107,19 @@ function FacetedSearch(props: AppProps) {
 								const values = searchResult.facetValues[facetConfig.id] as ListFacetValues
 								return (
 									<ListFacet
-										addFacetQuery={value => facetsDataDispatch({ type: 'set_query', facetId: facetConfig.id, value })}
-										addFilter={value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value })}
 										facetData={facetsData.get(facetConfig.id) as ListFacetData}
+										facetsDataDispatch={facetsDataDispatch}
 										key={facetConfig.id}
-										removeFilter={value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value })}
-										sortListFacet={(by, direction) => facetsDataDispatch(({ type: 'set_sort', facetId: facetConfig.id, by, direction }))}
 										values={values}
-										viewLess={() => facetsDataDispatch({ type: 'view_less', facetId: facetConfig.id })}
-										viewMore={() => facetsDataDispatch({ type: 'view_more', facetId: facetConfig.id, total: values?.total })}
 									/>
 								)
 							} else if (isBooleanFacet(facetConfig)) {
 								const values = searchResult.facetValues[facetConfig.id] as BooleanFacetValues
 								return (
 									<BooleanFacet
-										addFilter={value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value })}
 										facetData={facetsData.get(facetConfig.id) as BooleanFacetData}
+										facetsDataDispatch={facetsDataDispatch}
 										key={facetConfig.id}
-										removeFilter={value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value })}
 										values={values}
 									/>
 								)
@@ -125,10 +127,8 @@ function FacetedSearch(props: AppProps) {
 								const values = searchResult.facetValues[facetConfig.id] as RangeFacetValues
 								return (
 									<RangeFacet
-										addFilter={value => facetsDataDispatch({ type: 'add_filter', facetId: facetConfig.id, value })}
 										facetData={facetsData.get(facetConfig.id) as RangeFacetData}
 										key={facetConfig.id}
-										removeFilter={value => facetsDataDispatch({ type: 'remove_filter', facetId: facetConfig.id, value })}
 										values={values}
 									/>
 								)
@@ -142,12 +142,15 @@ function FacetedSearch(props: AppProps) {
 			</aside>
 			<SearchResult
 				currentPage={currentPage}
+				fields={props.fields}
 				onClickResult={props.onClickResult}
 				ResultBodyComponent={props.ResultBodyComponent}
 				resultBodyProps={props.resultBodyProps}
 				resultsPerPage={props.resultsPerPage}
 				searchResult={searchResult}
 				setCurrentPage={setCurrentPage}
+				setSortOrder={handleSetSortOrder}
+				sortOrder={sortOrder}
 			/>
 		</Wrapper>
 	)

@@ -9,7 +9,15 @@ const List = styled('ul')`
 	padding: 0;
 `
 
+let prevProps: any
+
 function BooleanFacet(props: BooleanFacetProps) {
+	console.log(prevProps === props)
+	for (const prop in props) {
+		if (prevProps) console.log(prop, prevProps[prop] === (props as any)[prop])
+	}
+
+	prevProps = props
 	return (
 		<FacetWrapper>
 			<FacetHeader facetData={props.facetData} />
@@ -17,22 +25,23 @@ function BooleanFacet(props: BooleanFacetProps) {
 				{
 					props.values.true > 0 &&
 					<FacetValueView
-						addFilter={() => props.addFilter('true')}
 						active={props.facetData.filters.has('true')}
+						facetId={props.facetData.id}
+						facetsDataDispatch={props.facetsDataDispatch}
 						key={'true'}
 						keyFormatter={() => props.facetData.labels.true}
-						removeFilter={() => props.removeFilter('true')}
+						// TODO don't create an object here
 						value={{ key: 'true', count: props.values.true }}
 					/>
 				}
 				{
 					props.values.false > 0 &&
 					<FacetValueView
-						addFilter={() => props.addFilter('false')}
 						active={props.facetData.filters.has('false')}
+						facetId={props.facetData.id}
+						facetsDataDispatch={props.facetsDataDispatch}
 						key={'false'}
 						keyFormatter={() => props.facetData.labels.false}
-						removeFilter={() => props.removeFilter('false')}
 						value={{ key: 'false', count: props.values.false }}
 					/>
 				}

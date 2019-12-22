@@ -28,24 +28,30 @@ const Count = styled('span')`
 
 interface Props {
 	active: boolean
-	addFilter: () => void
+	facetId: string
+	facetsDataDispatch: React.Dispatch<FacetsDataReducerAction>
 	keyFormatter?: (key: string | number) => string
-	removeFilter: () => void
 	value: KeyCount
 }
 
 function FacetValueView(props: Props) {
-	const { keyFormatter, value } = props
+	const { active, facetId, keyFormatter, value } = props
 	const key = (keyFormatter != null) ? keyFormatter(value.key) : value.key
+
+	const handleChange = React.useCallback(() => {
+		const type = active ? 'remove_filter' : 'add_filter'
+		props.facetsDataDispatch({ type, facetId, value: value.key })
+
+	}, [active, facetId, props.value])
 
 	return (
 		<Wrapper
-			onClick={props.active ? props.removeFilter : props.addFilter}
+			onClick={handleChange}
 			title={props.value.key}
 		>
 			<input
 				checked={props.active}
-				onChange={props.active ? props.removeFilter : props.addFilter}
+				onChange={handleChange}
 				type="checkbox"
 			/>
 			<Key active={props.active} dangerouslySetInnerHTML={{ __html: key }}></Key>

@@ -1,14 +1,23 @@
 import * as React from 'react'
 import { MoreLessButton } from '../../button'
 
-export default function(props: Pick<ListFacetProps, 'facetData' | 'values' | 'viewMore' | 'viewLess'>) {
+
+export default function(props: Pick<ListFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'>) {
+	const handleLess = React.useCallback(() => {
+		props.facetsDataDispatch({ type: 'view_less', facetId: props.facetData.id })
+	}, [props.facetData.id, props.values])
+
+	const handleMore = React.useCallback(() => {
+		props.facetsDataDispatch({ type: 'view_more', facetId: props.facetData.id, total: props.values.total })
+	}, [props.facetData.id, props.values.total])
+
 	return (
 		<>
 			{
 				props.values.total > 0 &&
 				props.values.total > props.facetData.viewSize &&
 				<MoreLessButton
-					onClick={props.viewMore}
+					onClick={handleMore}
 				>
 					{`View more (${props.values.total - props.facetData.viewSize})`}
 				</MoreLessButton>
@@ -16,7 +25,7 @@ export default function(props: Pick<ListFacetProps, 'facetData' | 'values' | 'vi
 			{
 				props.facetData.size < props.facetData.viewSize &&
 				<MoreLessButton
-					onClick={props.viewLess}
+					onClick={handleLess}
 				>
 					View less
 				</MoreLessButton>

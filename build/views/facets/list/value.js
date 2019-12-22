@@ -26,10 +26,14 @@ const Count = styled_1.default('span') `
 	text-align: right;
 `;
 function FacetValueView(props) {
-    const { keyFormatter, value } = props;
+    const { active, facetId, keyFormatter, value } = props;
     const key = (keyFormatter != null) ? keyFormatter(value.key) : value.key;
-    return (React.createElement(Wrapper, { onClick: props.active ? props.removeFilter : props.addFilter, title: props.value.key },
-        React.createElement("input", { checked: props.active, onChange: props.active ? props.removeFilter : props.addFilter, type: "checkbox" }),
+    const handleChange = React.useCallback(() => {
+        const type = active ? 'remove_filter' : 'add_filter';
+        props.facetsDataDispatch({ type, facetId, value: value.key });
+    }, [active, facetId, props.value]);
+    return (React.createElement(Wrapper, { onClick: handleChange, title: props.value.key },
+        React.createElement("input", { checked: props.active, onChange: handleChange, type: "checkbox" }),
         React.createElement(Key, { active: props.active, dangerouslySetInnerHTML: { __html: key } }),
         React.createElement(Count, { active: props.active }, props.value.count)));
 }

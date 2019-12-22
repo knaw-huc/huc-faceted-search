@@ -35,7 +35,7 @@ function useAnimate(collapse: boolean, ref: React.MutableRefObject<HTMLDivElemen
 	}, [collapse])
 }
 
-type Props = Pick<ListFacetProps, 'addFilter' | 'facetData' | 'removeFilter' | 'values' | 'viewLess' | 'viewMore'> & { collapse: boolean }
+type Props = Pick<ListFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'> & { collapse: boolean }
 function FacetValuesView(props: Props) {
 	const ref = React.useRef()
 	useAnimate(props.collapse, ref)
@@ -54,10 +54,10 @@ function FacetValuesView(props: Props) {
 						// })
 						.map(value =>
 							<FacetValueView
-								addFilter={() => props.addFilter(value.key)}
 								active={props.facetData.filters.has(value.key)}
+								facetId={props.facetData.id}
+								facetsDataDispatch={props.facetsDataDispatch}
 								key={value.key}
-								removeFilter={() => props.removeFilter(value.key)}
 								value={value}
 							/>
 						)
@@ -69,9 +69,8 @@ function FacetValuesView(props: Props) {
 				!props.facetData.query.length && 
 				<MoreLessButton
 					facetData={props.facetData}
+					facetsDataDispatch={props.facetsDataDispatch}
 					values={props.values}
-					viewLess={props.viewLess}
-					viewMore={props.viewMore}
 				/>
 			}
 		</Wrapper>

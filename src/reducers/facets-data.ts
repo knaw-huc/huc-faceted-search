@@ -22,6 +22,7 @@ function initRangeFacet(rangeFacetConfig: RangeFacetConfig): RangeFacetData {
 	return {
 		...rangeFacetConfig,
 		filters: new Set(),
+		type: rangeFacetConfig.type || 'timestamp'
 	}
 }
 
