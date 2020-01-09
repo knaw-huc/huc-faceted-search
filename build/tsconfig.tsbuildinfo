@@ -93,29 +93,25 @@
         "version": "4984b48a97160eac5282ffeae690315420a626de83ccf6045c36d934c5c957c0",
         "signature": "4984b48a97160eac5282ffeae690315420a626de83ccf6045c36d934c5c957c0"
       },
-      "../../docere/node_modules/@types/react/global.d.ts": {
+      "../node_modules/@types/react/global.d.ts": {
         "version": "d90b8dc8412ca005c4992e2b5c94d836a8234d32a6ec05d78ec725bbb634c5fb",
         "signature": "d90b8dc8412ca005c4992e2b5c94d836a8234d32a6ec05d78ec725bbb634c5fb"
-      },
-      "../../docere/node_modules/csstype/index.d.ts": {
-        "version": "9e89b1bb8360de8b984781243a920ac631ac5261cf7bf882e556c6c7dbf2e4ee",
-        "signature": "9e89b1bb8360de8b984781243a920ac631ac5261cf7bf882e556c6c7dbf2e4ee"
-      },
-      "../../docere/node_modules/@types/prop-types/index.d.ts": {
-        "version": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
-        "signature": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad"
-      },
-      "../../docere/node_modules/@types/react/index.d.ts": {
-        "version": "1ae5ec52e83833700f233274cf12b18b74fe477cbe6028c94e388861d9f5889f",
-        "signature": "1ae5ec52e83833700f233274cf12b18b74fe477cbe6028c94e388861d9f5889f"
-      },
-      "../node_modules/@emotion/utils/types/index.d.ts": {
-        "version": "b950589996caafaa1638f139de73257f6b47a3dc965c8c2a7e5b56138f427dfa",
-        "signature": "b950589996caafaa1638f139de73257f6b47a3dc965c8c2a7e5b56138f427dfa"
       },
       "../node_modules/csstype/index.d.ts": {
         "version": "599c67cf56a35a8a7bee5bcd877dece4cb71553efb763ebf1050c6987acfaefc",
         "signature": "599c67cf56a35a8a7bee5bcd877dece4cb71553efb763ebf1050c6987acfaefc"
+      },
+      "../node_modules/@types/prop-types/index.d.ts": {
+        "version": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
+        "signature": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad"
+      },
+      "../node_modules/@types/react/index.d.ts": {
+        "version": "2893daa576cf34d3375368ecdc8ff844d85e3634904ff4ded6d3c9f210e9b00b",
+        "signature": "2893daa576cf34d3375368ecdc8ff844d85e3634904ff4ded6d3c9f210e9b00b"
+      },
+      "../node_modules/@emotion/utils/types/index.d.ts": {
+        "version": "b950589996caafaa1638f139de73257f6b47a3dc965c8c2a7e5b56138f427dfa",
+        "signature": "b950589996caafaa1638f139de73257f6b47a3dc965c8c2a7e5b56138f427dfa"
       },
       "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/helper.d.ts": {
         "version": "b36255d645e094a9c8c1cb954c5becdf04b7423edb7f49539ac123a4e2932613",
@@ -171,7 +167,7 @@
       },
       "../src/views/button.tsx": {
         "version": "5f345a5debdf079268dd1a5aac94f2a161e32fbe3fb75934c20e2f87331b4122",
-        "signature": "4c1d72e764aadd20efaef005d9053bfe62b3b37ce0e4cce79f0a0c5e92b19ace"
+        "signature": "727c2ab10395f911f34854771ebaf4f63b044791f817aed1cd5214c2b7e3bab7"
       },
       "../src/views/facets/list/more-less-buttons.tsx": {
         "version": "5284196cf26309f4ec6147c004b91bce263af79ecd0f8d91c35ebd3d4fcaa0cd",
@@ -247,11 +243,11 @@
       },
       "../src/views/full-text-search/auto-suggest.tsx": {
         "version": "93487c0dd2cbd0e105fdce0fb27085ac3c4c8dd0c16647538cab7fd495b90fba",
-        "signature": "0699127d5650bb8bf20e32de9eb22467a6a92a57234b16b4fc500d6e19c20128"
+        "signature": "409fcf3a9729803ec5250f93d0b4708c1e628a3af57559e0a9a6578ca2f5ac6c"
       },
       "../src/views/full-text-search/index.tsx": {
         "version": "43795b63a4d3236840eb71174fe709c59976f95feea55d593d3fc4f0ee913f06",
-        "signature": "0e0088ee9ee0c7ad37f55eb3cf07db23e5c625dc3dfcc8dee51b24541e997181"
+        "signature": "8e049685ec36166efce30f84eaca2ccaa2a6a640ef3c252bb7dce4ac6e24b099"
       },
       "../src/views/facets/list/options.tsx": {
         "version": "be511a67e2693a297aba5254d549ef1d8189cbb08dd94e76ff92ed95e4fd5ca8",
@@ -259,19 +255,19 @@
       },
       "../src/views/facets/facet.tsx": {
         "version": "6391996a1b1967dcd14f9d042729cf0f1a5dd00e6ea93566dbcb67be61225c90",
-        "signature": "90e8c09cd12d2101b0bf62ffdcc5b05c18da523d47ce4387d05e0a859c50dad3"
+        "signature": "04f6e94ab5a9f56582821727987d8dbb47a2f680c68f593f1f58bbd88006d8dd"
       },
       "../src/views/facets/list/index.tsx": {
         "version": "be1af6565958e0f9a62c3f886028c8bdec140c994c5000024cd9dfad91a3ddd4",
-        "signature": "3526b97ae3deef312daa66ebdf3c44a30b86b0817daa30dc2cf6b3b0a779e094"
+        "signature": "46b26a4fb9a6cf07a4bcb914ec4d157cb29de638affe477a5137912049a1e70a"
       },
       "../src/views/facets/boolean/index.tsx": {
         "version": "b5d0b8f628731316aaad09798edffda380d27ef1e2b6aed9a644190c9346de02",
-        "signature": "59d8982a51166020f4eaf2a0d06b6ac642d3c87a50c5930ae0c2cf6aecec0162"
+        "signature": "d4d0fe02fecf28c050e625001671825c9a0ae276aaa1972e1b0e8b3acc37323a"
       },
       "../src/views/facets/range/utils.ts": {
         "version": "608bb13ac2dff7d27a355604e4ff219a748f48eca855948d796aab4d5c3aebe9",
-        "signature": "4be468456a69e35c4a8cc59de343e0455285b93f59904a5dc48de3a1d995dc2e"
+        "signature": "16e07d431d7e2f87a4aaba9f213002538f51755ba652fbec4bbffb0c9b3eed99"
       },
       "../src/views/facets/range/histogram.tsx": {
         "version": "49844ea002b6094a17c3a9eb4f11137b68908d6609ee5f186dd41a4083b3d948",
@@ -283,7 +279,7 @@
       },
       "../src/views/facets/range/index.tsx": {
         "version": "52806b49679721c07270327ff88bc35799e46ee81ad8cd39b66ace789eac3854",
-        "signature": "a73cd05dac74a65afd3863689675cfeb82f321afc9a5fdcdbda470a53f6e010d"
+        "signature": "8466c9ed56e47618b69f0ee8928b8343000884239532e0d8e8705e49dc095654"
       },
       "../src/views/reset.tsx": {
         "version": "bd7a57485fc58dfe6c37709b72ead6ac40dc7ede4678e387584e64406ecdfc2e",
@@ -299,15 +295,15 @@
       },
       "../src/reducers/facets-data.ts": {
         "version": "1dce215283301d708b576dcd5d8cc1d40dae46d8be61c001ddf4126948c8f644",
-        "signature": "6530ee4f5285b007ee1c45663e4a1d71e548b7f27e08aac7ac38fc3e7e0cb1c5"
+        "signature": "7d55fdd65fc6767a16d813bd46d9aac22c5b0ba518646651392e5728671af4ea"
       },
       "../src/views/search-result/components.tsx": {
         "version": "f8c91381908f38ce08ebca3f77d5c387a30620fcf4fd19ce6fd6e1b9e837919d",
-        "signature": "cd64e3f0be8de0023340b33d4f4b77b49f1ff6d9904baf3e394c9ef12b4ab108"
+        "signature": "16418b7e5793d302539da94c0fa4ffda9a5b835aefc6e33a8cce272a3947be9a"
       },
       "../src/views/search-result/page-number.tsx": {
         "version": "b5126683c267b962e81206486d18da1464ad60dbd6c11026365a646a99486664",
-        "signature": "1b7e3889409e284919ff888f8c68801f02e4733c3afb426ce1cdf59d46871365"
+        "signature": "30ec2c0d9eeb996283493c3ea2ac7663db507e9e9ed317a27ed3eb3573d353a8"
       },
       "../src/views/search-result/pagination.tsx": {
         "version": "170a33217846253c33daf75826510c3b5f05291220031995c732d502c1824d58",
@@ -327,7 +323,7 @@
       },
       "../src/index.tsx": {
         "version": "9e7c2e0eaad508c05ddf281c9c674a75c93047dc99484c324ef306a0b15feeb3",
-        "signature": "be3385068b3df250e4b99e8be58f93c19a05a2f534f7589d8663ffe661d70c4b"
+        "signature": "4508662829e6eb1173d94d2bdda79705aed673f81a9e5b5d699a21c4374b942f"
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
         "version": "bc12492fa90cd2ad3f73c10efa597503dbf59ebac0e3c9728cc10adaad6b0b87",
@@ -389,10 +385,6 @@
         "version": "9dd180752ee664a74a525a05194afdd787295e56634b8adbc8525d7c0af64e96",
         "signature": "9dd180752ee664a74a525a05194afdd787295e56634b8adbc8525d7c0af64e96"
       },
-      "../node_modules/@types/prop-types/index.d.ts": {
-        "version": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
-        "signature": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad"
-      },
       "../node_modules/@types/stack-utils/index.d.ts": {
         "version": "41422586881bcd739b4e62d9b91cd29909f8572aa3e3cdf316b7c50f14708d49",
         "signature": "41422586881bcd739b4e62d9b91cd29909f8572aa3e3cdf316b7c50f14708d49"
@@ -429,10 +421,10 @@
         "../src/reducers/facets-data.d.ts",
         "../src/types/facets/index.d.ts"
       ],
-      "../../docere/node_modules/@types/react/index.d.ts": [
-        "../../docere/node_modules/csstype/index.d.ts",
-        "../../docere/node_modules/@types/prop-types/index.d.ts",
-        "../../docere/node_modules/@types/react/global.d.ts"
+      "../node_modules/@types/react/index.d.ts": [
+        "../node_modules/csstype/index.d.ts",
+        "../node_modules/@types/prop-types/index.d.ts",
+        "../node_modules/@types/react/global.d.ts"
       ],
       "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/index.d.ts": [
         "../node_modules/@emotion/utils/types/index.d.ts",
@@ -440,11 +432,11 @@
         "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/helper.d.ts"
       ],
       "../node_modules/@emotion/styled-base/types/helper.d.ts": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../node_modules/@emotion/styled-base/types/index.d.ts": [
         "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled-base/types/helper.d.ts"
       ],
       "../node_modules/@emotion/styled/types/index.d.ts": [
@@ -466,10 +458,10 @@
         "../node_modules/@emotion/cache/types/index.d.ts",
         "../node_modules/@emotion/css/types/index.d.ts",
         "../node_modules/@emotion/serialize/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/list/value.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../node_modules/@emotion/core/types/index.d.ts"
       ],
@@ -478,21 +470,21 @@
         "../src/constants.tsx"
       ],
       "../src/views/facets/list/more-less-buttons.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/button.tsx"
       ],
       "../src/views/facets/list/values.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/facets/list/value.tsx",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/facets/list/more-less-buttons.tsx"
       ],
       "../src/views/facets/header.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
       "../src/views/full-text-search/suggestion.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
       "../node_modules/@types/lodash/ts3.1/common/common.d.ts": [
@@ -681,19 +673,19 @@
         "../node_modules/@types/lodash/ts3.1/index.d.ts"
       ],
       "../src/views/full-text-search/auto-suggest.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/full-text-search/suggestion.tsx",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../node_modules/@types/lodash.debounce/index.d.ts"
       ],
       "../src/views/full-text-search/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/full-text-search/auto-suggest.tsx",
         "../node_modules/@types/lodash.debounce/index.d.ts"
       ],
       "../src/views/facets/list/options.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/full-text-search/index.tsx",
         "../node_modules/@types/lodash.debounce/index.d.ts"
@@ -702,7 +694,7 @@
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
       "../src/views/facets/list/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/facets/list/values.tsx",
         "../src/views/facets/header.tsx",
         "../src/views/button.tsx",
@@ -710,31 +702,31 @@
         "../src/views/facets/facet.tsx"
       ],
       "../src/views/facets/boolean/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/facets/list/value.tsx",
         "../src/views/facets/header.tsx",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/facets/facet.tsx"
       ],
       "../src/views/facets/range/histogram.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/facets/range/utils.ts"
       ],
       "../src/views/facets/range/body.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/facets/range/histogram.tsx",
         "../src/views/facets/range/utils.ts"
       ],
       "../src/views/facets/range/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/facets/header.tsx",
         "../src/views/facets/facet.tsx",
         "../src/views/facets/range/body.tsx"
       ],
       "../src/views/reset.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/button.tsx"
       ],
       "../src/io/request-creator.ts": [
@@ -750,34 +742,34 @@
         "../node_modules/@emotion/styled/types/index.d.ts"
       ],
       "../src/views/search-result/page-number.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/constants.tsx"
       ],
       "../src/views/search-result/pagination.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/search-result/page-number.tsx"
       ],
       "../src/views/search-result/order-by/option.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/search-result/page-number.tsx"
       ],
       "../src/views/search-result/order-by/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/search-result/page-number.tsx",
         "../src/views/search-result/order-by/option.tsx"
       ],
       "../src/views/search-result/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../src/views/search-result/components.tsx",
         "../src/views/search-result/pagination.tsx",
         "../src/views/search-result/order-by/index.tsx"
       ],
       "../src/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/facets/list/index.tsx",
         "../src/views/facets/boolean/index.tsx",
@@ -839,10 +831,10 @@
         "../src/reducers/facets-data.d.ts",
         "../src/types/facets/index.d.ts"
       ],
-      "../../docere/node_modules/@types/react/index.d.ts": [
-        "../../docere/node_modules/csstype/index.d.ts",
-        "../../docere/node_modules/@types/prop-types/index.d.ts",
-        "../../docere/node_modules/@types/react/global.d.ts"
+      "../node_modules/@types/react/index.d.ts": [
+        "../node_modules/csstype/index.d.ts",
+        "../node_modules/@types/prop-types/index.d.ts",
+        "../node_modules/@types/react/global.d.ts"
       ],
       "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/index.d.ts": [
         "../node_modules/@emotion/utils/types/index.d.ts",
@@ -850,11 +842,11 @@
         "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/helper.d.ts"
       ],
       "../node_modules/@emotion/styled-base/types/helper.d.ts": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../node_modules/@emotion/styled-base/types/index.d.ts": [
         "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled-base/types/helper.d.ts"
       ],
       "../node_modules/@emotion/styled/types/index.d.ts": [
@@ -876,23 +868,23 @@
         "../node_modules/@emotion/cache/types/index.d.ts",
         "../node_modules/@emotion/css/types/index.d.ts",
         "../node_modules/@emotion/serialize/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/list/value.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/button.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
       "../src/views/facets/list/values.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/header.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/full-text-search/suggestion.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../node_modules/@types/lodash/ts3.1/common/common.d.ts": [
         "../node_modules/@types/lodash/ts3.1/index.d.ts",
@@ -1080,56 +1072,56 @@
         "../node_modules/@types/lodash/ts3.1/index.d.ts"
       ],
       "../src/views/full-text-search/auto-suggest.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/full-text-search/index.tsx": [
-        "../node_modules/@emotion/styled-base/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
       "../src/views/facets/list/options.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/facet.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
       "../src/views/facets/list/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/boolean/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/range/histogram.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/range/body.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/facets/range/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/components.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
       "../src/views/search-result/page-number.tsx": [
-        "../node_modules/@emotion/styled-base/types/index.d.ts",
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled-base/types/index.d.ts"
       ],
       "../src/views/search-result/pagination.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/order-by/option.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/order-by/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../src/index.tsx": [
-        "../../docere/node_modules/@types/react/index.d.ts"
+        "../node_modules/@types/react/index.d.ts"
       ],
       "../node_modules/@types/babel__generator/index.d.ts": [
         "../node_modules/@babel/types/lib/index.d.ts"
@@ -1171,21 +1163,6 @@
     },
     "semanticDiagnosticsPerFile": [
       "../node_modules/typescript/lib/lib.es6.d.ts",
-      "../node_modules/typescript/lib/lib.es5.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.d.ts",
-      "../node_modules/typescript/lib/lib.dom.d.ts",
-      "../node_modules/typescript/lib/lib.dom.iterable.d.ts",
-      "../node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
-      "../node_modules/typescript/lib/lib.scripthost.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.core.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.collection.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.generator.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.iterable.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.promise.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.proxy.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.reflect.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.symbol.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
       "../src/reducers/facets-data.d.ts",
       "../src/types/facets/boolean.d.ts",
       "../src/types/facets/list.d.ts",
@@ -1193,12 +1170,11 @@
       "../src/types/facets/index.d.ts",
       "../src/types/index.d.ts",
       "../node_modules/tslib/tslib.d.ts",
-      "../../docere/node_modules/@types/react/global.d.ts",
-      "../../docere/node_modules/csstype/index.d.ts",
-      "../../docere/node_modules/@types/prop-types/index.d.ts",
-      "../../docere/node_modules/@types/react/index.d.ts",
-      "../node_modules/@emotion/utils/types/index.d.ts",
+      "../node_modules/@types/react/global.d.ts",
       "../node_modules/csstype/index.d.ts",
+      "../node_modules/@types/prop-types/index.d.ts",
+      "../node_modules/@types/react/index.d.ts",
+      "../node_modules/@emotion/utils/types/index.d.ts",
       "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/helper.d.ts",
       "../node_modules/@emotion/styled-base/node_modules/@emotion/serialize/types/index.d.ts",
       "../node_modules/@emotion/styled-base/types/helper.d.ts",
@@ -1251,6 +1227,7 @@
       "../src/views/search-result/order-by/option.tsx",
       "../src/views/search-result/order-by/index.tsx",
       "../src/views/search-result/index.tsx",
+      "../src/index.tsx",
       "../node_modules/@babel/types/lib/index.d.ts",
       "../node_modules/@types/babel__generator/index.d.ts",
       "../node_modules/@types/babel__traverse/index.d.ts",
@@ -1266,10 +1243,23 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../node_modules/@types/prop-types/index.d.ts",
       "../node_modules/@types/stack-utils/index.d.ts",
       "../node_modules/@types/yargs/index.d.ts",
-      "../src/index.tsx"
+      "../node_modules/typescript/lib/lib.es2015.d.ts",
+      "../node_modules/typescript/lib/lib.es5.d.ts",
+      "../node_modules/typescript/lib/lib.dom.d.ts",
+      "../node_modules/typescript/lib/lib.dom.iterable.d.ts",
+      "../node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
+      "../node_modules/typescript/lib/lib.scripthost.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.core.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.collection.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.generator.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.iterable.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.promise.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.proxy.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.reflect.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.symbol.d.ts",
+      "../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts"
     ]
   },
   "version": "3.7.3"
