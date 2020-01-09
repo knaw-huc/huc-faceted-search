@@ -11,7 +11,7 @@ function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetD
 function initListFacet(listFacetConfig: ListFacetConfig): ListFacetData {
 	return {
 		...listFacetConfig,
-		datatype: EsDataType.Keyword, /* Explicitlyl set the datatype, for it is the default; facetConfig's without a datatype are converted to ListFacet's */
+		datatype: EsDataType.Keyword, /* Explicitly set the datatype, for it is the default; facetConfig's without a datatype are converted to ListFacet's */
 		filters: new Set(),
 		sort: null,
 		query: '',
@@ -102,7 +102,6 @@ export default function facetsDataReducer(facetsData: FacetsData, action: Facets
 			}
 		}
 	}
-
 
 	return facetsData
 }

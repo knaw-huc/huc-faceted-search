@@ -76,12 +76,6 @@ function FacetedSearch(props: AppProps) {
 		sortOrder,
 	})
 
-	const handleSetSortOrder = React.useCallback((facetId: string, direction: SortDirection) => {
-		if (sortOrder.has(facetId)) sortOrder.delete(facetId)
-		else sortOrder.set(facetId, direction)
-		setSortOrder(new Map(sortOrder))	
-	}, [sortOrder])
-
 	return (
 		<Wrapper
 			className={props.className}
@@ -96,61 +90,63 @@ function FacetedSearch(props: AppProps) {
 				<Reset
 					onClick={() => {
 						setQuery('')
+						setSortOrder(new Map())
 						facetsDataDispatch({ type: 'clear', fields: props.fields })
 					}}
 				/>
 				<div>
 					{
-						facetsData != null &&
-						props.fields.map(facetConfig => {
-							if (isListFacet(facetConfig)) {
-								const values = searchResult.facetValues[facetConfig.id] as ListFacetValues
-								return (
-									<ListFacet
-										facetData={facetsData.get(facetConfig.id) as ListFacetData}
-										facetsDataDispatch={facetsDataDispatch}
-										key={facetConfig.id}
-										values={values}
-									/>
-								)
-							} else if (isBooleanFacet(facetConfig)) {
-								const values = searchResult.facetValues[facetConfig.id] as BooleanFacetValues
-								return (
-									<BooleanFacet
-										facetData={facetsData.get(facetConfig.id) as BooleanFacetData}
-										facetsDataDispatch={facetsDataDispatch}
-										key={facetConfig.id}
-										values={values}
-									/>
-								)
-							} else if (isRangeFacet(facetConfig)) {
-								const values = searchResult.facetValues[facetConfig.id] as RangeFacetValues
-								return (
-									<RangeFacet
-										facetData={facetsData.get(facetConfig.id) as RangeFacetData}
-										facetsDataDispatch={facetsDataDispatch}
-										key={facetConfig.id}
-										values={values}
-									/>
-								)
-							} else {
-								return null
-							}
+						Array.from(facetsData.values())
+							.map(facetData => {
+								const values = searchResult.facetValues[facetData.id]
 
-						})
+								if (isListFacet(facetData)) {
+									return (
+										<ListFacet
+											facetData={facetData as ListFacetData}
+											facetsDataDispatch={facetsDataDispatch}
+											key={facetData.id}
+											values={values as ListFacetValues}
+										/>
+									)
+								}
+								else if (isBooleanFacet(facetData)) {
+									return (
+										<BooleanFacet
+											facetData={facetData as BooleanFacetData}
+											facetsDataDispatch={facetsDataDispatch}
+											key={facetData.id}
+											values={values as BooleanFacetValues}
+										/>
+									)
+								}
+								else if (isRangeFacet(facetData)) {
+									return (
+										<RangeFacet
+											facetData={facetData as RangeFacetData}
+											facetsDataDispatch={facetsDataDispatch}
+											key={facetData.id}
+											values={values as RangeFacetValues}
+										/>
+									)
+								}
+								else {
+									return null
+								}
+							})
 					}
 				</div>
 			</aside>
 			<SearchResult
 				currentPage={currentPage}
-				fields={props.fields}
+				facetsData={facetsData}
 				onClickResult={props.onClickResult}
 				ResultBodyComponent={props.ResultBodyComponent}
 				resultBodyProps={props.resultBodyProps}
 				resultsPerPage={props.resultsPerPage}
 				searchResult={searchResult}
 				setCurrentPage={setCurrentPage}
-				setSortOrder={handleSetSortOrder}
+				setSortOrder={setSortOrder}
 				sortOrder={sortOrder}
 			/>
 		</Wrapper>
@@ -158,6 +154,7 @@ function FacetedSearch(props: AppProps) {
 }
 
 FacetedSearch.defaultProps = {
+	fields: [],
 	resultFields: [],
 	resultsPerPage: 10,
 }

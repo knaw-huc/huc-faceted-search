@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { Button } from './page-number'
+import { Button } from '../page-number'
+import OrderOption from './option'
 
 const Wrapper = styled.div`
 	justify-self: end;	
@@ -8,22 +9,18 @@ const Wrapper = styled.div`
 `
 
 const OrderOptions = styled.ul`
-	background: yellow;
-	padding: .5em;
+	background: white;
+	border: 1px solid #888;
+	line-height: 1.6em;
+	padding: .5em 1em;
 	position: absolute;
 	right: 0;
-	width: 200px;
+	width: 240px;
 	z-index: 999;
-
-	& > li {
-		cursor: pointer;
-		text-transform: capitalize;
-	}
 `
 
-// TODO use facetsData instead of fields. Then render the active facets first and then the rest minus the active facets
 interface Props {
-	fields: AppProps['fields']
+	facetsData: FacetsData
 	setSortOrder: SetSortOrder
 	sortOrder: SortOrder
 }
@@ -41,7 +38,7 @@ function OrderBy(props: Props) {
 				showMenu &&
 				<OrderOptions>
 					{
-						props.fields
+						Array.from(props.facetsData.values())
 							.sort((field1, field2) => {
 								const a = props.sortOrder.has(field1.id)
 								const b = props.sortOrder.has(field2.id)
@@ -49,18 +46,12 @@ function OrderBy(props: Props) {
 								return a ? -1 : 1
 							})
 							.map(field =>
-								<li
+								<OrderOption
+									facetData={field}
 									key={field.id}
-									onClick={() => props.setSortOrder(field.id, SortDirection.Desc)}
-								>
-									<input
-										checked={props.sortOrder.has(field.id)}
-										readOnly
-										type="checkbox"
-									/>
-									{props.sortOrder.has(field.id)}
-									{field.title || field.id}
-								</li>		
+									sortOrder={props.sortOrder}
+									setSortOrder={props.setSortOrder}
+								/>
 							)
 					}
 				</OrderOptions>

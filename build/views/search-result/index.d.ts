@@ -1,6 +1,7 @@
 import * as React from 'react';
-declare type Props = Pick<AppProps, 'fields' | 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
+declare type Props = Pick<AppProps, 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
     currentPage: number;
+    facetsData: FacetsData;
     searchResult: FSResponse;
     setCurrentPage: (pageNumber: number) => void;
     setSortOrder: SetSortOrder;

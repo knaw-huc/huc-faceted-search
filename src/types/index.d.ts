@@ -18,7 +18,7 @@ interface AppProps {
 type Filters = Map<string, Set<string>>
 
 type SortOrder = Map<string, SortDirection>
-type SetSortOrder = (facetId: string, direction: SortDirection) => void
+type SetSortOrder = (sortOrder: SortOrder) => void
 
 type ElasticSearchRequestOptions = Pick<AppProps, 'resultFields' | 'resultsPerPage'> & {
 	currentPage: number

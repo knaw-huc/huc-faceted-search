@@ -3,8 +3,9 @@ import { Section, Header, ResultList, Result } from './components'
 import Pagination from './pagination'
 import OrderBy from './order-by'
 
-type Props = Pick<AppProps, 'fields' | 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
+type Props = Pick<AppProps, 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
 	currentPage: number
+	facetsData: FacetsData
 	searchResult: FSResponse
 	setCurrentPage: (pageNumber: number) => void
 	setSortOrder: SetSortOrder
@@ -19,7 +20,7 @@ function HucSearchResults(props: Props) {
 					Found {props.searchResult.total} result{props.searchResult.total === 1 ? '' : 's'}
 				</div>
 				<OrderBy
-					fields={props.fields}
+					facetsData={props.facetsData}
 					setSortOrder={props.setSortOrder}
 					sortOrder={props.sortOrder}
 				/>

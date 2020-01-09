@@ -86,8 +86,8 @@
         "signature": "c4b980c9b44e643fafc47caf05f65998a7302eeff44905ff91118c8c75ff4ede"
       },
       "../src/types/index.d.ts": {
-        "version": "ea4a346a20410da35a6c25f3fb0e82ea69816c455284bd667ba7f277c87277bd",
-        "signature": "ea4a346a20410da35a6c25f3fb0e82ea69816c455284bd667ba7f277c87277bd"
+        "version": "5864c41f143dac7d5fd7cb0203261770857905494ed13cc601e6f1ca1e9f698f",
+        "signature": "5864c41f143dac7d5fd7cb0203261770857905494ed13cc601e6f1ca1e9f698f"
       },
       "../node_modules/tslib/tslib.d.ts": {
         "version": "4984b48a97160eac5282ffeae690315420a626de83ccf6045c36d934c5c957c0",
@@ -171,7 +171,7 @@
       },
       "../src/views/button.tsx": {
         "version": "5f345a5debdf079268dd1a5aac94f2a161e32fbe3fb75934c20e2f87331b4122",
-        "signature": "45de582c1a38ccc3a55c9c6c25e19a3242f8c2ae2206db5c9ac77df721b601d1"
+        "signature": "4c1d72e764aadd20efaef005d9053bfe62b3b37ce0e4cce79f0a0c5e92b19ace"
       },
       "../src/views/facets/list/more-less-buttons.tsx": {
         "version": "5284196cf26309f4ec6147c004b91bce263af79ecd0f8d91c35ebd3d4fcaa0cd",
@@ -298,7 +298,7 @@
         "signature": "fee4b71df9fcc3ed1eaf1453bdb22804906c3f134636f75e5adabfae7bc59ab1"
       },
       "../src/reducers/facets-data.ts": {
-        "version": "351fd28af5931fa063d9ed25b7b396dd9d7f9425d02ac89a13ec896a1fdc9d0f",
+        "version": "1dce215283301d708b576dcd5d8cc1d40dae46d8be61c001ddf4126948c8f644",
         "signature": "6530ee4f5285b007ee1c45663e4a1d71e548b7f27e08aac7ac38fc3e7e0cb1c5"
       },
       "../src/views/search-result/components.tsx": {
@@ -307,23 +307,27 @@
       },
       "../src/views/search-result/page-number.tsx": {
         "version": "b5126683c267b962e81206486d18da1464ad60dbd6c11026365a646a99486664",
-        "signature": "af39b4d44e45e2bf6ba2248dded82306491488260685f170337fd8e97d1bfe40"
+        "signature": "1b7e3889409e284919ff888f8c68801f02e4733c3afb426ce1cdf59d46871365"
       },
       "../src/views/search-result/pagination.tsx": {
         "version": "170a33217846253c33daf75826510c3b5f05291220031995c732d502c1824d58",
         "signature": "2c56b1d43060ad67d1a96525afab9ef57f6d3c5ff51c202c3c96e0e66f2238e0"
       },
-      "../src/views/search-result/order-by.tsx": {
-        "version": "aafee06982db2013d9194431851731b7ee84d28aae383e0bab925da24feb70b0",
-        "signature": "e10948168b58226c6d332cbaf92a185412a30b02aa317ced019841a0560f4c87"
+      "../src/views/search-result/order-by/option.tsx": {
+        "version": "4d8cac69d89b0558c47daf4d0f5a71b4b2a22d8cf60c200a4c79823a11fe0f6c",
+        "signature": "5b71c98db2c6aa3740e2fc17cde4ef619bb62b6794767121bfea7ce7fb9c15e2"
+      },
+      "../src/views/search-result/order-by/index.tsx": {
+        "version": "d58228373184813cef4317c55d6234d627596040aca6942779f0343c88d969e9",
+        "signature": "c2d731a000af1b8a8336c09ec84f79238d88ec244b756b4916d848d9efc4d0a0"
       },
       "../src/views/search-result/index.tsx": {
-        "version": "14462e4fe3665378fcda9a3defde3a52b501e1a600e132ca4a902d47d413aea7",
-        "signature": "7d6f2980f535118148675a4283567f35860bbf826e6d838331dd27ca2239f59b"
+        "version": "8290fc9c330bc56f74c01c87607611232f2ff9d147ce6091ab9abf4e6e2d944a",
+        "signature": "038598f19fc667f3b4cdc57f4e0d2498f0fd6c3a7479c527c923111a9a5489a1"
       },
       "../src/index.tsx": {
-        "version": "994f150816e06767eb6dcd834dd8a25b1f12002c3c04137bf66e9db34a457fc4",
-        "signature": "3c29de8f19896463bb87b860d7b824f4e857e2c9a27e352596c063a3012ed178"
+        "version": "9e7c2e0eaad508c05ddf281c9c674a75c93047dc99484c324ef306a0b15feeb3",
+        "signature": "be3385068b3df250e4b99e8be58f93c19a05a2f534f7589d8663ffe661d70c4b"
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
         "version": "bc12492fa90cd2ad3f73c10efa597503dbf59ebac0e3c9728cc10adaad6b0b87",
@@ -755,16 +759,22 @@
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/search-result/page-number.tsx"
       ],
-      "../src/views/search-result/order-by.tsx": [
+      "../src/views/search-result/order-by/option.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../node_modules/@emotion/styled/types/index.d.ts",
         "../src/views/search-result/page-number.tsx"
+      ],
+      "../src/views/search-result/order-by/index.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts",
+        "../node_modules/@emotion/styled/types/index.d.ts",
+        "../src/views/search-result/page-number.tsx",
+        "../src/views/search-result/order-by/option.tsx"
       ],
       "../src/views/search-result/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
         "../src/views/search-result/components.tsx",
         "../src/views/search-result/pagination.tsx",
-        "../src/views/search-result/order-by.tsx"
+        "../src/views/search-result/order-by/index.tsx"
       ],
       "../src/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts",
@@ -1109,7 +1119,10 @@
       "../src/views/search-result/pagination.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
-      "../src/views/search-result/order-by.tsx": [
+      "../src/views/search-result/order-by/option.tsx": [
+        "../../docere/node_modules/@types/react/index.d.ts"
+      ],
+      "../src/views/search-result/order-by/index.tsx": [
         "../../docere/node_modules/@types/react/index.d.ts"
       ],
       "../src/views/search-result/index.tsx": [
@@ -1225,6 +1238,7 @@
       "../src/views/facets/list/index.tsx",
       "../src/views/facets/boolean/index.tsx",
       "../src/views/facets/range/utils.ts",
+      "../src/views/facets/range/histogram.tsx",
       "../src/views/facets/range/body.tsx",
       "../src/views/facets/range/index.tsx",
       "../src/views/reset.tsx",
@@ -1234,9 +1248,9 @@
       "../src/views/search-result/components.tsx",
       "../src/views/search-result/page-number.tsx",
       "../src/views/search-result/pagination.tsx",
-      "../src/views/search-result/order-by.tsx",
+      "../src/views/search-result/order-by/option.tsx",
+      "../src/views/search-result/order-by/index.tsx",
       "../src/views/search-result/index.tsx",
-      "../src/index.tsx",
       "../node_modules/@babel/types/lib/index.d.ts",
       "../node_modules/@types/babel__generator/index.d.ts",
       "../node_modules/@types/babel__traverse/index.d.ts",
@@ -1255,7 +1269,7 @@
       "../node_modules/@types/prop-types/index.d.ts",
       "../node_modules/@types/stack-utils/index.d.ts",
       "../node_modules/@types/yargs/index.d.ts",
-      "../src/views/facets/range/histogram.tsx"
+      "../src/index.tsx"
     ]
   },
   "version": "3.7.3"

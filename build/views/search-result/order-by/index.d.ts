@@ -1,6 +1,6 @@
 import * as React from 'react';
 interface Props {
-    fields: AppProps['fields'];
+    facetsData: FacetsData;
     setSortOrder: SetSortOrder;
     sortOrder: SortOrder;
 }

@@ -69,41 +69,34 @@ function FacetedSearch(props) {
         query,
         sortOrder,
     });
-    const handleSetSortOrder = React.useCallback((facetId, direction) => {
-        if (sortOrder.has(facetId))
-            sortOrder.delete(facetId);
-        else
-            sortOrder.set(facetId, direction);
-        setSortOrder(new Map(sortOrder));
-    }, [sortOrder]);
     return (React.createElement(Wrapper, { className: props.className, disableDefaultStyle: props.disableDefaultStyle, id: "huc-fs" },
         React.createElement("aside", null,
             React.createElement(full_text_search_1.default, { autoSuggest: props.autoSuggest, setQuery: setQuery }),
             React.createElement(reset_1.default, { onClick: () => {
                     setQuery('');
+                    setSortOrder(new Map());
                     facetsDataDispatch({ type: 'clear', fields: props.fields });
                 } }),
-            React.createElement("div", null, facetsData != null &&
-                props.fields.map(facetConfig => {
-                    if (constants_1.isListFacet(facetConfig)) {
-                        const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(list_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
-                    }
-                    else if (constants_1.isBooleanFacet(facetConfig)) {
-                        const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(boolean_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
-                    }
-                    else if (constants_1.isRangeFacet(facetConfig)) {
-                        const values = searchResult.facetValues[facetConfig.id];
-                        return (React.createElement(range_1.default, { facetData: facetsData.get(facetConfig.id), facetsDataDispatch: facetsDataDispatch, key: facetConfig.id, values: values }));
-                    }
-                    else {
-                        return null;
-                    }
-                }))),
-        React.createElement(search_result_1.default, { currentPage: currentPage, fields: props.fields, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage, setSortOrder: handleSetSortOrder, sortOrder: sortOrder })));
+            React.createElement("div", null, Array.from(facetsData.values())
+                .map(facetData => {
+                const values = searchResult.facetValues[facetData.id];
+                if (constants_1.isListFacet(facetData)) {
+                    return (React.createElement(list_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
+                }
+                else if (constants_1.isBooleanFacet(facetData)) {
+                    return (React.createElement(boolean_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
+                }
+                else if (constants_1.isRangeFacet(facetData)) {
+                    return (React.createElement(range_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
+                }
+                else {
+                    return null;
+                }
+            }))),
+        React.createElement(search_result_1.default, { currentPage: currentPage, facetsData: facetsData, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage, setSortOrder: setSortOrder, sortOrder: sortOrder })));
 }
 FacetedSearch.defaultProps = {
+    fields: [],
     resultFields: [],
     resultsPerPage: 10,
 };

@@ -13,7 +13,7 @@ function HucSearchResults(props) {
                 props.searchResult.total,
                 " result",
                 props.searchResult.total === 1 ? '' : 's'),
-            React.createElement(order_by_1.default, { fields: props.fields, setSortOrder: props.setSortOrder, sortOrder: props.sortOrder }),
+            React.createElement(order_by_1.default, { facetsData: props.facetsData, setSortOrder: props.setSortOrder, sortOrder: props.sortOrder }),
             React.createElement(pagination_1.default, { currentPage: props.currentPage, resultsPerPage: props.resultsPerPage, searchResults: props.searchResult, setCurrentPage: props.setCurrentPage })),
         React.createElement(components_1.ResultList, null, props.searchResult.results.map((hit, i) => React.createElement(components_1.Result, { key: i, onClick: (ev) => {
                 if (props.onClickResult != null)

@@ -3,6 +3,7 @@ import * as React from 'react';
 declare function FacetedSearch(props: AppProps): JSX.Element;
 declare namespace FacetedSearch {
     var defaultProps: {
+        fields: any[];
         resultFields: any[];
         resultsPerPage: number;
     };
