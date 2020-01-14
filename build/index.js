@@ -10,9 +10,9 @@ const reset_1 = tslib_1.__importDefault(require("./views/reset"));
 const request_creator_1 = tslib_1.__importDefault(require("./io/request-creator"));
 const constants_1 = require("./constants");
 const response_parser_1 = tslib_1.__importDefault(require("./io/response-parser"));
-const facets_data_1 = tslib_1.__importStar(require("./reducers/facets-data"));
 const full_text_search_1 = tslib_1.__importDefault(require("./views/full-text-search"));
 const search_result_1 = tslib_1.__importDefault(require("./views/search-result"));
+const facets_data_1 = tslib_1.__importDefault(require("./reducers/facets-data"));
 const Wrapper = styled_1.default.div `
 	margin-bottom: 10vh;
 
@@ -60,7 +60,7 @@ function FacetedSearch(props) {
     const [query, setQuery] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
     const [sortOrder, setSortOrder] = React.useState(new Map());
-    const [facetsData, facetsDataDispatch] = React.useReducer(facets_data_1.default, props.fields, facets_data_1.facetsDataReducerInit);
+    const [facetsData, facetsDataDispatch] = facets_data_1.default(props.fields);
     const searchResult = useSearchResult(props.url, {
         currentPage,
         facetsData,

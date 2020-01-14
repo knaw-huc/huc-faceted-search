@@ -9,9 +9,9 @@ import Reset from './views/reset'
 import ElasticSearchRequest from './io/request-creator'
 import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet } from './constants'
 import elasticSearchResponseParser from './io/response-parser'
-import facetsDataReducer, { facetsDataReducerInit } from './reducers/facets-data'
 import FullTextSearch from './views/full-text-search'
 import SearchResult from './views/search-result'
+import useFacetsDataReducer from './reducers/facets-data'
 
 const Wrapper = styled.div`
 	margin-bottom: 10vh;
@@ -66,7 +66,7 @@ function FacetedSearch(props: AppProps) {
 	const [query, setQuery] = React.useState('')
 	const [currentPage, setCurrentPage] = React.useState(1)
 	const [sortOrder, setSortOrder] = React.useState<SortOrder>(new Map())
-	const [facetsData, facetsDataDispatch] = React.useReducer(facetsDataReducer, props.fields, facetsDataReducerInit)
+	const [facetsData, facetsDataDispatch] = useFacetsDataReducer(props.fields)
 	const searchResult = useSearchResult(props.url, {
 		currentPage,
 		facetsData,
@@ -160,108 +160,3 @@ FacetedSearch.defaultProps = {
 }
 
 export default React.memo(FacetedSearch)
-
-// export default class FacetedSearch extends React.PureComponent<AppProps> {
-// 	render() {
-// 		return <App {...this.props} />
-// 	}
-
-// 	addFilter(field: string, key: string) {
-// 		this.state.facetsManager.reset()
-// 		this.state.facetsManager.addFilter(field, key)
-// 	}
-
-// 	getPrevNext(id: string): [Hit, Hit] {
-// 		return this.ioManager.getPrevNext(id)
-// 	}
-
-// 	getFilters() {
-// 		return this.state.facetsManager.getFacets()
-// 			.reduce((prev, curr) => {
-// 				if (curr.filters == null) return prev
-// 				prev[curr.field] = [...curr.filters]
-// 				return prev
-// 			}, {} as Record<string, any[]>)
-// 	}
-// }
-
-
-
-
-
-// interface FacetQueriesReducerAction {
-// 	type: 'set' | 'clear'
-// 	field?: string
-// 	value?: string
-// }
-// function facetQueriesReducer(facetQueries: Map<string, string>, action: FacetQueriesReducerAction): Map<string, string> {
-// 	switch(action.type) {
-// 		case 'set': {
-// 			facetQueries.set(action.field, action.value)
-// 			return new Map(facetQueries)
-// 		}
-
-// 		case 'clear': {
-// 			return new Map()
-// 		}
-// 	}
-
-// 	return facetQueries
-// }
-
-// interface SortsReducerAction {
-// 	type: 'set' | 'clear'
-// 	field?: string
-// 	by?: SortBy
-// 	direction?: SortDirection
-// }
-// function facetSortsReducer(facetSorts: Sorts, action: SortsReducerAction) {
-// 	switch(action.type) {
-// 		case 'set': {
-// 			const { by, direction } = action
-// 			facetSorts.set(action.field, { by, direction })
-// 			return new Map(facetSorts)
-// 		}
-
-// 		case 'clear': {
-// 			return new Map()
-// 		}
-// 	}
-
-// 	return facetSorts
-// }
-
-// interface FiltersReducerAction {
-// 	type: 'add' | 'remove' | 'clear'
-// 	field?: string
-// 	value?: any
-// }
-// function filtersReducer(filters: Filters, action: FiltersReducerAction) {
-// 	switch(action.type) {
-// 		case 'add': {
-// 			if (filters.has(action.field)) {
-// 				filters.get(action.field).add(action.value)
-// 				return new Map(filters)
-// 			}
-
-// 			filters.set(action.field, new Set([action.value]))
-// 			return new Map(filters)
-// 		}
-
-// 		case 'remove': {
-// 			if (filters.has(action.field)) {
-// 				const values = filters.get(action.field) 
-// 				values.delete(action.value)
-// 				if (!values.size) filters.delete(action.field)
-// 				return new Map(filters)
-// 			}
-// 			break
-// 		}
-
-// 		case 'clear': {
-// 			return new Map()
-// 		}
-// 	}
-
-// 	return filters
-// }

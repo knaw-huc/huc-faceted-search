@@ -1,4 +1,5 @@
 import { isListFacet, isBooleanFacet, isRangeFacet } from '../constants'
+import React from 'react'
 
 function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetData {
 	return {
@@ -28,7 +29,7 @@ function initRangeFacet(rangeFacetConfig: RangeFacetConfig): RangeFacetData {
 	}
 }
 
-export function facetsDataReducerInit(fields: AppProps['fields']): FacetsData {
+export function initFacetsData(fields: AppProps['fields']) {
 	return fields
 		.reduce((prev, curr) => {
 			if		(isListFacet(curr))		prev.set(curr.id, initListFacet(curr))
@@ -40,9 +41,19 @@ export function facetsDataReducerInit(fields: AppProps['fields']): FacetsData {
 		}, new Map())
 }
 
-export default function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerAction) {
+export default function useFacetsDataReducer(fields: AppProps['fields']) {
+	const x = React.useReducer(facetsDataReducer, initFacetsData(fields))
+
+	React.useEffect(() => {
+		x[1]({ type: 'clear', fields })
+	}, [fields])
+
+	return x
+}
+
+function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerAction): FacetsData {
 	if (action.type === 'clear') {
-		return facetsDataReducerInit(action.fields)
+		return initFacetsData(action.fields)
 	}
 
 	const facet = facetsData.get(action.facetId)

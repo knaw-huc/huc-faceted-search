@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const constants_1 = require("../constants");
+const react_1 = tslib_1.__importDefault(require("react"));
 function initBooleanFacet(booleanFacetConfig) {
     return Object.assign(Object.assign({}, booleanFacetConfig), { filters: new Set(), labels: booleanFacetConfig.labels || { true: 'Yes', false: 'No' } });
 }
@@ -11,7 +12,7 @@ function initListFacet(listFacetConfig) {
 function initRangeFacet(rangeFacetConfig) {
     return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, type: rangeFacetConfig.type || 'timestamp' });
 }
-function facetsDataReducerInit(fields) {
+function initFacetsData(fields) {
     return fields
         .reduce((prev, curr) => {
         if (constants_1.isListFacet(curr))
@@ -25,10 +26,18 @@ function facetsDataReducerInit(fields) {
         return prev;
     }, new Map());
 }
-exports.facetsDataReducerInit = facetsDataReducerInit;
+exports.initFacetsData = initFacetsData;
+function useFacetsDataReducer(fields) {
+    const x = react_1.default.useReducer(facetsDataReducer, initFacetsData(fields));
+    react_1.default.useEffect(() => {
+        x[1]({ type: 'clear', fields });
+    }, [fields]);
+    return x;
+}
+exports.default = useFacetsDataReducer;
 function facetsDataReducer(facetsData, action) {
     if (action.type === 'clear') {
-        return facetsDataReducerInit(action.fields);
+        return initFacetsData(action.fields);
     }
     const facet = facetsData.get(action.facetId);
     if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet)) {
@@ -83,4 +92,3 @@ function facetsDataReducer(facetsData, action) {
     }
     return facetsData;
 }
-exports.default = facetsDataReducer;
