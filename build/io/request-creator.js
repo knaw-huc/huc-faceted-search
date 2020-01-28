@@ -34,23 +34,23 @@ class ElasticSearchRequest {
             .map((facet) => toPostFilter(facet));
         const DatePostFilters = facetsData
             .filter(constants_1.isDateFacet)
-            .filter((facetData) => facetData.filter != null)
+            .filter((facetData) => facetData.filters != null)
             .map((facet) => ({
             range: {
                 [facet.id]: {
-                    gte: new Date(facet.filter.from).toISOString(),
-                    lte: facet.filter.to != null ? new Date(facet.filter.to).toISOString() : null
+                    gte: new Date(facet.filters.from).toISOString(),
+                    lte: facet.filters.to != null ? new Date(facet.filters.to).toISOString() : null
                 }
             }
         }));
         const RangePostFilters = facetsData
             .filter(constants_1.isRangeFacet)
-            .filter((facetData) => facetData.filter != null)
+            .filter((facetData) => facetData.filters != null)
             .map((facet) => ({
             range: {
                 [facet.id]: {
-                    gte: facet.filter.from,
-                    lte: facet.filter.to != null ? facet.filter.to : null
+                    gte: facet.filters.from,
+                    lte: facet.filters.to != null ? facet.filters.to : null
                 }
             }
         }));

@@ -3,7 +3,7 @@ interface DateFacetConfig extends FacetConfigBase {
 }
 
 interface DateFacetData extends DateFacetConfig {
-	filter: RangeFacetFilter,
+	filters: RangeFacetFilter,
 	interval?: 'year' | 'month' | 'day'
 } 
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 declare type Props = Pick<AppProps, 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
     currentPage: number;
+    dispatch: React.Dispatch<FacetsDataReducerAction>;
     facetsData: FacetsData;
     searchResult: FSResponse;
     setCurrentPage: (pageNumber: number) => void;

@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { Section, Header, ResultList, Result } from './components'
+import { Section, ResultList, Result } from './components'
 import Pagination from './pagination'
-import OrderBy from './order-by'
+import Header from './header'
 
 type Props = Pick<AppProps, 'onClickResult' | 'ResultBodyComponent' | 'resultBodyProps' | 'resultsPerPage'> & {
 	currentPage: number
+	dispatch: React.Dispatch<FacetsDataReducerAction>
 	facetsData: FacetsData
 	searchResult: FSResponse
 	setCurrentPage: (pageNumber: number) => void
@@ -15,22 +16,16 @@ type Props = Pick<AppProps, 'onClickResult' | 'ResultBodyComponent' | 'resultBod
 function HucSearchResults(props: Props) {
 	return (
 		<Section id="huc-fs-search-results">
-			<Header>
-				<div>
-					Found {props.searchResult.total} result{props.searchResult.total === 1 ? '' : 's'}
-				</div>
-				<OrderBy
-					facetsData={props.facetsData}
-					setSortOrder={props.setSortOrder}
-					sortOrder={props.sortOrder}
-				/>
-				<Pagination
-					currentPage={props.currentPage}
-					resultsPerPage={props.resultsPerPage}
-					searchResults={props.searchResult}
-					setCurrentPage={props.setCurrentPage}
-				/>
-			</Header>
+			<Header
+				currentPage={props.currentPage}
+				dispatch={props.dispatch}
+				facetsData={props.facetsData}
+				searchResult={props.searchResult}
+				resultsPerPage={props.resultsPerPage}
+				setCurrentPage={props.setCurrentPage}
+				setSortOrder={props.setSortOrder}
+				sortOrder={props.sortOrder}
+			/>
 			<ResultList>
 				{
 					props.searchResult.results.map((hit, i) =>

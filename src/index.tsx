@@ -151,6 +151,7 @@ function FacetedSearch(props: AppProps) {
 			<SearchResult
 				currentPage={currentPage}
 				facetsData={facetsData}
+				dispatch={facetsDataDispatch}
 				onClickResult={props.onClickResult}
 				ResultBodyComponent={props.ResultBodyComponent}
 				resultBodyProps={props.resultBodyProps}

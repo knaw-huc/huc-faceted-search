@@ -57,24 +57,24 @@ export default class ElasticSearchRequest {
 
 		const DatePostFilters = facetsData
 			.filter(isDateFacet)
-			.filter((facetData: RangeFacetData) => facetData.filter != null)
+			.filter((facetData: RangeFacetData) => facetData.filters != null)
 			.map((facet: RangeFacetData) => ({
 				range: {
 					[facet.id]: {
-						gte: new Date(facet.filter.from).toISOString(),
-						lte: facet.filter.to != null ? new Date(facet.filter.to).toISOString() : null
+						gte: new Date(facet.filters.from).toISOString(),
+						lte: facet.filters.to != null ? new Date(facet.filters.to).toISOString() : null
 					}
 				}
 			}))
 
 		const RangePostFilters = facetsData
 			.filter(isRangeFacet)
-			.filter((facetData: RangeFacetData) => facetData.filter != null)
+			.filter((facetData: RangeFacetData) => facetData.filters != null)
 			.map((facet: RangeFacetData) => ({
 				range: {
 					[facet.id]: {
-						gte: facet.filter.from,
-						lte: facet.filter.to != null ? facet.filter.to : null
+						gte: facet.filters.from,
+						lte: facet.filters.to != null ? facet.filters.to : null
 					}
 				}
 			}))

@@ -97,7 +97,7 @@ function FacetedSearch(props) {
                     return null;
                 }
             }))),
-        React.createElement(search_result_1.default, { currentPage: currentPage, facetsData: facetsData, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage, setSortOrder: setSortOrder, sortOrder: sortOrder })));
+        React.createElement(search_result_1.default, { currentPage: currentPage, facetsData: facetsData, dispatch: facetsDataDispatch, onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, resultsPerPage: props.resultsPerPage, searchResult: searchResult, setCurrentPage: setCurrentPage, setSortOrder: setSortOrder, sortOrder: sortOrder })));
 }
 FacetedSearch.defaultProps = {
     fields: [],

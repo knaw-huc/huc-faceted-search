@@ -101,3 +101,9 @@ interface SearchResults {
 interface ResultBodyProps {
 	result: Hit
 }
+
+interface ActiveFilter {
+	id: string
+	title: string
+	values: string[]
+}

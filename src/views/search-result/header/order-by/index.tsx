@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { Button } from '../page-number'
+import { Button } from '../../page-number'
 import OrderOption from './option'
 
 const Wrapper = styled.div`
@@ -32,7 +32,7 @@ function OrderBy(props: Props) {
 			<Button
 				onClick={() => setShowMenu(!showMenu)}
 			>
-				Order by ▾
+				order by ▾
 			</Button>
 			{
 				showMenu &&

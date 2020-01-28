@@ -12,7 +12,7 @@ function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetD
 function initDateFacet(rangeFacetConfig: DateFacetConfig): DateFacetData {
 	return {
 		...rangeFacetConfig,
-		filter: null,
+		filters: null,
 		interval: null,
 	}
 }
@@ -32,7 +32,7 @@ function initListFacet(listFacetConfig: ListFacetConfig): ListFacetData {
 function initRangeFacet(rangeFacetConfig: RangeFacetConfig): RangeFacetData {
 	return {
 		...rangeFacetConfig,
-		filter: null,
+		filters: null,
 		max: null,
 		min: null,
 	}
@@ -67,6 +67,7 @@ function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerActi
 	}
 
 	const facet = facetsData.get(action.facetId)
+	console.log(facet, action)
 
 	if (isListFacet(facet) || isBooleanFacet(facet)) {
 		switch(action.type) {
@@ -87,7 +88,13 @@ function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerActi
 		switch(action.type) {
 			case 'set_range': {
 				const { type, ...filter } = action
-				facet.filter = filter
+				facet.filters = filter
+				return new Map(facetsData)
+			}
+
+			case 'remove_filter': {
+				// const { type, ...filter } = action
+				facet.filters = null
 				return new Map(facetsData)
 			}
 		}

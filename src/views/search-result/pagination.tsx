@@ -7,11 +7,13 @@ function getRange(start: number, end: number) {
 }
 
 const Wrapper = styled.div`
+	align-items: center;
 	color: #AAA;
 	display: grid;
 	grid-column: 1 / span 2;
 	grid-template-columns: 32px auto 32px;
-	margin: 0 .2em 1em .2em;
+	height: 48px;
+	margin: 0 .2em;
 `
 
 const Prev = styled(Button)`

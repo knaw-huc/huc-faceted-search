@@ -12,7 +12,7 @@ interface RangeFacetConfig extends FacetConfigBase {
 }
 
 interface RangeFacetData extends RangeFacetConfig {
-	filter: RangeFacetFilter,
+	filters: RangeFacetFilter,
 	min: number,
 	max: number
 } 

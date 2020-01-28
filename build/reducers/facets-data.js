@@ -7,13 +7,13 @@ function initBooleanFacet(booleanFacetConfig) {
     return Object.assign(Object.assign({}, booleanFacetConfig), { filters: new Set(), labels: booleanFacetConfig.labels || { true: 'Yes', false: 'No' } });
 }
 function initDateFacet(rangeFacetConfig) {
-    return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, interval: null });
+    return Object.assign(Object.assign({}, rangeFacetConfig), { filters: null, interval: null });
 }
 function initListFacet(listFacetConfig) {
     return Object.assign(Object.assign({}, listFacetConfig), { datatype: "keyword", filters: new Set(), sort: null, query: '', size: listFacetConfig.size || 10, viewSize: listFacetConfig.size || 10 });
 }
 function initRangeFacet(rangeFacetConfig) {
-    return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, max: null, min: null });
+    return Object.assign(Object.assign({}, rangeFacetConfig), { filters: null, max: null, min: null });
 }
 function initFacetsData(fields) {
     return fields
@@ -43,6 +43,7 @@ function facetsDataReducer(facetsData, action) {
         return initFacetsData(action.fields);
     }
     const facet = facetsData.get(action.facetId);
+    console.log(facet, action);
     if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet)) {
         switch (action.type) {
             case 'add_filter': {
@@ -60,7 +61,11 @@ function facetsDataReducer(facetsData, action) {
         switch (action.type) {
             case 'set_range': {
                 const { type } = action, filter = tslib_1.__rest(action, ["type"]);
-                facet.filter = filter;
+                facet.filters = filter;
+                return new Map(facetsData);
+            }
+            case 'remove_filter': {
+                facet.filters = null;
                 return new Map(facetsData);
             }
         }
