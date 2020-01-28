@@ -11,10 +11,10 @@ const Dates = styled('div')`
 	margin-top: 1em;
 `
 
-const Date = styled.span``
-const DateMax = styled(Date)`
-	justify-self: end;
-`
+// const Date = styled.span``
+// const DateMax = styled(Date)`
+// 	justify-self: end;
+// `
 
 const ActiveDates = styled('div')`
 	color: #444;
@@ -23,7 +23,7 @@ const ActiveDates = styled('div')`
 	grid-template-columns: 1fr 16px 1fr;
 `
 
-function RangeFacetBody(props: RangeFacetProps) {
+function RangeFacetBody(props: DateFacetProps) {
 	// const minValue = props.values[0].key
 	// const maxValue = getEndDate(props.values[props.values.length - 1].key, props.facetData.interval)
 
@@ -52,7 +52,7 @@ function RangeFacetBody(props: RangeFacetProps) {
 				upperLimit={upperLimit}
 			/> */}
 			<Dates>
-				<Date>{props.values[0].key}</Date>
+				{/* <Date>{props.facetData.min}</Date> */}
 				<ActiveDates>
 					{/* {
 						rangeMin != null && rangeMax != null &&
@@ -63,7 +63,7 @@ function RangeFacetBody(props: RangeFacetProps) {
 						</>
 					} */}
 				</ActiveDates>
-				<DateMax>{props.values[props.values.length - 1].key + props.facetData.interval}</DateMax>
+				{/* <DateMax>{props.facetData.max}</DateMax> */}
 			</Dates>
 		</>
 	)

@@ -32,6 +32,13 @@ interface KeyCount {
 	count: number
 }
 
+interface RangeKeyCount {
+	key: number,
+	count: number
+	from: number
+	to: number
+}
+
 interface FSResponse {
 	facetValues: Record<string, FacetValues>
 	results: Hit[]

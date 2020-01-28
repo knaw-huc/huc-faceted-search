@@ -1,16 +1,20 @@
-interface RangeFacetConfig extends FacetConfig {
-	readonly datatype: EsDataType.Date
-	readonly type?: 'number' | 'timestamp'
-}
-
 interface RangeFacetFilter {
 	from: number
 	to?: number
 }
 
-type RangeFacetData = RangeFacetConfig & {
+type RangeFacetValues = RangeKeyCount[]
+
+
+interface RangeFacetConfig extends FacetConfigBase {
+	readonly datatype: EsDataType.Integer
+	readonly interval: number,
+}
+
+interface RangeFacetData extends RangeFacetConfig {
 	filter: RangeFacetFilter,
-	interval?: 'year' | 'month' | 'day'
+	min: number,
+	max: number
 } 
 
 interface RangeFacetProps {
@@ -18,10 +22,3 @@ interface RangeFacetProps {
 	facetsDataDispatch: React.Dispatch<FacetsDataReducerAction>
 	values: RangeFacetValues
 }
-
-interface RangeState {
-	rangeMin: number,
-	rangeMax: number,
-}
-
-type RangeFacetValues = { key: number, count: number }[]

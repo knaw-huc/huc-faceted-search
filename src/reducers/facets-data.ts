@@ -1,4 +1,4 @@
-import { isListFacet, isBooleanFacet, isRangeFacet } from '../constants'
+import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../constants'
 import React from 'react'
 
 function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetData {
@@ -6,6 +6,14 @@ function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetD
 		...booleanFacetConfig,
 		filters: new Set(),
 		labels: booleanFacetConfig.labels || { true: 'Yes', false: 'No' }
+	}
+}
+
+function initDateFacet(rangeFacetConfig: DateFacetConfig): DateFacetData {
+	return {
+		...rangeFacetConfig,
+		filter: null,
+		interval: null,
 	}
 }
 
@@ -25,7 +33,8 @@ function initRangeFacet(rangeFacetConfig: RangeFacetConfig): RangeFacetData {
 	return {
 		...rangeFacetConfig,
 		filter: null,
-		type: rangeFacetConfig.type || 'timestamp'
+		max: null,
+		min: null,
 	}
 }
 
@@ -35,7 +44,8 @@ export function initFacetsData(fields: AppProps['fields']) {
 			if		(isListFacet(curr))		prev.set(curr.id, initListFacet(curr))
 			else if (isBooleanFacet(curr))	prev.set(curr.id, initBooleanFacet(curr))
 			else if (isRangeFacet(curr))	prev.set(curr.id, initRangeFacet(curr))
-			else							prev.set(curr.id, initListFacet(curr as ListFacetConfig))
+			else if (isDateFacet(curr))		prev.set(curr.id, initDateFacet(curr))
+			// else							prev.set(curr.id, initListFacet(curr as ListFacetConfig))
 
 			return prev
 		}, new Map())

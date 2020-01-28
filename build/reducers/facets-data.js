@@ -6,11 +6,14 @@ const react_1 = tslib_1.__importDefault(require("react"));
 function initBooleanFacet(booleanFacetConfig) {
     return Object.assign(Object.assign({}, booleanFacetConfig), { filters: new Set(), labels: booleanFacetConfig.labels || { true: 'Yes', false: 'No' } });
 }
+function initDateFacet(rangeFacetConfig) {
+    return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, interval: null });
+}
 function initListFacet(listFacetConfig) {
     return Object.assign(Object.assign({}, listFacetConfig), { datatype: "keyword", filters: new Set(), sort: null, query: '', size: listFacetConfig.size || 10, viewSize: listFacetConfig.size || 10 });
 }
 function initRangeFacet(rangeFacetConfig) {
-    return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, type: rangeFacetConfig.type || 'timestamp' });
+    return Object.assign(Object.assign({}, rangeFacetConfig), { filter: null, max: null, min: null });
 }
 function initFacetsData(fields) {
     return fields
@@ -21,8 +24,8 @@ function initFacetsData(fields) {
             prev.set(curr.id, initBooleanFacet(curr));
         else if (constants_1.isRangeFacet(curr))
             prev.set(curr.id, initRangeFacet(curr));
-        else
-            prev.set(curr.id, initListFacet(curr));
+        else if (constants_1.isDateFacet(curr))
+            prev.set(curr.id, initDateFacet(curr));
         return prev;
     }, new Map());
 }

@@ -11,10 +11,6 @@ const Dates = styled_1.default('div') `
 	grid-template-columns: 1fr auto 1fr;
 	margin-top: 1em;
 `;
-const Date = styled_1.default.span ``;
-const DateMax = styled_1.default(Date) `
-	justify-self: end;
-`;
 const ActiveDates = styled_1.default('div') `
 	color: #444;
 	display: grid;
@@ -25,8 +21,6 @@ function RangeFacetBody(props) {
     return (React.createElement(React.Fragment, null,
         React.createElement(histogram_1.default, { facetData: props.facetData, facetsDataDispatch: props.facetsDataDispatch, values: props.values }),
         React.createElement(Dates, null,
-            React.createElement(Date, null, props.values[0].key),
-            React.createElement(ActiveDates, null),
-            React.createElement(DateMax, null, props.values[props.values.length - 1].key + props.facetData.interval))));
+            React.createElement(ActiveDates, null))));
 }
 exports.default = React.memo(RangeFacetBody);

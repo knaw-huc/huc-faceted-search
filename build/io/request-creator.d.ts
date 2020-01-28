@@ -27,6 +27,7 @@ export default class ElasticSearchRequest {
     private createBooleanAggregation;
     private createListAggregation;
     private createHistogramAggregation;
+    private createDateHistogramAggregation;
     private setQuery;
     private setSource;
 }

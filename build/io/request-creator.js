@@ -32,8 +32,8 @@ class ElasticSearchRequest {
         const BooleanAndListPostFilters = facetsData
             .filter(facet => (constants_1.isBooleanFacet(facet) || constants_1.isListFacet(facet)) && facet.filters.size)
             .map((facet) => toPostFilter(facet));
-        const RangePostFilters = facetsData
-            .filter(constants_1.isRangeFacet)
+        const DatePostFilters = facetsData
+            .filter(constants_1.isDateFacet)
             .filter((facetData) => facetData.filter != null)
             .map((facet) => ({
             range: {
@@ -43,7 +43,20 @@ class ElasticSearchRequest {
                 }
             }
         }));
-        const post_filters = BooleanAndListPostFilters.concat(RangePostFilters);
+        const RangePostFilters = facetsData
+            .filter(constants_1.isRangeFacet)
+            .filter((facetData) => facetData.filter != null)
+            .map((facet) => ({
+            range: {
+                [facet.id]: {
+                    gte: facet.filter.from,
+                    lte: facet.filter.to != null ? facet.filter.to : null
+                }
+            }
+        }));
+        const post_filters = BooleanAndListPostFilters
+            .concat(DatePostFilters)
+            .concat(RangePostFilters);
         if (post_filters.length === 1) {
             this.post_filter = post_filters[0];
         }
@@ -60,6 +73,8 @@ class ElasticSearchRequest {
             let facetAggs;
             if (constants_1.isBooleanFacet(facetData))
                 facetAggs = this.createBooleanAggregation(facetData);
+            if (constants_1.isDateFacet(facetData))
+                facetAggs = this.createDateHistogramAggregation(facetData);
             if (constants_1.isListFacet(facetData))
                 facetAggs = this.createListAggregation(facetData);
             if (constants_1.isRangeFacet(facetData))
@@ -106,6 +121,15 @@ class ElasticSearchRequest {
         return agg;
     }
     createHistogramAggregation(facet) {
+        const values = {
+            histogram: {
+                field: facet.id,
+                interval: facet.interval,
+            }
+        };
+        return this.addFilter(facet.id, values);
+    }
+    createDateHistogramAggregation(facet) {
         const values = {
             auto_date_histogram: {
                 field: facet.id,

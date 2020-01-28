@@ -4,10 +4,11 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import ListFacet from './views/facets/list'
 import BooleanFacet from './views/facets/boolean'
+import DateFacet from './views/facets/date'
 import RangeFacet from './views/facets/range'
 import Reset from './views/reset'
 import ElasticSearchRequest from './io/request-creator'
-import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet } from './constants'
+import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet, isDateFacet } from './constants'
 import elasticSearchResponseParser from './io/response-parser'
 import FullTextSearch from './views/full-text-search'
 import SearchResult from './views/search-result'
@@ -120,10 +121,20 @@ function FacetedSearch(props: AppProps) {
 										/>
 									)
 								}
+								else if (isDateFacet(facetData)) {
+									return (
+										<DateFacet
+											facetData={facetData}
+											facetsDataDispatch={facetsDataDispatch}
+											key={facetData.id}
+											values={values as RangeFacetValues}
+										/>
+									)
+								}
 								else if (isRangeFacet(facetData)) {
 									return (
 										<RangeFacet
-											facetData={facetData as RangeFacetData}
+											facetData={facetData}
 											facetsDataDispatch={facetsDataDispatch}
 											key={facetData.id}
 											values={values as RangeFacetValues}

@@ -4,20 +4,20 @@ import FacetWrapper from '../facet'
 import RangeFacetBody from './body'
 
 
-function RangeFacetView(props: RangeFacetProps) {
+function DateFacetView(props: DateFacetProps) {
 	return (
 		<FacetWrapper>
 			<FacetHeader facetData={props.facetData} />
 			{
-				props.values.length > 0 &&
+				props.values.values.length > 0 &&
 				<RangeFacetBody { ...props } />
 			}
 		</FacetWrapper>
 	)
 }
 
-RangeFacetView.defaultProps = {
+DateFacetView.defaultProps = {
 	values: []
 }
 
-export default React.memo(RangeFacetView)
+export default React.memo(DateFacetView)

@@ -35,11 +35,12 @@ const BarFill = styled_1.default.div `
 function Histogram(props) {
     const counts = props.values.map(v => v.count);
     const maxCount = Math.max(...counts);
+    console.log(props.values);
     const handleBarClick = React.useCallback((ev) => {
         let { index } = ev.currentTarget.dataset;
         index = parseInt(index, 10);
         const value = props.values[index];
-        props.facetsDataDispatch({ type: 'set_range', facetId: props.facetData.id, from: value.key, to: value.key + props.facetData.interval });
+        props.facetsDataDispatch({ type: 'set_range', facetId: props.facetData.id, from: value.from, to: value.to });
     }, [props.values]);
     return (React.createElement(Wrapper, { barCount: props.values.length }, props.values.map((value, index) => React.createElement(Bar, { count: value.count, "data-index": index, key: index, onClick: handleBarClick },
         React.createElement(BarFill, { height: value.count / maxCount })))));

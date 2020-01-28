@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-function getBuckets(response, field) {
-    const buckets = response.aggregations[field][field].buckets;
+function getBuckets(response, field, useValues = false) {
+    const prop = useValues ? 'values' : 'buckets';
+    const buckets = response.aggregations[field][field][prop];
     return buckets == null ? [] : buckets;
 }
 function elasticSearchResponseParser(response, facets) {
@@ -25,12 +26,18 @@ function elasticSearchResponseParser(response, facets) {
                 { key: 'false', count: falseCount },
             ];
         }
-        else if (constants_1.isRangeFacet(facet)) {
+        else if (constants_1.isDateFacet(facet)) {
             facetValues[facet.id] = buckets.map((hv) => ({
                 key: hv.key,
                 count: hv.doc_count,
             }));
             facet.interval = response.aggregations[facet.id][facet.id].interval;
+        }
+        else if (constants_1.isRangeFacet(facet)) {
+            facetValues[facet.id] = buckets.map((hv) => ({
+                key: hv.key,
+                count: hv.doc_count,
+            }));
         }
     });
     return {

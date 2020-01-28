@@ -26,11 +26,15 @@ function isBooleanFacet(facetConfig) {
     return facetConfig.datatype === "boolean";
 }
 exports.isBooleanFacet = isBooleanFacet;
+function isDateFacet(facetConfig) {
+    return facetConfig.datatype === "date";
+}
+exports.isDateFacet = isDateFacet;
 function isListFacet(facetConfig) {
     return facetConfig.datatype === "keyword";
 }
 exports.isListFacet = isListFacet;
 function isRangeFacet(facetConfig) {
-    return facetConfig.datatype === "date";
+    return facetConfig.datatype === "integer";
 }
 exports.isRangeFacet = isRangeFacet;

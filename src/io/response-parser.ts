@@ -1,7 +1,8 @@
-import { isListFacet, isBooleanFacet, isRangeFacet } from '../constants'
+import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../constants'
 
-function getBuckets(response: any, field: string) {
-	const buckets = response.aggregations[field][field].buckets
+function getBuckets(response: any, field: string, useValues = false) {
+	const prop = useValues ? 'values' : 'buckets'
+	const buckets = response.aggregations[field][field][prop]
 	return buckets == null ? [] : buckets
 }
 
@@ -28,7 +29,7 @@ export default function elasticSearchResponseParser(response: any, facets: Facet
 				{ key: 'false', count: falseCount },
 			]
 		}
-		else if (isRangeFacet(facet)) {
+		else if (isDateFacet(facet)) {
 			// TODO set values to from and to, so we have to calculate less in the views
 			facetValues[facet.id] = buckets.map((hv: any) => ({
 				key: hv.key,
@@ -36,6 +37,33 @@ export default function elasticSearchResponseParser(response: any, facets: Facet
 			}))
 
 			facet.interval = response.aggregations[facet.id][facet.id].interval
+		}
+		else if (isRangeFacet(facet)) {
+			// const values: Record<string, number> = getBuckets(response, facet.id, true)
+			// let sum = 0
+			facetValues[facet.id] = buckets.map((hv: any) => ({
+				key: hv.key,
+				count: hv.doc_count,
+			}))
+
+			// facetValues[facet.id] = Object.keys(values)
+			// 	.reduce((prev, curr, index, array) => {
+			// 		const prevCount = index > 0 ? values[array[index - 1]] : 0
+			// 		const count = values[curr] - prevCount
+			// 		const to = Math.ceil(sum + count)
+
+			// 		prev.push({
+			// 			count,
+			// 			key: count,
+			// 			from: sum,
+			// 			to, 
+			// 		})
+
+			// 		sum = to
+
+			// 		return prev	
+			// 	}, [] as RangeKeyCount[])
+			// 	.slice(1)
 		}
 	})
 

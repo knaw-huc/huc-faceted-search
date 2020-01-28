@@ -19,14 +19,18 @@ export async function fetchSearchResults(url: string, request: any) {
 	return fetchResponse.status === 200 ? response : null
 }
 
-export function isBooleanFacet(facetConfig: FacetConfig): facetConfig is BooleanFacetConfig {
+export function isBooleanFacet(facetConfig: FacetConfigBase): facetConfig is BooleanFacetConfig {
 	return facetConfig.datatype === EsDataType.Boolean
 }
 
-export function isListFacet(facetConfig: FacetConfig): facetConfig is ListFacetConfig {
+export function isDateFacet(facetConfig: FacetConfigBase): facetConfig is DateFacetConfig {
+	return facetConfig.datatype === EsDataType.Date
+}
+
+export function isListFacet(facetConfig: FacetConfigBase): facetConfig is ListFacetConfig {
 	return facetConfig.datatype === EsDataType.Keyword
 }
 
-export function isRangeFacet(facetConfig: FacetConfig): facetConfig is RangeFacetConfig {
-	return facetConfig.datatype === EsDataType.Date
+export function isRangeFacet(facetConfig: FacetConfigBase): facetConfig is RangeFacetConfig {
+	return facetConfig.datatype === EsDataType.Integer
 }

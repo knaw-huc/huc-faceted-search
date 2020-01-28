@@ -54,7 +54,7 @@ function FacetValuesView(props: Props) {
 						// })
 						.map(value =>
 							<FacetValueView
-								active={props.facetData.filters.has(value.key)}
+								active={props.facetData.filters.has(value.key.toString())}
 								facetId={props.facetData.id}
 								facetsDataDispatch={props.facetsDataDispatch}
 								key={value.key}

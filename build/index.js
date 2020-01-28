@@ -5,6 +5,7 @@ const React = tslib_1.__importStar(require("react"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const list_1 = tslib_1.__importDefault(require("./views/facets/list"));
 const boolean_1 = tslib_1.__importDefault(require("./views/facets/boolean"));
+const date_1 = tslib_1.__importDefault(require("./views/facets/date"));
 const range_1 = tslib_1.__importDefault(require("./views/facets/range"));
 const reset_1 = tslib_1.__importDefault(require("./views/reset"));
 const request_creator_1 = tslib_1.__importDefault(require("./io/request-creator"));
@@ -85,6 +86,9 @@ function FacetedSearch(props) {
                 }
                 else if (constants_1.isBooleanFacet(facetData)) {
                     return (React.createElement(boolean_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
+                }
+                else if (constants_1.isDateFacet(facetData)) {
+                    return (React.createElement(date_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
                 }
                 else if (constants_1.isRangeFacet(facetData)) {
                     return (React.createElement(range_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));

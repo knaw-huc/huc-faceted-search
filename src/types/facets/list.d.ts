@@ -1,4 +1,4 @@
-interface ListFacetConfig extends FacetConfig {
+interface ListFacetConfig extends FacetConfigBase {
 	readonly datatype: EsDataType.Keyword
 	readonly size?: number
 }

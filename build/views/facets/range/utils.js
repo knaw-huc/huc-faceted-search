@@ -16,31 +16,7 @@ function getEndDate(timestamp, interval) {
     return new Date(nextYear, nextMonth, nextDate).getTime();
 }
 exports.getEndDate = getEndDate;
-function ratioToTimestamp(ratio, values) {
-    const minValue = values[0].key;
-    const maxValue = values[values.length - 1].key;
-    return Math.floor(minValue + (ratio * (maxValue - minValue)));
-}
-exports.ratioToTimestamp = ratioToTimestamp;
-function timestampToRatio(timestamp, values) {
-    const minValue = values[0].key;
-    const maxValue = values[values.length - 1].key;
-    return (timestamp - minValue) / (maxValue - minValue);
-}
-exports.timestampToRatio = timestampToRatio;
-function formatRange(facetData, rangeMin, rangeMax) {
-    if (facetData.type === 'number')
-        return [rangeMin, rangeMax];
-    const dateMin = new Date(rangeMin);
-    const yearMin = dateMin.getUTCFullYear();
-    const dateMax = new Date(rangeMax);
-    const yearMax = dateMax.getUTCFullYear();
-    return [formatDate(facetData, rangeMin, yearMin === yearMax), formatDate(facetData, rangeMax)];
-}
-exports.formatRange = formatRange;
 function formatDate(facetData, num, sameYear) {
-    if (facetData.type === 'number')
-        return num;
     if (facetData.interval == null)
         return null;
     let date = '';

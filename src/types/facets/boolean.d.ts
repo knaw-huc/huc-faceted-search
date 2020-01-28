@@ -1,4 +1,4 @@
-interface BooleanFacetConfig extends FacetConfig {
+interface BooleanFacetConfig extends FacetConfigBase {
 	readonly datatype: EsDataType.Boolean
 	readonly labels?: { false: string, true: string }
 }
