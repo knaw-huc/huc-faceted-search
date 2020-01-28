@@ -1,9 +1,8 @@
 import * as React from 'react'
 import OrderBy from './order-by'
-import ActiveFilters from './selected-values'
+import ActiveFilters from './active-filters'
 import styled from '@emotion/styled'
 import Pagination from '../pagination'
-
 
 export const Header = styled.header`
 	color: #888;

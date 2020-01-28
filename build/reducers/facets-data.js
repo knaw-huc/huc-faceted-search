@@ -43,7 +43,6 @@ function facetsDataReducer(facetsData, action) {
         return initFacetsData(action.fields);
     }
     const facet = facetsData.get(action.facetId);
-    console.log(facet, action);
     if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet)) {
         switch (action.type) {
             case 'add_filter': {

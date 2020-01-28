@@ -67,7 +67,6 @@ function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerActi
 	}
 
 	const facet = facetsData.get(action.facetId)
-	console.log(facet, action)
 
 	if (isListFacet(facet) || isBooleanFacet(facet)) {
 		switch(action.type) {

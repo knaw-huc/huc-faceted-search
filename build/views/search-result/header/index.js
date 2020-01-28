@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const order_by_1 = tslib_1.__importDefault(require("./order-by"));
-const selected_values_1 = tslib_1.__importDefault(require("./selected-values"));
+const active_filters_1 = tslib_1.__importDefault(require("./active-filters"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const pagination_1 = tslib_1.__importDefault(require("../pagination"));
 exports.Header = styled_1.default.header `
@@ -19,7 +19,7 @@ exports.Header = styled_1.default.header `
 `;
 function HucSearchResults(props) {
     return (React.createElement(exports.Header, null,
-        React.createElement(selected_values_1.default, { dispatch: props.dispatch, facetsData: props.facetsData }),
+        React.createElement(active_filters_1.default, { dispatch: props.dispatch, facetsData: props.facetsData }),
         React.createElement("div", { className: "right" },
             "Found ",
             props.searchResult.total,
