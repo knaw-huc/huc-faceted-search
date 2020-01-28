@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../../../../constants'
 import ActiveFilter from './active-filter'
+import { formatDate } from '../../../facets/date/utils'
 
 function hasFilter(facetData: FacetData) {
 	if (facetData.filters == null) return false
@@ -21,8 +22,11 @@ function getFilterValue(facetData: FacetData): string[] {
 	if (isListFacet(facetData) || isBooleanFacet(facetData)) {
 		return Array.from(facetData.filters)
 	}
-	else if (isRangeFacet(facetData) || isDateFacet(facetData)) {
+	else if (isRangeFacet(facetData)) {
 		return [`${facetData.filters.from} - ${facetData.filters.to}`]
+	}
+	else if (isDateFacet(facetData)) {
+		return [`${formatDate(facetData.filters.from, facetData.interval)} - ${formatDate(facetData.filters.to, facetData.interval)}`]
 	}
 
 	return []
@@ -56,7 +60,6 @@ interface Props {
 }
 function ActiveFilters(props: Props) {
 	const filters = useFilters(props.facetsData)
-	console.log(filters)
 	return (
 		<div>
 			<ul>

@@ -9,7 +9,7 @@ function DateFacetView(props: DateFacetProps) {
 		<FacetWrapper>
 			<FacetHeader facetData={props.facetData} />
 			{
-				props.values.values.length > 0 &&
+				props.values.length > 0 &&
 				<RangeFacetBody { ...props } />
 			}
 		</FacetWrapper>

@@ -8,7 +8,7 @@ const body_1 = tslib_1.__importDefault(require("./body"));
 function DateFacetView(props) {
     return (React.createElement(facet_1.default, null,
         React.createElement(header_1.default, { facetData: props.facetData }),
-        props.values.values.length > 0 &&
+        props.values.length > 0 &&
             React.createElement(body_1.default, Object.assign({}, props))));
 }
 DateFacetView.defaultProps = {

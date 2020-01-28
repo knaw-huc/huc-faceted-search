@@ -56,7 +56,7 @@ function facetsDataReducer(facetsData, action) {
             }
         }
     }
-    if (constants_1.isRangeFacet(facet)) {
+    if (constants_1.isRangeFacet(facet) || constants_1.isDateFacet(facet)) {
         switch (action.type) {
             case 'set_range': {
                 const { type } = action, filter = tslib_1.__rest(action, ["type"]);

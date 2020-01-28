@@ -2,6 +2,8 @@ import * as React from 'react'
 // import Slider from './slider'
 import styled from '@emotion/styled'
 import Histogram from './histogram'
+import { isDateFacet } from '../../../constants'
+import { getEndDate, formatDate } from './utils'
 
 const Dates = styled('div')`
 	color: #888;
@@ -11,10 +13,10 @@ const Dates = styled('div')`
 	margin-top: 1em;
 `
 
-// const Date = styled.span``
-// const DateMax = styled(Date)`
-// 	justify-self: end;
-// `
+const Date = styled.span``
+const DateMax = styled(Date)`
+	justify-self: end;
+`
 
 const ActiveDates = styled('div')`
 	color: #444;
@@ -24,11 +26,11 @@ const ActiveDates = styled('div')`
 `
 
 function RangeFacetBody(props: DateFacetProps) {
-	// const minValue = props.values[0].key
-	// const maxValue = getEndDate(props.values[props.values.length - 1].key, props.facetData.interval)
+	const minValue = props.values[0].key
+	const maxValue = getEndDate(props.values[props.values.length - 1].key, props.facetData.interval)
 
-	// const minDate = isDateFacet(props.facetData) ? formatDate(props.facetData, minValue) : props.values[0].count
-	// const maxDate = isDateFacet(props.facetData) ? formatDate(props.facetData, maxValue) : props.values.reduce((prev, curr) => prev + curr.count, 0)
+	const minDate = isDateFacet(props.facetData) ? formatDate(minValue, props.facetData.interval) : props.values[0].count
+	const maxDate = isDateFacet(props.facetData) ? formatDate(maxValue, props.facetData.interval) : props.values.reduce((prev, curr) => prev + curr.count, 0)
 
 	return (
 		<>
@@ -52,7 +54,7 @@ function RangeFacetBody(props: DateFacetProps) {
 				upperLimit={upperLimit}
 			/> */}
 			<Dates>
-				{/* <Date>{props.facetData.min}</Date> */}
+				<Date>{minDate}</Date>
 				<ActiveDates>
 					{/* {
 						rangeMin != null && rangeMax != null &&
@@ -63,7 +65,7 @@ function RangeFacetBody(props: DateFacetProps) {
 						</>
 					} */}
 				</ActiveDates>
-				{/* <DateMax>{props.facetData.max}</DateMax> */}
+				<DateMax>{maxDate}</DateMax>
 			</Dates>
 		</>
 	)

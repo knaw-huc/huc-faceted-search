@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
+import { getEndDate } from './utils'
 // import { getEndDate } from './utils'
 
 interface WrapperProps { barCount: number }
@@ -41,18 +42,20 @@ type Props = Pick<DateFacetProps, 'facetData' | 'facetsDataDispatch' | 'values'>
 function Histogram(props: Props) {
 	const counts = props.values.map(v => v.count)
 	const maxCount = Math.max(...counts)
-	console.log(props.values)
 
 	const handleBarClick = React.useCallback((ev: any) => {
 		let { index } = ev.currentTarget.dataset
 		index = parseInt(index, 10)
 		const value = props.values[index]
-		// const nextValue = props.values.values[index + 1]
-		// if (value.count === 0) return
-		// const from = value.count
-		// const to = nextValue != null ? nextValue.count : null
-		// console.log(from, to)
-		props.facetsDataDispatch({ type: 'set_range', facetId: props.facetData.id, from: value.from, to: value.to })
+		const from = value.key
+		const to = getEndDate(value.key, props.facetData.interval)
+
+		props.facetsDataDispatch({
+			type: 'set_range',
+			facetId: props.facetData.id,
+			from,
+			to,
+		})
 	}, [props.values])
 
 	return (

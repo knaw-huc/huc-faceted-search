@@ -40,23 +40,23 @@ export function getEndDate(timestamp: number, interval: string): number {
 // 	return [formatDate(facetData, rangeMin, yearMin === yearMax), formatDate(facetData, rangeMax)]
 // }
 
-export function formatDate(facetData: RangeFacetData, num: number, sameYear?: boolean): number | string {
-	if (facetData.interval == null) return null
+export function formatDate(timestamp: number, interval: DateFacetData['interval'], sameYear?: boolean): number | string {
+	if (interval == null) return null
 
 	let date: string = ''
-	const d = new Date(num)
+	const d = new Date(timestamp)
 	const year = d.getUTCFullYear()
 
-	const interval = facetData.interval.slice(-1)
+	const intervalType = interval.slice(-1)
 
-	if (interval === 'y' && !sameYear) {
+	if (intervalType === 'y' && !sameYear) {
 		date = isNaN(year) ? '' : year.toString()
 	}
-	else if (interval === 'M') {
+	else if (intervalType === 'M') {
 		date = `${months[d.getUTCMonth()]}`
 		if (!sameYear) date += ` ${year}`
 	}
-	else if (interval === 'd' || interval === 'h' || interval === 's') {
+	else if (intervalType === 'd' || intervalType === 'h' || intervalType === 's') {
 		date = `${d.getUTCDate()} ${months[d.getUTCMonth()]}`
 		if (!sameYear) date += ` ${year}`
 	}

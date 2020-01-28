@@ -83,7 +83,7 @@ function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerActi
 		}
 	}
 
-	if (isRangeFacet(facet)) {
+	if (isRangeFacet(facet) || isDateFacet(facet)) {
 		switch(action.type) {
 			case 'set_range': {
 				const { type, ...filter } = action
