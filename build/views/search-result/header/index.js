@@ -11,20 +11,26 @@ exports.Header = styled_1.default.header `
 	display: grid;
 	font-size: .85em;
 	grid-template-rows: auto 48px auto;
-	grid-template-columns: 2fr 1fr;
+	grid-template-columns: 1fr 1fr;
 
 	& > .right {
 		justify-self: right;
 	}
 `;
 function HucSearchResults(props) {
+    const from = (props.currentPage - 1) * props.resultsPerPage + 1;
+    const to = from + props.resultsPerPage - 1;
     return (React.createElement(exports.Header, null,
         React.createElement(active_filters_1.default, { dispatch: props.dispatch, facetsData: props.facetsData }),
         React.createElement("div", { className: "right" },
-            "Found ",
+            from,
+            "-",
+            to,
+            " of ",
             props.searchResult.total,
             " result",
             props.searchResult.total === 1 ? '' : 's',
+            ",\u00A0",
             React.createElement(order_by_1.default, { facetsData: props.facetsData, setSortOrder: props.setSortOrder, sortOrder: props.sortOrder })),
         React.createElement(pagination_1.default, { currentPage: props.currentPage, resultsPerPage: props.resultsPerPage, searchResults: props.searchResult, setCurrentPage: props.setCurrentPage })));
 }

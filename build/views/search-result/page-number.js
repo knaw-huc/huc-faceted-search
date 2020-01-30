@@ -5,6 +5,7 @@ const React = tslib_1.__importStar(require("react"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const constants_1 = require("../../constants");
 exports.Button = styled_1.default.div `
+	color: ${constants_1.SPOT_COLOR};
 	cursor: pointer;
 	user-select: none;
 

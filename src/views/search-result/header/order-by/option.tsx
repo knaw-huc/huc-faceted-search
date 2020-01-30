@@ -51,7 +51,8 @@ function OrderOption(props: Props) {
 		props.setSortOrder(nextSortOrder)
 	}, [props.sortOrder, props.facetData])
 
-	const setFacetId = React.useCallback(() => {
+	const setFacetId = React.useCallback(ev => {
+		ev.stopPropagation()
 		const direction = props.sortOrder.get(props.facetData.id)
 		const nextSortOrder = updateSortOrder(props.sortOrder, props.facetData.id, direction)
 		props.setSortOrder(nextSortOrder)

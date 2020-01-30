@@ -1,8 +1,9 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { BACKGROUND_GRAY } from '../../constants'
+import { BACKGROUND_GRAY, SPOT_COLOR } from '../../constants'
 
 export const Button = styled.div`
+	color: ${SPOT_COLOR};
 	cursor: pointer;
 	user-select: none;
 

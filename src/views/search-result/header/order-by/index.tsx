@@ -4,6 +4,7 @@ import { Button } from '../../page-number'
 import OrderOption from './option'
 
 const Wrapper = styled.div`
+	display: inline-block;
 	justify-self: end;	
 	position: relative;
 `
@@ -27,12 +28,22 @@ interface Props {
 function OrderBy(props: Props) {
 	const [showMenu, setShowMenu] = React.useState(false)
 
+	const handleClick = React.useCallback(ev => {
+		ev.stopPropagation()
+
+		const hideMenu = () => setShowMenu(false)
+		if (!showMenu) window.addEventListener('click', hideMenu)
+		else window.removeEventListener('click', hideMenu)
+		
+		setShowMenu(!showMenu)
+	}, [showMenu])
+
 	return (
 		<Wrapper>
 			<Button
-				onClick={() => setShowMenu(!showMenu)}
+				onClick={handleClick}
 			>
-				order by ▾
+				sort by ({props.sortOrder.size}) ▾
 			</Button>
 			{
 				showMenu &&

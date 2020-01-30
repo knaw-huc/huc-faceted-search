@@ -6,6 +6,7 @@ const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const page_number_1 = require("../../page-number");
 const option_1 = tslib_1.__importDefault(require("./option"));
 const Wrapper = styled_1.default.div `
+	display: inline-block;
 	justify-self: end;	
 	position: relative;
 `;
@@ -21,8 +22,20 @@ const OrderOptions = styled_1.default.ul `
 `;
 function OrderBy(props) {
     const [showMenu, setShowMenu] = React.useState(false);
+    const handleClick = React.useCallback(ev => {
+        ev.stopPropagation();
+        const hideMenu = () => setShowMenu(false);
+        if (!showMenu)
+            window.addEventListener('click', hideMenu);
+        else
+            window.removeEventListener('click', hideMenu);
+        setShowMenu(!showMenu);
+    }, [showMenu]);
     return (React.createElement(Wrapper, null,
-        React.createElement(page_number_1.Button, { onClick: () => setShowMenu(!showMenu) }, "order by \u25BE"),
+        React.createElement(page_number_1.Button, { onClick: handleClick },
+            "sort by (",
+            props.sortOrder.size,
+            ") \u25BE"),
         showMenu &&
             React.createElement(OrderOptions, null, Array.from(props.facetsData.values())
                 .sort((field1, field2) => {
