@@ -7,6 +7,7 @@ const Wrapper = styled.div`
 `
 
 const DropDownButton = styled(Button)`
+	background: rgba(0, 0, 0, 0);
 	border: 1px solid rgba(0, 0, 0, 0);
 	position: relative;
 	transition: all 300ms;
@@ -20,6 +21,7 @@ const DropDownButton = styled(Button)`
 	${(props: { showMenu: boolean, z: number }) => {
 		if (props.showMenu) {
 			return `
+				background: white;
 				border: 1px solid #888;
 				border-bottom: 1px solid white;
 				padding: 0 12px;

@@ -4,6 +4,6 @@ interface Props {
     setSortOrder: SetSortOrder;
     sortOrder: SortOrder;
 }
-declare function OrderBy(props: Props): JSX.Element;
-declare const _default: React.MemoExoticComponent<typeof OrderBy>;
+declare function SortBy(props: Props): JSX.Element;
+declare const _default: React.MemoExoticComponent<typeof SortBy>;
 export default _default;

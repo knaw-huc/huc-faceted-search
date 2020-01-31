@@ -1,5 +1,5 @@
 import * as React from 'react'
-import OrderBy from './order-by'
+import SortBy from './order-by'
 import ActiveFilters from './active-filters'
 import styled from '@emotion/styled'
 import Pagination from './pagination'
@@ -63,7 +63,7 @@ function Header(props: Props) {
 			/>
 			<div className="right">
 				{from}-{to} of {props.searchResult.total} result{props.searchResult.total === 1 ? '' : 's'},&nbsp;
-				<OrderBy
+				<SortBy
 					facetsData={props.facetsData}
 					setSortOrder={props.setSortOrder}
 					sortOrder={props.sortOrder}

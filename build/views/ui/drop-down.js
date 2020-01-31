@@ -8,6 +8,7 @@ const Wrapper = styled_1.default.div `
 	display: inline-block;
 `;
 const DropDownButton = styled_1.default(page_number_1.Button) `
+	background: rgba(0, 0, 0, 0);
 	border: 1px solid rgba(0, 0, 0, 0);
 	position: relative;
 	transition: all 300ms;
@@ -21,6 +22,7 @@ const DropDownButton = styled_1.default(page_number_1.Button) `
 	${(props) => {
     if (props.showMenu) {
         return `
+				background: white;
 				border: 1px solid #888;
 				border-bottom: 1px solid white;
 				padding: 0 12px;
