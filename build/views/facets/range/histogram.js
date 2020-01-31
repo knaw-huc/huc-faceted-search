@@ -24,12 +24,12 @@ const Bar = styled_1.default.div `
 	}
 `;
 const BarFill = styled_1.default.div `
-	background: #e6e6e6;
+	background: #DDD;
 	height: ${(props) => {
     let height = props.height;
     if (height > 0 && height < .03)
         height = .03;
-    return `${height * 100}px`;
+    return `${height * 60}px`;
 }};
 `;
 function Histogram(props) {

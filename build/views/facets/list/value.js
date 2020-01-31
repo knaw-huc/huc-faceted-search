@@ -7,8 +7,12 @@ const core_1 = require("@emotion/core");
 const Wrapper = styled_1.default('li') `
 	cursor: pointer;
 	display: grid;
-	grid-template-columns: 24px 4fr 1fr;
+	grid-template-columns: 20px 4fr 1fr;
 	margin-bottom: .2em;
+
+	& > input {
+		margin-left: 0;
+	}
 `;
 const common = (props) => core_1.css `
 	color: ${props.active ? '#444' : '#888'};

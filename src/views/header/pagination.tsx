@@ -10,8 +10,7 @@ const Wrapper = styled.div`
 	align-items: center;
 	color: #AAA;
 	display: grid;
-	grid-column: 1 / span 2;
-	grid-template-columns: 32px auto 32px;
+	grid-template-columns: 16px auto 16px;
 	height: 48px;
 	margin: 0 .2em;
 `
@@ -28,7 +27,7 @@ const Next = styled(Prev)`
 const PageNumbers = styled.div`
 	align-items: center;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(32px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(16px, 1fr));
 	justify-items: center;
 `
 

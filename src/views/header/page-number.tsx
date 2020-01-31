@@ -6,10 +6,6 @@ export const Button = styled.div`
 	color: ${SPOT_COLOR};
 	cursor: pointer;
 	user-select: none;
-
-	&:hover {
-		color: #444;
-	}
 `
 
 interface PnProps { active: boolean }

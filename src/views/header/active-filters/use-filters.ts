@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../../../../constants'
-import ActiveFilter from './active-filter'
-import { formatDate } from '../../../facets/date/utils'
+import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../../../constants'
+import { formatDate } from '../../facets/date/utils'
 
 function hasFilter(facetData: FacetData) {
 	if (facetData.filters == null) return false
@@ -32,7 +31,7 @@ function getFilterValue(facetData: FacetData): string[] {
 	return []
 }
 
-function useFilters(facetsData: FacetsData) {
+export default function useFilters(facetsData: FacetsData) {
 	const [filters, setFilters] = React.useState<ActiveFilter[]>([])
 	React.useEffect(() => {
 		const activeFilters: ActiveFilter[] = []
@@ -53,28 +52,3 @@ function useFilters(facetsData: FacetsData) {
 	}, [facetsData])
 	return filters
 }
-
-interface Props {
-	dispatch: React.Dispatch<FacetsDataReducerAction>
-	facetsData: FacetsData
-}
-function ActiveFilters(props: Props) {
-	const filters = useFilters(props.facetsData)
-	return (
-		<div>
-			<ul>
-				{
-					filters.map(filter =>
-						<ActiveFilter
-							dispatch={props.dispatch}
-							filter={filter}
-							key={filter.id}
-						/>
-					)
-				}
-			</ul>
-		</div>
-	)
-}
-
-export default React.memo(ActiveFilters)

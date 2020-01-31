@@ -28,11 +28,11 @@ const Bar = styled.div`
 
 interface BarFillProps { height: number }
 const BarFill = styled.div`
-	background: #e6e6e6;
+	background: #DDD;
 	height: ${(props: BarFillProps) => {
 		let height = props.height
 		if (height > 0 && height < .03) height = .03 /* Set minimum height to 3px */
-		return `${height * 100}px`
+		return `${height * 60}px`
 	}};
 `
 

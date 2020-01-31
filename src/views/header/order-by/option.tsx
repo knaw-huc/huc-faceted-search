@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { Button } from '../../page-number'
+import { Button } from '../page-number'
 
 interface OOProps { active: boolean }
 const Wrapper = styled.li`
