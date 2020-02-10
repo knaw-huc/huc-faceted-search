@@ -54,6 +54,7 @@ interface ParsedResponse {
 // ENUMS
 declare const enum EsDataType {
 	Boolean = "boolean",
+	Completion = "completion",
 	Date = "date",
 	Geo_point = "geo_point",
 	Integer = "integer",
