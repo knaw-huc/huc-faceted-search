@@ -57,6 +57,8 @@ const initialSearchResult = {
 function useSearchResult(url, options) {
     const [searchResult, setSearchResult] = React.useState(initialSearchResult);
     React.useEffect(() => {
+        if (options.facetsData == null)
+            return;
         const searchRequest = new request_creator_1.default(options);
         constants_1.fetchSearchResults(url, searchRequest)
             .then(result => {
@@ -88,6 +90,8 @@ function FacetedSearch(props) {
         setSortOrder(new Map());
         facetsDataDispatch({ type: 'clear', fields: props.fields });
     }, [props.fields]);
+    if (facetsData == null)
+        return null;
     return (React.createElement(Wrapper, { className: props.className, disableDefaultStyle: props.disableDefaultStyle, id: "huc-fs" },
         React.createElement(full_text_search_1.default, { autoSuggest: props.autoSuggest, setQuery: setQuery }),
         React.createElement(header_1.default, { autoSuggest: props.autoSuggest, clearActiveFilters: clearActiveFilters, currentPage: currentPage, dispatch: facetsDataDispatch, facetsData: facetsData, searchResult: searchResult, resultsPerPage: props.resultsPerPage, setCurrentPage: setCurrentPage, setSortOrder: setSortOrder, sortOrder: sortOrder }),

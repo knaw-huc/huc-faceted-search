@@ -52,7 +52,7 @@ export function initFacetsData(fields: AppProps['fields']) {
 }
 
 export default function useFacetsDataReducer(fields: AppProps['fields']) {
-	const x = React.useReducer(facetsDataReducer, initFacetsData(fields))
+	const x = React.useReducer(facetsDataReducer, null)
 
 	React.useEffect(() => {
 		x[1]({ type: 'clear', fields })

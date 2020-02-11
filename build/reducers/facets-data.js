@@ -31,7 +31,7 @@ function initFacetsData(fields) {
 }
 exports.initFacetsData = initFacetsData;
 function useFacetsDataReducer(fields) {
-    const x = react_1.default.useReducer(facetsDataReducer, initFacetsData(fields));
+    const x = react_1.default.useReducer(facetsDataReducer, null);
     react_1.default.useEffect(() => {
         x[1]({ type: 'clear', fields });
     }, [fields]);

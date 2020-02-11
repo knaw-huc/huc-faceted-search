@@ -6,7 +6,6 @@ import ListFacet from './views/facets/list'
 import BooleanFacet from './views/facets/boolean'
 import DateFacet from './views/facets/date'
 import RangeFacet from './views/facets/range'
-// import Reset from './views/reset'
 import ElasticSearchRequest from './io/request-creator'
 import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet, isDateFacet } from './constants'
 import elasticSearchResponseParser from './io/response-parser'
@@ -61,6 +60,7 @@ function useSearchResult(url: string, options: ElasticSearchRequestOptions) {
 	const [searchResult, setSearchResult] = React.useState(initialSearchResult)
 
 	React.useEffect(() => {
+		if (options.facetsData == null) return
 		const searchRequest = new ElasticSearchRequest(options)
 
 		fetchSearchResults(url, searchRequest)
@@ -96,6 +96,8 @@ function FacetedSearch(props: AppProps) {
 		setSortOrder(new Map())
 		facetsDataDispatch({ type: 'clear', fields: props.fields })
 	}, [props.fields])
+
+	if (facetsData == null) return null
 
 	return (
 		<Wrapper
