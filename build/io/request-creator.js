@@ -144,9 +144,12 @@ class ElasticSearchRequest {
         this.highlight = { fields: { text: {} }, require_field_match: false };
     }
     setSource(options) {
-        if (!options.resultFields.length)
+        if (!options.resultFields.length && !options.excludeResultFields.length)
             return;
-        this._source = options.resultFields;
+        this._source = {
+            include: options.resultFields,
+            exclude: options.excludeResultFields
+        };
     }
 }
 exports.default = ElasticSearchRequest;

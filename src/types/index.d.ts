@@ -5,6 +5,7 @@ interface AppProps {
 	autoSuggest?: (query: string) => Promise<string[]>
 	className?: string /* className prop is used by StyledComponents */
 	disableDefaultStyle?: boolean
+	excludeResultFields?: string[]
 	fields: FacetConfig[]
 	// onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
@@ -20,7 +21,7 @@ type Filters = Map<string, Set<string>>
 type SortOrder = Map<string, SortDirection>
 type SetSortOrder = (sortOrder: SortOrder) => void
 
-type ElasticSearchRequestOptions = Pick<AppProps, 'resultFields' | 'resultsPerPage'> & {
+type ElasticSearchRequestOptions = Pick<AppProps, 'excludeResultFields' | 'resultFields' | 'resultsPerPage'> & {
 	currentPage: number
 	facetsData: FacetsData
 	query: string

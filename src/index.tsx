@@ -83,6 +83,7 @@ function FacetedSearch(props: AppProps) {
 	const [facetsData, facetsDataDispatch] = useFacetsDataReducer(props.fields)
 	const searchResult = useSearchResult(props.url, {
 		currentPage,
+		excludeResultFields: props.excludeResultFields,
 		facetsData,
 		resultFields: props.resultFields,
 		resultsPerPage: props.resultsPerPage,
@@ -181,6 +182,7 @@ function FacetedSearch(props: AppProps) {
 }
 
 FacetedSearch.defaultProps = {
+	excludeResultFields: [],
 	fields: [],
 	resultFields: [],
 	resultsPerPage: 10,

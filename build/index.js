@@ -76,6 +76,7 @@ function FacetedSearch(props) {
     const [facetsData, facetsDataDispatch] = facets_data_1.default(props.fields);
     const searchResult = useSearchResult(props.url, {
         currentPage,
+        excludeResultFields: props.excludeResultFields,
         facetsData,
         resultFields: props.resultFields,
         resultsPerPage: props.resultsPerPage,
@@ -112,6 +113,7 @@ function FacetedSearch(props) {
         React.createElement(search_result_1.default, { onClickResult: props.onClickResult, ResultBodyComponent: props.ResultBodyComponent, resultBodyProps: props.resultBodyProps, searchResult: searchResult })));
 }
 FacetedSearch.defaultProps = {
+    excludeResultFields: [],
     fields: [],
     resultFields: [],
     resultsPerPage: 10,

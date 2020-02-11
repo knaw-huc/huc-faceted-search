@@ -16,7 +16,7 @@ interface ListAggregationTerms {
 }
 
 export default class ElasticSearchRequest {
-	_source: AppProps['resultFields']
+	_source: { include?: AppProps['resultFields'], exclude?: AppProps['excludeResultFields'] }
 	aggs: Aggregations = {}
 	from: number
 	highlight: Highlight
@@ -187,7 +187,11 @@ export default class ElasticSearchRequest {
 	}
 
 	private setSource(options: ElasticSearchRequestOptions) {
-		if (!options.resultFields.length) return
-		this._source = options.resultFields
+		if (!options.resultFields.length && !options.excludeResultFields.length) return
+
+		this._source = {
+			include: options.resultFields,
+			exclude: options.excludeResultFields
+		}
 	}
 }

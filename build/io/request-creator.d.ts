@@ -12,7 +12,10 @@ declare type Highlight = {
     require_field_match: boolean;
 };
 export default class ElasticSearchRequest {
-    _source: AppProps['resultFields'];
+    _source: {
+        include?: AppProps['resultFields'];
+        exclude?: AppProps['excludeResultFields'];
+    };
     aggs: Aggregations;
     from: number;
     highlight: Highlight;
