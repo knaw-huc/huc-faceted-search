@@ -58,8 +58,6 @@ const initialSearchResult = {
 function useSearchResult(url, options) {
     const [searchResult, setSearchResult] = React.useState(initialSearchResult);
     React.useEffect(() => {
-        if (options.facetsData == null)
-            return;
         const searchRequest = new request_creator_1.default(options);
         constants_1.fetchSearchResults(url, searchRequest)
             .then(result => {

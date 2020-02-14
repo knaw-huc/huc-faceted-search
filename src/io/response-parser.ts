@@ -41,74 +41,76 @@ function addHierarchyBucket(parentField: string, response: any): (bucket: Bucket
 export default function elasticSearchResponseParser(response: any, facets: FacetsData): FSResponse {
 	const facetValues: FSResponse['facetValues'] = {}
 
-	facets.forEach(facet => {
-		const buckets = getBuckets(response, facet.id)
+	if (facets != null) {
+		facets.forEach(facet => {
+			const buckets = getBuckets(response, facet.id)
 
-		if (isListFacet(facet)) {
-			facetValues[facet.id] = {
-				total: response.aggregations[`${facet.id}-count`][`${facet.id}-count`].value,
-				values: buckets.map((b: any) => ({ key: b.key, count: b.doc_count }))
+			if (isListFacet(facet)) {
+				facetValues[facet.id] = {
+					total: response.aggregations[`${facet.id}-count`][`${facet.id}-count`].value,
+					values: buckets.map((b: any) => ({ key: b.key, count: b.doc_count }))
+				}
 			}
-		}
-		if (isHierarchyFacet(facet)) {
-			const values: HierarchyFacetValues = {
-				total: response.aggregations[`${facet.id}-count`][`${facet.id}-count`].value,
-				values: buckets.map(addHierarchyBucket(facet.id, response))
-				// child: addHierarchyValue(facet.id)
-				// child: null
+			if (isHierarchyFacet(facet)) {
+				const values: HierarchyFacetValues = {
+					total: response.aggregations[`${facet.id}-count`][`${facet.id}-count`].value,
+					values: buckets.map(addHierarchyBucket(facet.id, response))
+					// child: addHierarchyValue(facet.id)
+					// child: null
+				}
+
+				facetValues[facet.id] = values
 			}
+			else if (isBooleanFacet(facet)) {
+				const trueBucket = buckets.find((b: any) => b.key === 1)
+				const trueCount = trueBucket != null ? trueBucket.doc_count : 0
+				const falseBucket = buckets.find((b: any) => b.key === 0)
+				const falseCount = falseBucket != null ? falseBucket.doc_count : 0
 
-			facetValues[facet.id] = values
-		}
-		else if (isBooleanFacet(facet)) {
-			const trueBucket = buckets.find((b: any) => b.key === 1)
-			const trueCount = trueBucket != null ? trueBucket.doc_count : 0
-			const falseBucket = buckets.find((b: any) => b.key === 0)
-			const falseCount = falseBucket != null ? falseBucket.doc_count : 0
+				facetValues[facet.id] = [
+					{ key: 'true', count: trueCount },
+					{ key: 'false', count: falseCount },
+				]
+			}
+			else if (isDateFacet(facet)) {
+				// TODO set values to from and to, so we have to calculate less in the views
+				facetValues[facet.id] = buckets.map(hv => ({
+					key: hv.key,
+					count: hv.doc_count,
+				})) as RangeFacetValues
+				// console.log('in red', facetValues[facet.id])
 
-			facetValues[facet.id] = [
-				{ key: 'true', count: trueCount },
-				{ key: 'false', count: falseCount },
-			]
-		}
-		else if (isDateFacet(facet)) {
-			// TODO set values to from and to, so we have to calculate less in the views
-			facetValues[facet.id] = buckets.map(hv => ({
-				key: hv.key,
-				count: hv.doc_count,
-			})) as RangeFacetValues
-			// console.log('in red', facetValues[facet.id])
+				facet.interval = response.aggregations[facet.id][facet.id].interval
+			}
+			else if (isRangeFacet(facet)) {
+				// const values: Record<string, number> = getBuckets(response, facet.id, true)
+				// let sum = 0
+				facetValues[facet.id] = buckets.map(hv => ({
+					key: hv.key,
+					count: hv.doc_count,
+				})) as RangeFacetValues
 
-			facet.interval = response.aggregations[facet.id][facet.id].interval
-		}
-		else if (isRangeFacet(facet)) {
-			// const values: Record<string, number> = getBuckets(response, facet.id, true)
-			// let sum = 0
-			facetValues[facet.id] = buckets.map(hv => ({
-				key: hv.key,
-				count: hv.doc_count,
-			})) as RangeFacetValues
+				// facetValues[facet.id] = Object.keys(values)
+				// 	.reduce((prev, curr, index, array) => {
+				// 		const prevCount = index > 0 ? values[array[index - 1]] : 0
+				// 		const count = values[curr] - prevCount
+				// 		const to = Math.ceil(sum + count)
 
-			// facetValues[facet.id] = Object.keys(values)
-			// 	.reduce((prev, curr, index, array) => {
-			// 		const prevCount = index > 0 ? values[array[index - 1]] : 0
-			// 		const count = values[curr] - prevCount
-			// 		const to = Math.ceil(sum + count)
+				// 		prev.push({
+				// 			count,
+				// 			key: count,
+				// 			from: sum,
+				// 			to, 
+				// 		})
 
-			// 		prev.push({
-			// 			count,
-			// 			key: count,
-			// 			from: sum,
-			// 			to, 
-			// 		})
+				// 		sum = to
 
-			// 		sum = to
-
-			// 		return prev	
-			// 	}, [] as RangeKeyCount[])
-			// 	.slice(1)
-		}
-	})
+				// 		return prev	
+				// 	}, [] as RangeKeyCount[])
+				// 	.slice(1)
+			}
+		})
+	}
 
 	return {
 		facetValues,

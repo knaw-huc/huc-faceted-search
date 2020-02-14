@@ -26,8 +26,11 @@ export default class ElasticSearchRequest {
 	sort: any
 
 	constructor(options: ElasticSearchRequestOptions) {
-		this.setPostFilter(options)
-		this.setAggregations(options)
+		if (options.facetsData != null && options.facetsData.size) {
+			this.setPostFilter(options)
+			this.setAggregations(options)
+		}
+
 		this.setQuery(options)
 		this.setSource(options)
 		this.size = options.resultsPerPage

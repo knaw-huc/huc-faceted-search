@@ -61,7 +61,6 @@ function useSearchResult(url: string, options: ElasticSearchRequestOptions) {
 	const [searchResult, setSearchResult] = React.useState(initialSearchResult)
 
 	React.useEffect(() => {
-		if (options.facetsData == null) return
 		const searchRequest = new ElasticSearchRequest(options)
 
 		fetchSearchResults(url, searchRequest)
