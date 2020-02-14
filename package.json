@@ -1,6 +1,6 @@
 {
   "name": "huc-faceted-search",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -16,8 +16,8 @@
   "devDependencies": {
     "@types/elasticsearch": "^5.0.34",
     "@types/lodash.debounce": "^4.0.6",
-    "@types/react": "^16.9.5",
-    "react": "^16.10.2",
+    "@types/react": "^16.9.19",
+    "react": "^16.12.0",
     "react-emotion": "^10.0.0",
     "ts-loader": "^6.0.4",
     "tslib": "^1.10.0",
@@ -26,7 +26,7 @@
     "webpack-cli": "^3.3.6"
   },
   "peerDependencies": {
-    "react": "^16.10.2",
+    "react": "^16.12.0",
     "react-emotion": "^10.0.0"
   },
   "dependencies": {
