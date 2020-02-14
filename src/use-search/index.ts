@@ -1,6 +1,6 @@
 import ESRequestWithFacets from './request-with-facets-creator'
 import ESResponseWithFacetsParser from './response-with-facets-parser'
-import ESRequest from './request-creator'
+// import ESRequest from './request-creator'
 import ESResponseParser from './response-parser'
 import React from 'react'
 import fetchSearchResults from './fetch'
@@ -15,7 +15,7 @@ export default function useSearch(url: string, options: ElasticSearchRequestOpti
 	const [facetValues, setFacetValues] = React.useState({})
 
 	React.useEffect(() => {
-		const searchRequest = new ESRequest(options)
+		const searchRequest = new ESRequestWithFacets(options)
 
 		fetchSearchResults(url, searchRequest)
 			.then(result => {

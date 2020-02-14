@@ -18,6 +18,7 @@ const PageNumberWrapper = styled_1.default(exports.Button) `
 	text-align: center;
 `;
 function PageNumber(props) {
-    return (React.createElement(PageNumberWrapper, { active: props.pageNumber === props.currentPage, key: props.pageNumber, onClick: props.setCurrentPage }, props.pageNumber));
+    const active = props.pageNumber === props.currentPage;
+    return (React.createElement(PageNumberWrapper, { active: active, className: active ? 'active' : null, key: props.pageNumber, onClick: props.setCurrentPage }, props.pageNumber));
 }
 exports.default = React.memo(PageNumber);

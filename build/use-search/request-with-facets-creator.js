@@ -7,6 +7,8 @@ class ESRequestWithFacets extends request_creator_1.default {
     constructor(options) {
         super(options);
         this.aggs = {};
+        if (options.facetsData == null)
+            return;
         this.setPostFilter(options);
         this.setAggregations(options);
         this.setQuery(options);

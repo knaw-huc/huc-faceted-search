@@ -17,44 +17,20 @@ interface ListAggregationTerms {
 }
 
 export default class ESRequestWithFacets extends ESRequest {
-	// _source: { include?: AppProps['resultFields'], exclude?: AppProps['excludeResultFields'] }
 	aggs: Aggregations = {}
-	// from: number
 	highlight: Highlight
 	post_filter: Record<string, any>
 	query: Record<string, any>
-	// size: number
-	// sort: any
 
 	constructor(options: ElasticSearchRequestOptions) {
 		super(options)
 
+		if (options.facetsData == null) return
+
 		this.setPostFilter(options)
 		this.setAggregations(options)
 		this.setQuery(options)
-
-		// this.setSource(options)
-		// this.size = options.resultsPerPage
-		// if (options.currentPage > 1) this.from = this.size * (options.currentPage - 1) 
-		// if (options.sortOrder.size) {
-		// 	this.sort = []
-		// 	options.sortOrder.forEach((sortDirection, facetId) => {
-		// 		this.sort.push({[facetId]: sortDirection})
-		// 	})
-		// 	this.sort.push('_score')
-		// }
 	}
-	// private toHierarchyPostFilter(id: HierarchyFacetData['id'], filters: HierarchyFacetData['filters']) {
-	// 	const allFacetFilters = [...filters].map((key, index) => {
-	// 		const field = index === 0 ?
-	// 			id :
-	// 			getChildFieldName(id, index)
-	// 		return { term: { [field]: key } }
-	// 	})
-	// 	if (allFacetFilters.length === 1) return allFacetFilters[0]
-	// 	else if (allFacetFilters.length > 1) return { bool: { should: allFacetFilters } }
-	// 	return {}
-	// }
 
 	private setPostFilter(options: ElasticSearchRequestOptions) {
 		function toPostFilter(facet: ListFacetData | BooleanFacetData) {
@@ -188,31 +164,6 @@ export default class ESRequestWithFacets extends ESRequest {
 		return this.addFilter(facet.id, values)
 	}
 
-	// private tmp(field: string, filters: string[]): Record<string, any> {
-	// 	if (filters.length < 1) return {}
-
-	// 	const childFieldName = getChildFieldName(field)
-	// 	// console.log(field, filters)
-	// 	// console.log(field)
-	// 	// console.log(getChildFieldName(field))
-	// 	// const value = filters[0]
-	// 	let aggs = {}
-	// 	if (filters.length > 1) aggs = this.tmp(childFieldName, filters.slice(1))
-	// 	const ret = {
-	// 		// aggs: {
-	// 			[childFieldName]: {
-	// 				terms: {
-	// 					field: childFieldName
-	// 				}
-	// 			},
-	// 			aggs
-	// 		// }
-	// 	}
-
-	// 	if (!Object.keys(aggs).length) delete ret.aggs
-	// 	return ret
-	// }
-
 	private tmp(facetData: HierarchyFacetData, filters: string[], index: number = 0): Record<string, any> {
 		const field = index === 0 ? facetData.id : getChildFieldName(facetData.id, index)
 		const terms: ListAggregationTerms = {
@@ -311,13 +262,4 @@ export default class ESRequestWithFacets extends ESRequest {
 		this.query = { query_string: { query: options.query } }
 		this.highlight = { fields: { text: {} }, require_field_match: false }
 	}
-
-	// private setSource(options: ElasticSearchRequestOptions) {
-	// 	if (!options.resultFields.length && !options.excludeResultFields.length) return
-
-	// 	this._source = {
-	// 		include: options.resultFields,
-	// 		exclude: options.excludeResultFields
-	// 	}
-	// }
 }

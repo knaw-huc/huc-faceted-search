@@ -24,9 +24,11 @@ interface Props {
 	setCurrentPage: () => void
 }
 function PageNumber(props: Props) {
+	const active = props.pageNumber === props.currentPage
 	return (
 		<PageNumberWrapper
-			active={props.pageNumber === props.currentPage}
+			active={active}
+			className={active ? 'active' : null}
 			key={props.pageNumber}
 			onClick={props.setCurrentPage}
 		>
