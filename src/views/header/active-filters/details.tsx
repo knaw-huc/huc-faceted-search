@@ -39,16 +39,34 @@ const ActiveFiltersDropDown = styled(DropDown)`
 `
 
 interface Props {
+	clearFullTextInput: () => void
 	dispatch: React.Dispatch<FacetsDataReducerAction>
 	filters: ActiveFilter[]
+	query: string
 }
 function ActiveFiltersDetails(props: Props) {
 	return (
 		<ActiveFiltersDropDown
-			label={`active (${props.filters.reduce((p, c) => p + c.values.length, 0)})`}
+			label={`active (${props.filters.reduce((p, c) => p + c.values.length, !props.query.length ? 0 : 1)})`}
 			z={1001}
 		>
 			<ul>
+				{
+					props.query.length > 0 &&
+					<li>
+						<div>Full text query</div>
+						<ul>
+							<li
+								onClick={ev => {
+									ev.stopPropagation()
+									props.clearFullTextInput()
+								}}
+							>
+								{props.query}
+							</li>		
+						</ul>
+					</li>
+				}
 				{
 					props.filters.map(filter =>
 						<li key={filter.id}>

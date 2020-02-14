@@ -78,6 +78,10 @@ function FullTextSearch(props) {
         setQuery(ev.target.value);
         showLoader(loaderRef);
     }, []);
+    React.useEffect(() => {
+        if (props.query !== inputValue)
+            setInputValue(props.query);
+    }, [props.query]);
     return (React.createElement(exports.Wrapper, { id: "huc-full-text-search" },
         React.createElement("div", { className: "input" },
             React.createElement("div", { className: "search-icon" },

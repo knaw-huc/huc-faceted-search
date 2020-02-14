@@ -41,7 +41,6 @@ interface RangeKeyCount {
 }
 
 interface FSResponse {
-	facetValues: Record<string, FacetValues>
 	results: Hit[]
 	total: number
 }

@@ -39,9 +39,11 @@ const Wrapper = styled.header`
 type Props = Pick<AppProps, 'resultsPerPage'> & {
 	autoSuggest: AppProps['autoSuggest']
 	clearActiveFilters: () => void
+	clearFullTextInput: () => void
 	currentPage: number
 	dispatch: React.Dispatch<FacetsDataReducerAction>
 	facetsData: FacetsData
+	query: string
 	searchResult: FSResponse
 	setCurrentPage: (pageNumber: number) => void
 	setSortOrder: SetSortOrder
@@ -58,8 +60,10 @@ function Header(props: Props) {
 		<Wrapper id="huc-fs-header">
 			<ActiveFilters
 				clearActiveFilters={props.clearActiveFilters}
+				clearFullTextInput={props.clearFullTextInput}
 				dispatch={props.dispatch}
 				facetsData={props.facetsData}
+				query={props.query}
 			/>
 			<div className="right">
 				{from}-{to} of {props.searchResult.total} result{props.searchResult.total === 1 ? '' : 's'},&nbsp;

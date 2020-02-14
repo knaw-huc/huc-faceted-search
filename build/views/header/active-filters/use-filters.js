@@ -7,7 +7,7 @@ const utils_1 = require("../../facets/date/utils");
 function hasFilter(facetData) {
     if (facetData.filters == null)
         return false;
-    if (constants_1.isListFacet(facetData) || constants_1.isBooleanFacet(facetData)) {
+    if (constants_1.isListFacet(facetData) || constants_1.isBooleanFacet(facetData) || constants_1.isHierarchyFacet(facetData)) {
         return facetData.filters.size > 0;
     }
     else if (constants_1.isRangeFacet(facetData) || constants_1.isDateFacet(facetData)) {
@@ -18,7 +18,7 @@ function hasFilter(facetData) {
 function getFilterValue(facetData) {
     if (!hasFilter(facetData))
         return [];
-    if (constants_1.isListFacet(facetData) || constants_1.isBooleanFacet(facetData)) {
+    if (constants_1.isListFacet(facetData) || constants_1.isBooleanFacet(facetData) || constants_1.isHierarchyFacet(facetData)) {
         return Array.from(facetData.filters);
     }
     else if (constants_1.isRangeFacet(facetData)) {

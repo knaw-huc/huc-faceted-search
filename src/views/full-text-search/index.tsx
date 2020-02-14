@@ -47,11 +47,6 @@ export const Input = styled.input`
 	}
 `
 
-interface Props {
-	autoSuggest: (query: string) => Promise<string[]>
-	setQuery: (query: string) => void
-}
-
 let loaderIntervalID: number
 let loaderIntervalProgress = 0
 function showLoader(loaderRef: any) {
@@ -70,6 +65,12 @@ function hideLoader(loaderRef: any) {
 	loaderRef.current.style.width = '0'
 }
 
+
+interface Props {
+	autoSuggest: (query: string) => Promise<string[]>
+	query: string
+	setQuery: (query: string) => void
+}
 function FullTextSearch(props: Props) {
 	const loaderRef = React.useRef()
 	const [suggestActive, setSuggestActive] = React.useState(false)
@@ -90,6 +91,10 @@ function FullTextSearch(props: Props) {
 		},
 		[]
 	)
+
+	React.useEffect(() => {
+		if (props.query !== inputValue) setInputValue(props.query) 
+	}, [props.query])
 
 	return (
 		<Wrapper id="huc-full-text-search">

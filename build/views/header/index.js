@@ -45,7 +45,7 @@ function Header(props) {
     if (to > props.searchResult.total)
         to = props.searchResult.total;
     return (React.createElement(Wrapper, { id: "huc-fs-header" },
-        React.createElement(active_filters_1.default, { clearActiveFilters: props.clearActiveFilters, dispatch: props.dispatch, facetsData: props.facetsData }),
+        React.createElement(active_filters_1.default, { clearActiveFilters: props.clearActiveFilters, clearFullTextInput: props.clearFullTextInput, dispatch: props.dispatch, facetsData: props.facetsData, query: props.query }),
         React.createElement("div", { className: "right" },
             from,
             "-",

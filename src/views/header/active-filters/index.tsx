@@ -33,12 +33,14 @@ const Wrapper = styled.div`
 
 interface Props {
 	clearActiveFilters: () => void
+	clearFullTextInput: () => void
 	dispatch: React.Dispatch<FacetsDataReducerAction>
 	facetsData: FacetsData
+	query: string
 }
 function ActiveFilters(props: Props) {
 	const filters = useFilters(props.facetsData)
-	if (!filters.length) return null
+	if (!props.query.length && !filters.length) return null
 
 	return (
 		<Wrapper
@@ -46,8 +48,10 @@ function ActiveFilters(props: Props) {
 		>
 			filters:
 			<Details
+				clearFullTextInput={props.clearFullTextInput}
 				dispatch={props.dispatch}
 				filters={filters}
+				query={props.query}
 			/>
 			<Button
 				onClick={props.clearActiveFilters}

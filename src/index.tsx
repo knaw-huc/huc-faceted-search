@@ -7,13 +7,12 @@ import HierarchyFacet from './views/facets/hierarchy'
 import DateFacet from './views/facets/date'
 import ListFacet from './views/facets/list'
 import RangeFacet from './views/facets/range'
-import ElasticSearchRequest from './io/request-creator'
-import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet, isDateFacet, isHierarchyFacet } from './constants'
-import elasticSearchResponseParser from './io/response-parser'
+import { isBooleanFacet, isListFacet, isRangeFacet, isDateFacet, isHierarchyFacet } from './constants'
 import Header from './views/header'
 import SearchResult from './views/search-result'
 import FullTextSearch from './views/full-text-search'
 import useFacetsDataReducer from './reducers/facets-data'
+import useSearch from './use-search'
 
 const Wrapper = styled.div`
 	margin-bottom: 10vh;
@@ -51,37 +50,12 @@ const Wrapper = styled.div`
 	}}
 `
 
-const initialSearchResult: FSResponse = {
-	facetValues: {},
-	results: [],
-	total: 0
-}
-
-function useSearchResult(url: string, options: ElasticSearchRequestOptions) {
-	const [searchResult, setSearchResult] = React.useState(initialSearchResult)
-
-	React.useEffect(() => {
-		const searchRequest = new ElasticSearchRequest(options)
-
-		fetchSearchResults(url, searchRequest)
-			.then(result => {
-				const searchResponse = elasticSearchResponseParser(result, options.facetsData)
-				setSearchResult(searchResponse)
-			})
-			.catch(err => {
-				console.log(err)
-			})
-	}, [url, ...Object.keys(options).map((opt: keyof ElasticSearchRequestOptions) => options[opt])])
-
-	return searchResult
-}
-
 function FacetedSearch(props: AppProps) {
 	const [query, setQuery] = React.useState('')
 	const [currentPage, setCurrentPage] = React.useState(1)
 	const [sortOrder, setSortOrder] = React.useState<SortOrder>(new Map())
 	const [facetsData, facetsDataDispatch] = useFacetsDataReducer(props.fields)
-	const searchResult = useSearchResult(props.url, {
+	const [searchResult, facetValues] = useSearch(props.url, {
 		currentPage,
 		excludeResultFields: props.excludeResultFields,
 		facetsData,
@@ -97,6 +71,10 @@ function FacetedSearch(props: AppProps) {
 		facetsDataDispatch({ type: 'clear', fields: props.fields })
 	}, [props.fields])
 
+	const clearFullTextInput = React.useCallback(() => {
+		setQuery('')
+	}, [])
+
 	if (facetsData == null) return null
 
 	return (
@@ -108,14 +86,17 @@ function FacetedSearch(props: AppProps) {
 			<FullTextSearch
 				autoSuggest={props.autoSuggest}
 				setQuery={setQuery}
+				query={query}
 			/>
 			<Header
 				autoSuggest={props.autoSuggest}
 				clearActiveFilters={clearActiveFilters}
+				clearFullTextInput={clearFullTextInput}
 				currentPage={currentPage}
 				dispatch={facetsDataDispatch}
 				facetsData={facetsData}
 				searchResult={searchResult}
+				query={query}
 				resultsPerPage={props.resultsPerPage}
 				setCurrentPage={setCurrentPage}
 				setSortOrder={setSortOrder}
@@ -125,7 +106,7 @@ function FacetedSearch(props: AppProps) {
 				{
 					Array.from(facetsData.values())
 						.map(facetData => {
-							const values = searchResult.facetValues[facetData.id]
+							const values = facetValues[facetData.id]
 
 							if (isListFacet(facetData)) {
 								return (

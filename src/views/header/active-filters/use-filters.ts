@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../../../constants'
+import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet, isHierarchyFacet } from '../../../constants'
 import { formatDate } from '../../facets/date/utils'
 
 function hasFilter(facetData: FacetData) {
 	if (facetData.filters == null) return false
 
-	if (isListFacet(facetData) || isBooleanFacet(facetData)) {
+	if (isListFacet(facetData) || isBooleanFacet(facetData) || isHierarchyFacet(facetData)) {
 		return facetData.filters.size > 0
 	}
 	else if (isRangeFacet(facetData) || isDateFacet(facetData)) {
@@ -18,7 +18,7 @@ function hasFilter(facetData: FacetData) {
 function getFilterValue(facetData: FacetData): string[] {
 	if (!hasFilter(facetData)) return []
 
-	if (isListFacet(facetData) || isBooleanFacet(facetData)) {
+	if (isListFacet(facetData) || isBooleanFacet(facetData) || isHierarchyFacet(facetData)) {
 		return Array.from(facetData.filters)
 	}
 	else if (isRangeFacet(facetData)) {

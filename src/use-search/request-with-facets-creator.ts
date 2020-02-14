@@ -1,4 +1,5 @@
 import { isBooleanFacet, isListFacet, isRangeFacet, isDateFacet, isHierarchyFacet, getChildFieldName } from '../constants'
+import ESRequest from './request-creator'
 
 interface AggregationRequest {
 	aggs: any
@@ -15,33 +16,33 @@ interface ListAggregationTerms {
 	size: number
 }
 
-export default class ElasticSearchRequest {
-	_source: { include?: AppProps['resultFields'], exclude?: AppProps['excludeResultFields'] }
+export default class ESRequestWithFacets extends ESRequest {
+	// _source: { include?: AppProps['resultFields'], exclude?: AppProps['excludeResultFields'] }
 	aggs: Aggregations = {}
-	from: number
+	// from: number
 	highlight: Highlight
 	post_filter: Record<string, any>
 	query: Record<string, any>
-	size: number
-	sort: any
+	// size: number
+	// sort: any
 
 	constructor(options: ElasticSearchRequestOptions) {
-		if (options.facetsData != null && options.facetsData.size) {
-			this.setPostFilter(options)
-			this.setAggregations(options)
-		}
+		super(options)
 
+		this.setPostFilter(options)
+		this.setAggregations(options)
 		this.setQuery(options)
-		this.setSource(options)
-		this.size = options.resultsPerPage
-		if (options.currentPage > 1) this.from = this.size * (options.currentPage - 1) 
-		if (options.sortOrder.size) {
-			this.sort = []
-			options.sortOrder.forEach((sortDirection, facetId) => {
-				this.sort.push({[facetId]: sortDirection})
-			})
-			this.sort.push('_score')
-		}
+
+		// this.setSource(options)
+		// this.size = options.resultsPerPage
+		// if (options.currentPage > 1) this.from = this.size * (options.currentPage - 1) 
+		// if (options.sortOrder.size) {
+		// 	this.sort = []
+		// 	options.sortOrder.forEach((sortDirection, facetId) => {
+		// 		this.sort.push({[facetId]: sortDirection})
+		// 	})
+		// 	this.sort.push('_score')
+		// }
 	}
 	// private toHierarchyPostFilter(id: HierarchyFacetData['id'], filters: HierarchyFacetData['filters']) {
 	// 	const allFacetFilters = [...filters].map((key, index) => {
@@ -311,12 +312,12 @@ export default class ElasticSearchRequest {
 		this.highlight = { fields: { text: {} }, require_field_match: false }
 	}
 
-	private setSource(options: ElasticSearchRequestOptions) {
-		if (!options.resultFields.length && !options.excludeResultFields.length) return
+	// private setSource(options: ElasticSearchRequestOptions) {
+	// 	if (!options.resultFields.length && !options.excludeResultFields.length) return
 
-		this._source = {
-			include: options.resultFields,
-			exclude: options.excludeResultFields
-		}
-	}
+	// 	this._source = {
+	// 		include: options.resultFields,
+	// 		exclude: options.excludeResultFields
+	// 	}
+	// }
 }

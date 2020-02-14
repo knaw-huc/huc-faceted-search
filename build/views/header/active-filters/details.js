@@ -40,12 +40,21 @@ const ActiveFiltersDropDown = styled_1.default(drop_down_1.default) `
 	}
 `;
 function ActiveFiltersDetails(props) {
-    return (React.createElement(ActiveFiltersDropDown, { label: `active (${props.filters.reduce((p, c) => p + c.values.length, 0)})`, z: 1001 },
-        React.createElement("ul", null, props.filters.map(filter => React.createElement("li", { key: filter.id },
-            React.createElement("div", null, filter.title),
-            React.createElement("ul", null, filter.values.map(value => React.createElement("li", { key: value, onClick: ev => {
-                    ev.stopPropagation();
-                    props.dispatch({ type: 'remove_filter', facetId: filter.id, value });
-                } }, value))))))));
+    return (React.createElement(ActiveFiltersDropDown, { label: `active (${props.filters.reduce((p, c) => p + c.values.length, !props.query.length ? 0 : 1)})`, z: 1001 },
+        React.createElement("ul", null,
+            props.query.length > 0 &&
+                React.createElement("li", null,
+                    React.createElement("div", null, "Full text query"),
+                    React.createElement("ul", null,
+                        React.createElement("li", { onClick: ev => {
+                                ev.stopPropagation();
+                                props.clearFullTextInput();
+                            } }, props.query))),
+            props.filters.map(filter => React.createElement("li", { key: filter.id },
+                React.createElement("div", null, filter.title),
+                React.createElement("ul", null, filter.values.map(value => React.createElement("li", { key: value, onClick: ev => {
+                        ev.stopPropagation();
+                        props.dispatch({ type: 'remove_filter', facetId: filter.id, value });
+                    } }, value))))))));
 }
 exports.default = React.memo(ActiveFiltersDetails);

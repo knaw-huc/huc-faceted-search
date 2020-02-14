@@ -33,11 +33,11 @@ const Wrapper = styled_1.default.div `
 `;
 function ActiveFilters(props) {
     const filters = use_filters_1.default(props.facetsData);
-    if (!filters.length)
+    if (!props.query.length && !filters.length)
         return null;
     return (React.createElement(Wrapper, { id: "huc-fs-active-filters" },
         "filters:",
-        React.createElement(details_1.default, { dispatch: props.dispatch, filters: filters }),
+        React.createElement(details_1.default, { clearFullTextInput: props.clearFullTextInput, dispatch: props.dispatch, filters: filters, query: props.query }),
         React.createElement(page_number_1.Button, { onClick: props.clearActiveFilters }, "clear")));
 }
 exports.default = React.memo(ActiveFilters);
