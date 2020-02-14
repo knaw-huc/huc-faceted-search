@@ -3,9 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
-const list_1 = tslib_1.__importDefault(require("./views/facets/list"));
 const boolean_1 = tslib_1.__importDefault(require("./views/facets/boolean"));
+const hierarchy_1 = tslib_1.__importDefault(require("./views/facets/hierarchy"));
 const date_1 = tslib_1.__importDefault(require("./views/facets/date"));
+const list_1 = tslib_1.__importDefault(require("./views/facets/list"));
 const range_1 = tslib_1.__importDefault(require("./views/facets/range"));
 const request_creator_1 = tslib_1.__importDefault(require("./io/request-creator"));
 const constants_1 = require("./constants");
@@ -103,6 +104,9 @@ function FacetedSearch(props) {
             }
             else if (constants_1.isBooleanFacet(facetData)) {
                 return (React.createElement(boolean_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
+            }
+            else if (constants_1.isHierarchyFacet(facetData)) {
+                return (React.createElement(hierarchy_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));
             }
             else if (constants_1.isDateFacet(facetData)) {
                 return (React.createElement(date_1.default, { facetData: facetData, facetsDataDispatch: facetsDataDispatch, key: facetData.id, values: values }));

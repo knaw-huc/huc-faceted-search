@@ -9,6 +9,9 @@ function initBooleanFacet(booleanFacetConfig) {
 function initDateFacet(rangeFacetConfig) {
     return Object.assign(Object.assign({}, rangeFacetConfig), { filters: null, interval: null });
 }
+function initHierarchyFacet(hierarchyFacetConfig) {
+    return Object.assign(Object.assign({}, hierarchyFacetConfig), { filters: new Set(), size: hierarchyFacetConfig.size || 10, viewSize: hierarchyFacetConfig.size || 10 });
+}
 function initListFacet(listFacetConfig) {
     return Object.assign(Object.assign({}, listFacetConfig), { datatype: "keyword", filters: new Set(), sort: null, query: '', size: listFacetConfig.size || 10, viewSize: listFacetConfig.size || 10 });
 }
@@ -22,6 +25,8 @@ function initFacetsData(fields) {
             prev.set(curr.id, initListFacet(curr));
         else if (constants_1.isBooleanFacet(curr))
             prev.set(curr.id, initBooleanFacet(curr));
+        else if (constants_1.isHierarchyFacet(curr))
+            prev.set(curr.id, initHierarchyFacet(curr));
         else if (constants_1.isRangeFacet(curr))
             prev.set(curr.id, initRangeFacet(curr));
         else if (constants_1.isDateFacet(curr))
@@ -43,15 +48,29 @@ function facetsDataReducer(facetsData, action) {
         return initFacetsData(action.fields);
     }
     const facet = facetsData.get(action.facetId);
-    if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet)) {
+    if (constants_1.isHierarchyFacet(facet)) {
         switch (action.type) {
-            case 'add_filter': {
-                facet.filters = new Set(facet.filters.add(action.value));
+            case 'remove_filter': {
+                const filters = Array.from(facet.filters);
+                const nextFilters = filters.slice(0, filters.indexOf(action.value));
+                facet.filters = new Set(nextFilters);
                 return new Map(facetsData);
             }
+        }
+    }
+    if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet)) {
+        switch (action.type) {
             case 'remove_filter': {
                 facet.filters.delete(action.value);
                 facet.filters = new Set(facet.filters);
+                return new Map(facetsData);
+            }
+        }
+    }
+    if (constants_1.isListFacet(facet) || constants_1.isBooleanFacet(facet) || constants_1.isHierarchyFacet(facet)) {
+        switch (action.type) {
+            case 'add_filter': {
+                facet.filters = new Set(facet.filters.add(action.value));
                 return new Map(facetsData);
             }
         }
@@ -79,6 +98,10 @@ function facetsDataReducer(facetsData, action) {
                 facet.sort = { by: action.by, direction: action.direction };
                 return new Map(facetsData);
             }
+        }
+    }
+    if (constants_1.isListFacet(facet) || constants_1.isHierarchyFacet(facet)) {
+        switch (action.type) {
             case 'view_less': {
                 if (facet.viewSize > facet.size) {
                     facet.viewSize -= facet.size;

@@ -30,6 +30,10 @@ function isDateFacet(facetConfig) {
     return facetConfig.datatype === "date";
 }
 exports.isDateFacet = isDateFacet;
+function isHierarchyFacet(facetConfig) {
+    return facetConfig.datatype === "hierarchy";
+}
+exports.isHierarchyFacet = isHierarchyFacet;
 function isListFacet(facetConfig) {
     return facetConfig.datatype === "keyword";
 }
@@ -38,3 +42,9 @@ function isRangeFacet(facetConfig) {
     return facetConfig.datatype === "integer";
 }
 exports.isRangeFacet = isRangeFacet;
+function getChildFieldName(parentFieldName, number) {
+    const [field, extractedNumber] = parentFieldName.split('_level');
+    number = number != null ? number : parseInt(extractedNumber, 10) + 1;
+    return `${field}_level${number}`;
+}
+exports.getChildFieldName = getChildFieldName;

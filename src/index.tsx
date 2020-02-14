@@ -2,12 +2,13 @@
 
 import * as React from 'react'
 import styled from '@emotion/styled'
-import ListFacet from './views/facets/list'
 import BooleanFacet from './views/facets/boolean'
+import HierarchyFacet from './views/facets/hierarchy'
 import DateFacet from './views/facets/date'
+import ListFacet from './views/facets/list'
 import RangeFacet from './views/facets/range'
 import ElasticSearchRequest from './io/request-creator'
-import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet, isDateFacet } from './constants'
+import { fetchSearchResults, isBooleanFacet, isListFacet, isRangeFacet, isDateFacet, isHierarchyFacet } from './constants'
 import elasticSearchResponseParser from './io/response-parser'
 import Header from './views/header'
 import SearchResult from './views/search-result'
@@ -144,6 +145,16 @@ function FacetedSearch(props: AppProps) {
 										facetsDataDispatch={facetsDataDispatch}
 										key={facetData.id}
 										values={values as BooleanFacetValues}
+									/>
+								)
+							}
+							else if (isHierarchyFacet(facetData)) {
+								return (
+									<HierarchyFacet
+										facetData={facetData as HierarchyFacetData}
+										facetsDataDispatch={facetsDataDispatch}
+										key={facetData.id}
+										values={values as HierarchyFacetValues}
 									/>
 								)
 							}

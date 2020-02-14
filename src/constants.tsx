@@ -27,10 +27,20 @@ export function isDateFacet(facetConfig: FacetConfigBase): facetConfig is DateFa
 	return facetConfig.datatype === EsDataType.Date
 }
 
+export function isHierarchyFacet(facetConfig: FacetConfigBase): facetConfig is HierarchyFacetConfig {
+	return facetConfig.datatype === EsDataType.Hierarchy
+}
+
 export function isListFacet(facetConfig: FacetConfigBase): facetConfig is ListFacetConfig {
 	return facetConfig.datatype === EsDataType.Keyword
 }
 
 export function isRangeFacet(facetConfig: FacetConfigBase): facetConfig is RangeFacetConfig {
 	return facetConfig.datatype === EsDataType.Integer
+}
+
+export function getChildFieldName(parentFieldName: string, number?: number) {
+	const [field, extractedNumber] = parentFieldName.split('_level')
+	number = number != null ? number : parseInt(extractedNumber, 10) + 1
+	return `${field}_level${number}`
 }

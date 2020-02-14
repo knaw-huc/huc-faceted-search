@@ -27,7 +27,10 @@ export default class ElasticSearchRequest {
     private setPostFilter;
     private setAggregations;
     private addFilter;
+    private addHierarchyFilter;
     private createBooleanAggregation;
+    private tmp;
+    private createHierarchyAggregation;
     private createListAggregation;
     private createHistogramAggregation;
     private createDateHistogramAggregation;

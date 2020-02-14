@@ -1,4 +1,4 @@
-import { isBooleanFacet, isListFacet, isRangeFacet, isDateFacet } from '../constants'
+import { isBooleanFacet, isListFacet, isRangeFacet, isDateFacet, isHierarchyFacet, getChildFieldName } from '../constants'
 
 interface AggregationRequest {
 	aggs: any
@@ -40,6 +40,17 @@ export default class ElasticSearchRequest {
 			this.sort.push('_score')
 		}
 	}
+	// private toHierarchyPostFilter(id: HierarchyFacetData['id'], filters: HierarchyFacetData['filters']) {
+	// 	const allFacetFilters = [...filters].map((key, index) => {
+	// 		const field = index === 0 ?
+	// 			id :
+	// 			getChildFieldName(id, index)
+	// 		return { term: { [field]: key } }
+	// 	})
+	// 	if (allFacetFilters.length === 1) return allFacetFilters[0]
+	// 	else if (allFacetFilters.length > 1) return { bool: { should: allFacetFilters } }
+	// 	return {}
+	// }
 
 	private setPostFilter(options: ElasticSearchRequestOptions) {
 		function toPostFilter(facet: ListFacetData | BooleanFacetData) {
@@ -49,11 +60,27 @@ export default class ElasticSearchRequest {
 			return {}
 		}
 
+		function toHierarchyPostFilter(id: HierarchyFacetData['id'], filters: HierarchyFacetData['filters']) {
+			const allFacetFilters = [...filters].map((key, index) => {
+				const field = index === 0 ?
+					id :
+					getChildFieldName(id, index)
+				return { term: { [field]: key } }
+			})
+			if (allFacetFilters.length === 1) return allFacetFilters[0]
+			else if (allFacetFilters.length > 1) return { bool: { must: allFacetFilters } }
+			return {}
+		}
+
 		const facetsData = Array.from(options.facetsData.values())
 
 		const BooleanAndListPostFilters = facetsData
 			.filter(facet => (isBooleanFacet(facet) || isListFacet(facet)) && facet.filters.size) // Only set post_filter where facet has filters (check if Set is empty)
 			.map((facet: ListFacetData | BooleanFacetData) => toPostFilter(facet))
+
+		const HierarchyPostFilters = facetsData
+			.filter(facet => isHierarchyFacet(facet) && facet.filters.size) // Only set post_filter where facet has filters (check if Set is empty)
+			.map((facet: HierarchyFacetData) => toHierarchyPostFilter(facet.id, facet.filters))
 
 		const DatePostFilters = facetsData
 			.filter(isDateFacet)
@@ -83,6 +110,7 @@ export default class ElasticSearchRequest {
 		const post_filters = BooleanAndListPostFilters
 			.concat(DatePostFilters as any[])
 			.concat(RangePostFilters as any[])
+			.concat(HierarchyPostFilters as any[])
 
 		if (post_filters.length === 1) {
 			this.post_filter = post_filters[0]
@@ -100,6 +128,7 @@ export default class ElasticSearchRequest {
 			let facetAggs	
 			if (isBooleanFacet(facetData)) facetAggs = this.createBooleanAggregation(facetData)
 			if (isDateFacet(facetData)) facetAggs = this.createDateHistogramAggregation(facetData)
+			if (isHierarchyFacet(facetData)) facetAggs = this.createHierarchyAggregation(facetData)
 			if (isListFacet(facetData)) facetAggs = this.createListAggregation(facetData)
 			if (isRangeFacet(facetData)) facetAggs = this.createHistogramAggregation(facetData)
 
@@ -128,6 +157,23 @@ export default class ElasticSearchRequest {
 		return agg
 	}
 
+	private addHierarchyFilter(key: string, filter: string, values: any): any {
+		// console.log(key, filter)
+		const agg = {
+			[key]: {
+				aggs: { [key]: values },
+				filter: { match_all: {} }
+			}
+		}
+
+		if (filter != null) {
+			// @ts-ignore
+			agg[key].filter = { term: { [key]: filter } }
+		}
+
+		return agg
+	}
+
 	private createBooleanAggregation(facet: BooleanFacetConfig) {
 		const values = {
 			terms: {
@@ -136,6 +182,98 @@ export default class ElasticSearchRequest {
 		}
 
 		return this.addFilter(facet.id, values)
+	}
+
+	// private tmp(field: string, filters: string[]): Record<string, any> {
+	// 	if (filters.length < 1) return {}
+
+	// 	const childFieldName = getChildFieldName(field)
+	// 	// console.log(field, filters)
+	// 	// console.log(field)
+	// 	// console.log(getChildFieldName(field))
+	// 	// const value = filters[0]
+	// 	let aggs = {}
+	// 	if (filters.length > 1) aggs = this.tmp(childFieldName, filters.slice(1))
+	// 	const ret = {
+	// 		// aggs: {
+	// 			[childFieldName]: {
+	// 				terms: {
+	// 					field: childFieldName
+	// 				}
+	// 			},
+	// 			aggs
+	// 		// }
+	// 	}
+
+	// 	if (!Object.keys(aggs).length) delete ret.aggs
+	// 	return ret
+	// }
+
+	private tmp(facetData: HierarchyFacetData, filters: string[], index: number = 0): Record<string, any> {
+		const field = index === 0 ? facetData.id : getChildFieldName(facetData.id, index)
+		const terms: ListAggregationTerms = {
+			field,
+			size: facetData.viewSize,
+		}
+
+		const [currentFilter, ...nextFilters] = filters
+		// console.log(currentFilter, nextFilters)
+
+		const aggs = filters.length > 0 ?
+			this.tmp(facetData, nextFilters, ++index) :
+			{}
+
+		return this.addHierarchyFilter(field, currentFilter, { terms, aggs })
+	}
+
+	private createHierarchyAggregation(facetData: HierarchyFacetData) {
+		// const terms: ListAggregationTerms = {
+		// 	field: facetData.id,
+		// 	size: facetData.viewSize,
+		// }
+
+		// console.log(this.addFilter(face))
+		// Array.from(facetData.filters).forEach((_filter, index) => {
+		// 	const field = index === 0 ? facetData.id : getChildFieldName(facetData.id, index)
+		// 	const terms: ListAggregationTerms = {
+		// 		field,
+		// 		size: facetData.viewSize,
+		// 	}
+
+		// 	console.log(this.addFilter(field, { terms }))
+		// })
+
+		const aggs = this.tmp(facetData, Array.from(facetData.filters))
+		// console.log(aggs)
+
+		// console.log(aggs)
+		// let aggs = {}
+
+		// Array.from(facetData.filters).reduce((prev, curr) => {
+			
+		// }, {})
+		// if (facetData.filters.size === 1) {
+		// 	aggs = {
+		// 		toegang_level1: {
+		// 			terms: {
+		// 				field: 'toegang_level1'
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+
+		const agg = {
+			// ...this.addFilter(facetData.id, { aggs, terms }),
+			...aggs,
+			...this.addFilter(`${facetData.id}-count`, {
+				cardinality: {
+					field: facetData.id
+				}
+			})
+		}
+
+		return agg
 	}
 
 	private createListAggregation(facetData: ListFacetData) {

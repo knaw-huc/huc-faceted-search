@@ -1,4 +1,4 @@
-import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet } from '../constants'
+import { isListFacet, isBooleanFacet, isRangeFacet, isDateFacet, isHierarchyFacet } from '../constants'
 import React from 'react'
 
 function initBooleanFacet(booleanFacetConfig: BooleanFacetConfig): BooleanFacetData {
@@ -14,6 +14,15 @@ function initDateFacet(rangeFacetConfig: DateFacetConfig): DateFacetData {
 		...rangeFacetConfig,
 		filters: null,
 		interval: null,
+	}
+}
+
+function initHierarchyFacet(hierarchyFacetConfig: HierarchyFacetConfig): HierarchyFacetData {
+	return {
+		...hierarchyFacetConfig,
+		filters: new Set(),
+		size: hierarchyFacetConfig.size || 10,
+		viewSize: hierarchyFacetConfig.size || 10,
 	}
 }
 
@@ -41,11 +50,12 @@ function initRangeFacet(rangeFacetConfig: RangeFacetConfig): RangeFacetData {
 export function initFacetsData(fields: AppProps['fields']) {
 	return fields
 		.reduce((prev, curr) => {
-			if		(isListFacet(curr))		prev.set(curr.id, initListFacet(curr))
-			else if (isBooleanFacet(curr))	prev.set(curr.id, initBooleanFacet(curr))
-			else if (isRangeFacet(curr))	prev.set(curr.id, initRangeFacet(curr))
-			else if (isDateFacet(curr))		prev.set(curr.id, initDateFacet(curr))
-			// else							prev.set(curr.id, initListFacet(curr as ListFacetConfig))
+			if		(isListFacet(curr))			prev.set(curr.id, initListFacet(curr))
+			else if (isBooleanFacet(curr))		prev.set(curr.id, initBooleanFacet(curr))
+			else if (isHierarchyFacet(curr))	prev.set(curr.id, initHierarchyFacet(curr))
+			else if (isRangeFacet(curr))		prev.set(curr.id, initRangeFacet(curr))
+			else if (isDateFacet(curr))			prev.set(curr.id, initDateFacet(curr))
+			// else								prev.set(curr.id, initListFacet(curr as ListFacetConfig))
 
 			return prev
 		}, new Map())
@@ -68,16 +78,31 @@ function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerActi
 
 	const facet = facetsData.get(action.facetId)
 
-	if (isListFacet(facet) || isBooleanFacet(facet)) {
+	if (isHierarchyFacet(facet)) {
 		switch(action.type) {
-			case 'add_filter': {
-				facet.filters = new Set(facet.filters.add(action.value))
+			case 'remove_filter': {
+				const filters = Array.from(facet.filters)
+				const nextFilters = filters.slice(0, filters.indexOf(action.value))
+				facet.filters = new Set(nextFilters)
 				return new Map(facetsData)
 			}
+		}
+	}
 
+	if (isListFacet(facet) || isBooleanFacet(facet)) {
+		switch(action.type) {
 			case 'remove_filter': {
 				facet.filters.delete(action.value)
 				facet.filters = new Set(facet.filters)
+				return new Map(facetsData)
+			}
+		}
+	}
+
+	if (isListFacet(facet) || isBooleanFacet(facet) || isHierarchyFacet(facet)) {
+		switch(action.type) {
+			case 'add_filter': {
+				facet.filters = new Set(facet.filters.add(action.value))
 				return new Map(facetsData)
 			}
 		}
@@ -110,7 +135,11 @@ function facetsDataReducer(facetsData: FacetsData, action: FacetsDataReducerActi
 				facet.sort = { by: action.by,  direction: action.direction }
 				return new Map(facetsData)
 			}
+		}
+	}
 
+	if (isListFacet(facet) || isHierarchyFacet(facet)) {
+		switch(action.type) {
 			case 'view_less': {
 				if (facet.viewSize > facet.size) {
 					facet.viewSize -= facet.size

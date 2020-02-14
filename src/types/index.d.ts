@@ -36,8 +36,8 @@ interface KeyCount {
 interface RangeKeyCount {
 	key: number,
 	count: number
-	from: number
-	to: number
+	// from: number
+	// to: number
 }
 
 interface FSResponse {
@@ -58,6 +58,7 @@ declare const enum EsDataType {
 	Completion = "completion",
 	Date = "date",
 	Geo_point = "geo_point",
+	Hierarchy = "hierarchy",
 	Integer = "integer",
 	Keyword = "keyword",
 	Null = "null",
