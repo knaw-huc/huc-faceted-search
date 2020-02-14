@@ -77,6 +77,7 @@ export default function elasticSearchResponseParser(response: any, facets: Facet
 				key: hv.key,
 				count: hv.doc_count,
 			})) as RangeFacetValues
+			// console.log('in red', facetValues[facet.id])
 
 			facet.interval = response.aggregations[facet.id][facet.id].interval
 		}

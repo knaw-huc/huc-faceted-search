@@ -1,4 +1,4 @@
 import * as React from 'react';
-declare function RangeFacetBody(props: DateFacetProps): JSX.Element;
-declare const _default: React.MemoExoticComponent<typeof RangeFacetBody>;
+declare function DateFacetBody(props: DateFacetProps): JSX.Element;
+declare const _default: React.MemoExoticComponent<typeof DateFacetBody>;
 export default _default;

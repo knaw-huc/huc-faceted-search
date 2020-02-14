@@ -1,7 +1,7 @@
 import * as React from 'react'
 import FacetHeader from '../header'
 import FacetWrapper from '../facet'
-import RangeFacetBody from './body'
+import DateFacetBody from './body'
 
 
 function DateFacetView(props: DateFacetProps) {
@@ -10,7 +10,7 @@ function DateFacetView(props: DateFacetProps) {
 			<FacetHeader facetData={props.facetData} />
 			{
 				props.values.length > 0 &&
-				<RangeFacetBody { ...props } />
+				<DateFacetBody { ...props } />
 			}
 		</FacetWrapper>
 	)

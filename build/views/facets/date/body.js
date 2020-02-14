@@ -23,7 +23,7 @@ const ActiveDates = styled_1.default('div') `
 	font-weight: bold;
 	grid-template-columns: 1fr 16px 1fr;
 `;
-function RangeFacetBody(props) {
+function DateFacetBody(props) {
     const minValue = props.values[0].key;
     const maxValue = utils_1.getEndDate(props.values[props.values.length - 1].key, props.facetData.interval);
     const minDate = constants_1.isDateFacet(props.facetData) ? utils_1.formatDate(minValue, props.facetData.interval) : props.values[0].count;
@@ -35,4 +35,4 @@ function RangeFacetBody(props) {
             React.createElement(ActiveDates, null),
             React.createElement(DateMax, null, maxDate))));
 }
-exports.default = React.memo(RangeFacetBody);
+exports.default = React.memo(DateFacetBody);

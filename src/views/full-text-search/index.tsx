@@ -42,7 +42,7 @@ export const Input = styled.input`
 	width: 100%;
 
 	&::placeholder {
-		color: #BBB;
+		color: #DDD;
 		font-style: italic;
 	}
 `
@@ -103,7 +103,7 @@ function FullTextSearch(props: Props) {
 					type="text"
 					onChange={handleInputChange}
 					onClick={() => setSuggestActive(false)}
-					placeholder="search"
+					placeholder="search documents"
 					value={inputValue}
 				/>
 			</div>

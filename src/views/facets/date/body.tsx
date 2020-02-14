@@ -25,13 +25,17 @@ const ActiveDates = styled('div')`
 	grid-template-columns: 1fr 16px 1fr;
 `
 
-function RangeFacetBody(props: DateFacetProps) {
+function DateFacetBody(props: DateFacetProps) {
+	// console.log('in datef', props.values)
 	const minValue = props.values[0].key
 	const maxValue = getEndDate(props.values[props.values.length - 1].key, props.facetData.interval)
 
 	const minDate = isDateFacet(props.facetData) ? formatDate(minValue, props.facetData.interval) : props.values[0].count
 	const maxDate = isDateFacet(props.facetData) ? formatDate(maxValue, props.facetData.interval) : props.values.reduce((prev, curr) => prev + curr.count, 0)
 
+	// console.log(minValue, maxValue)
+	// console.log(props.facetData, minDate, maxDate)
+	// console.log(props.values[0].key, props.values[props.values.length - 1].key + props.facetData.interval)
 	return (
 		<>
 			<Histogram
@@ -71,4 +75,4 @@ function RangeFacetBody(props: DateFacetProps) {
 	)
 }
 
-export default React.memo(RangeFacetBody)
+export default React.memo(DateFacetBody)
