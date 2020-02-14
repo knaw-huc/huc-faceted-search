@@ -36,20 +36,20 @@ function usePages(currentPage, pageCount) {
         let first = [];
         let current = [];
         let last = [];
-        if (pageCount < 10) {
+        if (pageCount < 7) {
             current = getRange(1, pageCount);
         }
         else {
             first = [1];
             last = [pageCount];
-            if (currentPage < 6) {
-                first = getRange(1, 7);
+            if (currentPage < 4) {
+                first = getRange(1, 4);
             }
-            else if (currentPage > pageCount - 6) {
-                last = getRange(pageCount - 6, pageCount);
+            else if (currentPage > pageCount - 3) {
+                last = getRange(pageCount - 3, pageCount);
             }
             else {
-                current = getRange(currentPage - 2, currentPage + 2);
+                current = getRange(currentPage - 1, currentPage + 1);
             }
         }
         setFirst(first);

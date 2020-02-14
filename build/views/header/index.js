@@ -14,7 +14,7 @@ const Wrapper = styled_1.default.header `
 	display: grid;
 	font-size: .85em;
 	grid-template-rows: 24px 48px;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 3fr 2fr;
 	padding-top: 32px;
 	position: sticky;
 	top: -54px;
