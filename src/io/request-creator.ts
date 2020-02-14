@@ -227,50 +227,34 @@ export default class ElasticSearchRequest {
 	}
 
 	private createHierarchyAggregation(facetData: HierarchyFacetData) {
-		// const terms: ListAggregationTerms = {
-		// 	field: facetData.id,
-		// 	size: facetData.viewSize,
-		// }
+		const filters = Array.from(facetData.filters)
+		const aggs = this.tmp(facetData, filters)
 
-		// console.log(this.addFilter(face))
-		// Array.from(facetData.filters).forEach((_filter, index) => {
-		// 	const field = index === 0 ? facetData.id : getChildFieldName(facetData.id, index)
-		// 	const terms: ListAggregationTerms = {
-		// 		field,
-		// 		size: facetData.viewSize,
-		// 	}
+		/*
+		 * The top level filter is the starting point for the reduce, because
+		 * the top level count aggegration always has to be run. If filters
+		 * has values, the reduce will add the underlying levels
+		 */
+		const topLevelFilter = this.addFilter(`${facetData.id}-count`, {
+			cardinality: { field: facetData.id }
+		})
 
-		// 	console.log(this.addFilter(field, { terms }))
-		// })
+		const countFilters = filters.reduce((prev, _curr, index) => {
+			const field = getChildFieldName(facetData.id, ++index)
+			prev = {
+				...prev,
+				...this.addFilter(`${field}-count`, {
+					cardinality: { field }
+				})
+			}
 
-		const aggs = this.tmp(facetData, Array.from(facetData.filters))
-		// console.log(aggs)
+			return prev
 
-		// console.log(aggs)
-		// let aggs = {}
-
-		// Array.from(facetData.filters).reduce((prev, curr) => {
-			
-		// }, {})
-		// if (facetData.filters.size === 1) {
-		// 	aggs = {
-		// 		toegang_level1: {
-		// 			terms: {
-		// 				field: 'toegang_level1'
-		// 			}
-		// 		}
-		// 	}
-		// }
-
+		}, topLevelFilter)
 
 		const agg = {
-			// ...this.addFilter(facetData.id, { aggs, terms }),
 			...aggs,
-			...this.addFilter(`${facetData.id}-count`, {
-				cardinality: {
-					field: facetData.id
-				}
-			})
+			...countFilters
 		}
 
 		return agg

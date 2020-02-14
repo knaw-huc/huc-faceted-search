@@ -148,12 +148,19 @@ class ElasticSearchRequest {
         return this.addHierarchyFilter(field, currentFilter, { terms, aggs });
     }
     createHierarchyAggregation(facetData) {
-        const aggs = this.tmp(facetData, Array.from(facetData.filters));
-        const agg = Object.assign(Object.assign({}, aggs), this.addFilter(`${facetData.id}-count`, {
-            cardinality: {
-                field: facetData.id
-            }
-        }));
+        const filters = Array.from(facetData.filters);
+        const aggs = this.tmp(facetData, filters);
+        const topLevelFilter = this.addFilter(`${facetData.id}-count`, {
+            cardinality: { field: facetData.id }
+        });
+        const countFilters = filters.reduce((prev, _curr, index) => {
+            const field = constants_1.getChildFieldName(facetData.id, ++index);
+            prev = Object.assign(Object.assign({}, prev), this.addFilter(`${field}-count`, {
+                cardinality: { field }
+            }));
+            return prev;
+        }, topLevelFilter);
+        const agg = Object.assign(Object.assign({}, aggs), countFilters);
         return agg;
     }
     createListAggregation(facetData) {
