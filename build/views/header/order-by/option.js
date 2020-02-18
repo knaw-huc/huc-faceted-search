@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const page_number_1 = require("../page-number");
-const Wrapper = styled_1.default.li `
+const Wrapper = styled_1.default.div `
 	border-bottom: 1px solid #eee;
 	color: ${(props) => props.active ? '#666' : 'inherit'};
 	display: grid;

@@ -1,22 +1,12 @@
 import * as React from 'react'
-import Suggestion from './suggestion'
 import styled from '@emotion/styled'
 import debounce from 'lodash.debounce'
+import { DropDownBody } from '../ui/drop-down'
 
-const Suggestions = styled('ul')`
-	border-bottom: 0;
-	border-left: 1px solid #CCC;
-	border-right: 1px solid #CCC;
-	box-sizing: border-box;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: 45px;
-	width: calc(100% - 100px);
-	z-index: 1;
+const SuggestionsDropDownBody = styled(DropDownBody)`
+	border-top: 0;
+	margin-top: 1px;
 `
-
 
 interface Props {
 	autoSuggest: (query: string) => Promise<string[]>
@@ -43,20 +33,23 @@ export default class AutoSuggest extends React.PureComponent<Props, State> {
 
 	render() {
 		return (
-			<Suggestions>
+			<SuggestionsDropDownBody
+				show={this.state.suggestions.length > 0}
+			>
 				{
 					this.state.suggestions.map((suggestion, index) =>
-						<Suggestion
+						<div
 							key={index}
-							onClick={(query) => {
+							onClick={() => {
 								this.setState({ suggestions: [] })
-								this.props.onClick(query)
+								this.props.onClick(suggestion)
 							}}
-							value={suggestion}
-						/>
+						>
+							{suggestion}
+						</div>
 					)
 				}
-			</Suggestions>
+			</SuggestionsDropDownBody>
 		)
 	}
 

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { Button } from '../page-number'
 
 interface OOProps { active: boolean }
-const Wrapper = styled.li`
+const Wrapper = styled.div`
 	border-bottom: 1px solid #eee;
 	color: ${(props: OOProps) => props.active ? '#666' : 'inherit' };
 	display: grid;

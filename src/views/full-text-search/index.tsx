@@ -116,7 +116,10 @@ function FullTextSearch(props: Props) {
 				suggestActive &&
 				<AutoSuggest
 					autoSuggest={props.autoSuggest}
-					onClick={(query) => setInputValue(query)}
+					onClick={query => {
+						setInputValue(query)
+						setQuery(query)
+					}}
 					value={inputValue}
 				/>	
 			}

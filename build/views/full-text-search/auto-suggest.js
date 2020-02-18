@@ -2,21 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const React = tslib_1.__importStar(require("react"));
-const suggestion_1 = tslib_1.__importDefault(require("./suggestion"));
 const styled_1 = tslib_1.__importDefault(require("@emotion/styled"));
 const lodash_debounce_1 = tslib_1.__importDefault(require("lodash.debounce"));
-const Suggestions = styled_1.default('ul') `
-	border-bottom: 0;
-	border-left: 1px solid #CCC;
-	border-right: 1px solid #CCC;
-	box-sizing: border-box;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: 45px;
-	width: calc(100% - 100px);
-	z-index: 1;
+const drop_down_1 = require("../ui/drop-down");
+const SuggestionsDropDownBody = styled_1.default(drop_down_1.DropDownBody) `
+	border-top: 0;
+	margin-top: 1px;
 `;
 class AutoSuggest extends React.PureComponent {
     constructor() {
@@ -48,10 +39,10 @@ class AutoSuggest extends React.PureComponent {
         });
     }
     render() {
-        return (React.createElement(Suggestions, null, this.state.suggestions.map((suggestion, index) => React.createElement(suggestion_1.default, { key: index, onClick: (query) => {
+        return (React.createElement(SuggestionsDropDownBody, { show: this.state.suggestions.length > 0 }, this.state.suggestions.map((suggestion, index) => React.createElement("div", { key: index, onClick: () => {
                 this.setState({ suggestions: [] });
-                this.props.onClick(query);
-            }, value: suggestion }))));
+                this.props.onClick(suggestion);
+            } }, suggestion))));
     }
 }
 exports.default = AutoSuggest;

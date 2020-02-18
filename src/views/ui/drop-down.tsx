@@ -30,18 +30,34 @@ const DropDownButton = styled(Button)`
 	}}
 `
 
-const Body = styled.div`
+export const DropDownBody = styled.div`
 	background: white;
 	border: 1px solid #888;
 	line-height: 1.6em;
 	margin-top: -1px;
-	opacity: ${(props: { showMenu: boolean, z: number }) => props.showMenu ? 1 : 0};
+	min-width: 200px;
+	opacity: ${(props: { show?: boolean, z?: number }) => props.show ? 1 : 0};
 	padding: .5em 1em;
-	pointer-events: ${props => props.showMenu ? 'all' : 'none'};
+	pointer-events: ${props => props.show ? 'all' : 'none'};
 	position: absolute;
 	transition: opacity 300ms;
 	z-index: ${props => props.z};
+
+	& > div {
+		color: #888;
+		font-size: .9rem;
+
+		&:hover {
+			cursor: pointer;
+			color: #444;
+		}
+	}
+
+	& > div:not(:last-of-type) {
+		border-bottom: 1px solid #EEE;
+	}
 `
+DropDownBody.defaultProps = { show: true, z: 0 }
 
 interface Props {
 	children: React.ReactNode
@@ -50,41 +66,38 @@ interface Props {
 	z: number
 }
 function DropDown(props: Props) {
-	const [showMenu, setShowMenu] = React.useState(false)
-	const hideMenu = React.useCallback(() => setShowMenu(false), [])
+	const [showBody, setShowBody] = React.useState(false)
+	const hideMenu = React.useCallback(() => setShowBody(false), [])
 
 	const handleClick = React.useCallback(ev => {
 		ev.stopPropagation()
-		
-		setShowMenu(!showMenu)
-	}, [showMenu])
+		setShowBody(!showBody)
+	}, [showBody])
 
 	React.useEffect(() => {
-		if (showMenu) window.addEventListener('click', hideMenu)
+		if (showBody) window.addEventListener('click', hideMenu)
 		else window.removeEventListener('click', hideMenu)
 
-		return () => {
-			window.removeEventListener('click', hideMenu)
-		}
-	}, [showMenu])
+		return () => window.removeEventListener('click', hideMenu)
+	}, [showBody])
 
 	return (
 		<Wrapper className={props.className}>
 			<DropDownButton
 				className="huc-fs-dropdown-button"
 				onClick={handleClick}
-				showMenu={showMenu}
+				showMenu={showBody}
 				z={props.z}
 			>
-				{props.label} <span>{showMenu ? '▲' : '▼'}</span>
+				{props.label} <span>{showBody ? '▲' : '▼'}</span>
 			</DropDownButton>
-			<Body
+			<DropDownBody
 				className="huc-fs-dropdown-body"
-				showMenu={showMenu}
+				show={showBody}
 				z={props.z}
 			>
 				{props.children}
-			</Body>
+			</DropDownBody>
 		</Wrapper>
 	)
 }
