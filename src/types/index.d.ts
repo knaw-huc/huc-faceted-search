@@ -7,12 +7,12 @@ interface AppProps {
 	disableDefaultStyle?: boolean
 	excludeResultFields?: string[]
 	fields: FacetConfig[]
-	// onChange?: (response: OnChangeResponse) => void
 	onClickResult: (result: any, ev: React.MouseEvent<HTMLLIElement>) => void
 	resultFields?: string[]
 	ResultBodyComponent: React.FC<ResultBodyProps>
 	resultBodyProps?: Record<string, any>
 	resultsPerPage?: number
+	track_total_hits?: number
 	url: string
 }
 
@@ -26,6 +26,7 @@ type ElasticSearchRequestOptions = Pick<AppProps, 'excludeResultFields' | 'resul
 	facetsData: FacetsData
 	query: string
 	sortOrder: SortOrder
+	track_total_hits: number
 }
 
 interface KeyCount {

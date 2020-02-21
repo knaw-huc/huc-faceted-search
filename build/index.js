@@ -62,6 +62,7 @@ function FacetedSearch(props) {
         resultsPerPage: props.resultsPerPage,
         query,
         sortOrder,
+        track_total_hits: props.track_total_hits
     });
     const clearActiveFilters = React.useCallback(() => {
         setQuery('');

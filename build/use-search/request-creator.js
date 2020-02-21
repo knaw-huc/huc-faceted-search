@@ -13,6 +13,9 @@ class ESRequest {
             });
             this.sort.push('_score');
         }
+        if (options.track_total_hits != null) {
+            this.track_total_hits = options.track_total_hits;
+        }
     }
     setSource(options) {
         if (!options.resultFields.length && !options.excludeResultFields.length)

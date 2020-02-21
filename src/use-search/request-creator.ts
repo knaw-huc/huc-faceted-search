@@ -3,6 +3,7 @@ export default class ESRequest {
 	from: number
 	size: number
 	sort: any
+	track_total_hits: number
 
 	constructor(options: ElasticSearchRequestOptions) {
 		this.setSource(options)
@@ -14,6 +15,9 @@ export default class ESRequest {
 				this.sort.push({[facetId]: sortDirection})
 			})
 			this.sort.push('_score')
+		}
+		if (options.track_total_hits != null) {
+			this.track_total_hits = options.track_total_hits
 		}
 	}
 

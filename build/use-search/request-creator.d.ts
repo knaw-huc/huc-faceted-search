@@ -6,6 +6,7 @@ export default class ESRequest {
     from: number;
     size: number;
     sort: any;
+    track_total_hits: number;
     constructor(options: ElasticSearchRequestOptions);
     private setSource;
 }
